@@ -21,3 +21,16 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-08 | RUNBOOK (new) | Local setup, make targets, deploy flow, env vars, custom domain, rollback, IRSA down |
 | 2026-11-08 | AI_USAGE | Row for the light theme and the new docs |
 | 2026-11-08 | DOC_UPDATES | This set of rows |
+| 2026-11-08 | CLAUDE.md (new) | Claude Code entry point: loads AGENTS.md, PM_PLAYBOOK and STATUS; lists /daily, /tasks, /docupdate |
+| 2026-11-08 | PM_PLAYBOOK (new) | Project-manager rules for the AI agent: team, rhythm, templates, open items, ready messages |
+| 2026-11-08 | docs/assets/planetes-palettes-light.png (new) | Palette vote image (A Lab Notebook · B Clear Sky · C Plate Archive) |
+| 2026-11-08 | .claude/commands/daily.md, tasks.md, docupdate.md (new) | Slash commands for standup script, nightly tasks, doc-change log |
+| 2026-11-08 | .agents/workflows/daily.md, tasks.md, docupdate.md (new) | Same three workflows for Antigravity |
+| 2026-11-08 | AGENTS.md | Added "Project management rules: docs/PM_PLAYBOOK.md" |
+| 2026-11-08 | 09 | Handoff copy checked: identical to the version already in the repo, no change |
+| 2026-11-08 | 02 | Persistent cache is Google Cloud Storage (`planetes-cache`, asia-south1), not Cloudflare R2; new env vars `GCS_BUCKET`, `GCP_SERVICE_ACCOUNT_JSON` |
+| 2026-11-08 | RUNBOOK | GCS setup steps (bucket, 30-day lifecycle, service account, key into Render, $20 budget alert); GCS env vars |
+| 2026-11-08 | DECISIONS | R2 decision replaced: GCS over R2, team already has Google Cloud credit |
+| 2026-11-08 | STATUS | Live Vercel and Render URLs; all PM_PLAYBOOK §7 open items; R2 [VERIFY] replaced by trial-credit expiry |
+| 2026-11-08 | render.yaml | Declares `GCS_BUCKET=planetes-cache` and `GCP_SERVICE_ACCOUNT_JSON` (value set in the dashboard only) |
+| 2026-11-08 | DOC_UPDATES | This set of rows |
