@@ -12,7 +12,7 @@ Nov 8, 2026 · All times IST · Hackathon: Sat Nov 14 – Sun Nov 15, 2026
 
 | Phase | When | Goal | Gate to pass |
 | --- | --- | --- | --- |
-| **0 · Prove it** (light, Diwali) | Sun 8 → Mon 9, 10:30 | Each person proves their data/tool works on real SPHEREx data | G0: real frames for ≥1 benchmark; repo + AGENTS.md + contracts v1; “hello” site live on Vercel and API live on Render |
+| **0 · Prove it** (light, Diwali) | Sun 8 → Mon 9, 10:00 | Each person proves their data/tool works on real SPHEREx data | G0: real frames for ≥1 benchmark; repo + AGENTS.md + contracts v1; “hello” site live on Vercel and API live on Render |
 | **1 · Live time-lapse MVP** | Mon 9 → Tue 10, 23:00 | The challenge's core: coordinates in → SPHEREx “little video” out | G1: any coordinates + 5 benchmarks play as aligned time-lapses with flags and metadata → **first submittable version** |
 | **2 · Power features** | Wed 11 → Thu 12, 13:00 | Stacks, difference, colour, FOV, overlays, URL/embed, spectra on the fly, proper motions | G2: every official “consideration” (C1–C9 in doc 01) works on the benchmarks |
 | **3 · Two Opinions** | Thu 12, 13:00 → Fri 13, 18:00 | Our differentiator + Validation page | G3: verdict panel live for benchmarks + validation set; V1–V8 results shown |
@@ -24,7 +24,7 @@ Nov 8, 2026 · All times IST · Hackathon: Sat Nov 14 – Sun Nov 15, 2026
 
 **Hosting (decided):** website on **Vercel** (free), API on **Render Starter** (team credits, no sleep) from day one.
 
-## Phase 0 · Prove it (Sun 8 → Mon 9, 10:30)
+## Phase 0 · Prove it (Sun 8 → Mon 9, 10:00)
 
 Light work for the holiday: about 2–3 hours each.
 
@@ -32,7 +32,7 @@ Light work for the holiday: about 2–3 hours each.
 - **Tirth:** TAP query + cutouts for Barnard's Star at its **propagated** position; list of frames (obs ID, date, detector, wavelength at the star); 6 frames rendered side by side. (D2.1 start)
 - **Shivaansh:** `resolve` prototype: name → position + proper motion (SIMBAD/Gaia), propagated to any date; table for the 5 benchmarks with sources. (D3.1 start)
 - **Shimaya:** `sbpy` NEATM + reflected model at 1.5/2.5/3.5/5.2 AU, plot TR (D6/D3 ratio) vs r; locate the SPHEREx brown-dwarf templates and their terms. (D4.1/D4.3 start)
-- **G0 at Mon 10:30:** each shows a working notebook/plot. **Decision:** confirm QR3 vs QR2 table names; confirm the thermometer is worth pursuing.
+- **G0 at Mon 10:00:** each shows a working notebook/plot. **Decision:** confirm QR3 vs QR2 table names; confirm the thermometer is worth pursuing.
 
 ## Phase 1 · Live time-lapse MVP (Mon 9 → Tue 10)
 

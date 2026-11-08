@@ -41,7 +41,7 @@ The AI agent working in this repo is also Rishabh's **project manager**. Rishabh
 | By 23:30 | **Tomorrow's tasks per person** as one group message (§5), sized for 3–5 focused hours with AI tools, tied to D-codes in docs/06 and the current phase gate in docs/05 |
 | Anytime | Group message whenever a doc changes, a decision is made, or a deadline is near |
 
-**Phase gates (docs/05):** G0 Mon 9, 10:30 · G1 Tue 10, 23:00 (first submittable version) · G2 Thu 12, 13:00 · G3 Fri 13, 18:00 · Buffer to Sat 14, 10:00 · Wow layer Sat 10:00–18:00 · Freeze Sat 18:00 · Submit Sun 15, 18:00.
+**Phase gates (docs/05):** G0 Mon 9, 10:00 · G1 Tue 10, 23:00 (first submittable version) · G2 Thu 12, 13:00 · G3 Fri 13, 18:00 · Buffer to Sat 14, 10:00 · Wow layer Sat 10:00–18:00 · Freeze Sat 18:00 · Submit Sun 15, 18:00.
 
 ## 4. Standup script template
 
@@ -84,7 +84,7 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 - [ ] **Google Cloud Storage cache** (replaces the earlier R2 idea): steps in docs/RUNBOOK.md.
 - [ ] **Camber**: can teammates run jobs on Rishabh's account? Ask Rishabh, update docs/02 [VERIFY].
 - [ ] **Science [VERIFY] at Monday standup** (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
-- [ ] **G0 Mon 9, 10:30:** each person shows a working notebook/plot (Phase 0 tasks in docs/05).
+- [ ] **G0 Mon 9, 10:00:** each person shows a working notebook/plot (Phase 0 tasks in docs/05).
 - [ ] **Nov 13:** read the Resources tab and Submission/Judging guides; update docs/01 and docs/08 (video length, required fields, AI-use disclosure).
 
 ## 8. Ready messages not sent yet

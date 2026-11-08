@@ -35,3 +35,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-08 | render.yaml | Declares `GCS_BUCKET=planetes-cache` and `GCP_SERVICE_ACCOUNT_JSON` (value set in the dashboard only) |
 | 2026-11-08 | DOC_UPDATES | This set of rows |
 | 2026-11-08 | STATUS | G0 meeting moved to tonight Sun 8, 22:00 (was Mon 9, 10:30); daily 10:30 standup unchanged |
+| 2026-11-08 | 05, PM_PLAYBOOK, STATUS | For clarification: the G0 meeting is Mon 9 at 10:00 (not 10:30, and not Sun 22:00) |
