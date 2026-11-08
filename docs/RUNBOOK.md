@@ -31,7 +31,7 @@ Push (or merge a PR) to `main` → CI runs → **Vercel** builds `web/` (static 
 | Service | Variable | Value |
 |---|---|---|
 | Vercel (web) | `NEXT_PUBLIC_API_BASE` | Render API URL, no trailing slash. Baked in at build time, so redeploy after changing it |
-| Render (API) | `ALLOWED_ORIGINS` | Comma-separated site origins: `https://planetes.xyz` plus the Vercel default URL. Unset = no cross-origin access |
+| Render (API) | `ALLOWED_ORIGINS` | Comma-separated site origins: `https://planetes.divergit.com` plus the Vercel default URL. Unset = no cross-origin access |
 | Render (API) | `PYTHON_VERSION` | `3.11.9` (from `render.yaml`) |
 | Render (API) | `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR` | `60`, `8`, `/tmp/planetes-cache` (from `render.yaml`; read by the API from D1.2 on) |
 | Render (API) | `GIT_COMMIT` (optional) | Overrides `RENDER_GIT_COMMIT` for `code_version` |
@@ -50,12 +50,12 @@ Secrets go only in the Vercel/Render dashboards, never in the repo.
 6. Service account → Keys → Add key → JSON. Paste it into Render as `GCP_SERVICE_ACCOUNT_JSON`, set `GCS_BUCKET=planetes-cache`, then delete the downloaded file.
 7. Billing → Budgets & alerts → budget $20 for this project, email alerts at 50/90/100 %. (Alerts only; they don't stop spending.)
 
-## Custom domain (planetes.xyz)
+## Custom domain (planetes.divergit.com)
 
-1. Vercel → project → Settings → Domains → add `planetes.xyz` (and `www.planetes.xyz`, redirected to the apex).
-2. At the domain registrar, create exactly the DNS records Vercel shows (usually an `A` record for the apex and a `CNAME` for `www`). Remove any old `A`/`AAAA`/`CNAME` records for those names.
-3. Wait until Vercel shows "Valid Configuration" and has issued the certificate. Check `https://planetes.xyz` in incognito.
-4. Add `https://planetes.xyz` to `ALLOWED_ORIGINS` on Render, then redeploy the API.
+1. Vercel → project → Settings → Domains → add `planetes.divergit.com`.
+2. In the DNS settings for divergit.com (wherever that domain is managed), add the record Vercel shows: usually `CNAME`, name `planetes`, value `cname.vercel-dns.com`. Don't touch the other divergit.com records.
+3. Wait until Vercel shows "Valid Configuration" and has issued the certificate. Check `https://planetes.divergit.com` in incognito.
+4. Add `https://planetes.divergit.com` to `ALLOWED_ORIGINS` on Render, then redeploy the API.
 5. Record the URL in docs/STATUS.md.
 
 ## Rollback

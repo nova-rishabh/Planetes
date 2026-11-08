@@ -14,7 +14,7 @@ The AI agent working in this repo is also Rishabh's **project manager**. Rishabh
 - They are **school students**, new to astronomy. Explain in plain words. They build with AI tools (Antigravity, Codex, Claude Code), so tasks should be substantial, not 2-prompt chores.
 - **Event:** NASA Space Apps 2026, challenge "Planet X and SPHEREx". Registered under **Universal Event, Anywhere in the World**. Hackathon **Sat Nov 14 – Sun Nov 15, 2026**. Official Resources tab + Submission & Judging guides come out **Nov 13**.
 - **Team page:** "**Team Planetes**" on spaceappschallenge.org (owner: Tirth). A *different* team called just "Planetes" exists on the same challenge. Always share our **direct link**, never just the name.
-- **Live:** API https://planetes-api.onrender.com/api/health · web https://web-gamma-flame-16.vercel.app → moving to **https://planetes.xyz**.
+- **Live:** API https://planetes-api.onrender.com/api/health · web https://web-gamma-flame-16.vercel.app → moving to **https://planetes.divergit.com**.
 - **Internal deadline:** Sun Nov 15, 18:00 IST. All times IST (Asia/Kolkata).
 
 ## 2. Rishabh's standing rules (always follow)
@@ -80,7 +80,7 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 - [ ] **Everyone:** create Space Apps accounts, register for 2026, join Team Planetes via the direct link.
 - [ ] **Team page About text** says "starry discoveries": change it (no discovery claims) once Rishabh is owner.
 - [ ] **Palette vote** by tonight (A Lab Notebook · B Clear Sky · C Plate Archive, default C). Then lock it in docs/09 and tokens.css.
-- [ ] **Domain** `planetes.xyz`: claim, add to Vercel, DNS, then add to Render `ALLOWED_ORIGINS`.
+- [ ] **Domain** `planetes.divergit.com`: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`.
 - [ ] **Google Cloud Storage cache** (replaces the earlier R2 idea): steps in docs/RUNBOOK.md.
 - [ ] **Camber**: can teammates run jobs on Rishabh's account? Ask Rishabh, update docs/02 [VERIFY].
 - [ ] **Science [VERIFY] at Monday standup** (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
@@ -106,7 +106,7 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 > • New doc 09 Design & Brand: light theme, palettes, IBM Plex fonts, the "not AI-looking" rules
 > • New `STATUS.md` (read it first each day), `DECISIONS.md` and `RUNBOOK.md`
 > • AGENTS.md rule 11: UI must follow doc 09
-> • Our site is moving to **planetes.xyz**
+> • Our site is moving to **planetes.divergit.com**
 > Please pull the latest before you start.
 
 **To the group, after Tirth turns joining on:**

@@ -6,7 +6,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 | What | URL | State (Nov 8) |
 |---|---|---|
-| Website | https://planetes.xyz | Not live yet: the domain serves a certificate for a different name. Steps in docs/RUNBOOK.md |
+| Website | https://planetes.divergit.com | Not live yet (no DNS record). Steps in docs/RUNBOOK.md |
 | Website fallback | https://web-gamma-flame-16.vercel.app | Live (HTTP 200) |
 | API | https://planetes-api.onrender.com/api/health | Live: `status ok`, `irsa_tap ok`, `code_version 08b009b` (deploys from `main`) |
 | Repo | https://github.com/nova-rishabh/Planetes | Public |
@@ -28,7 +28,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [ ] Everyone: create Space Apps accounts, register for 2026, join Team Planetes via the direct link
 - [ ] Team page About text says "starry discoveries": change it (no discovery claims) once Rishabh is owner
 - [ ] Palette vote by tonight (A · B · C, default C); then lock it in docs/09 and `tokens.css`
-- [ ] Domain planetes.xyz: claim, add to Vercel, DNS, then add to Render `ALLOWED_ORIGINS`
+- [ ] Domain planetes.divergit.com: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`
 - [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
 - [ ] Camber: can teammates run jobs on Rishabh's account? Then close the docs/02 [VERIFY]
 - [ ] Science [VERIFY] at Monday standup (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?

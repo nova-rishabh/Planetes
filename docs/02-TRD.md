@@ -34,7 +34,7 @@ Nov 7, 2026 · v2 (final for build) · Read 01 PRD first. Exact JSON/API shapes 
 | **Website** (Next.js) | **Vercel Hobby (free)** | Best Next.js host; global CDN, always on, automatic preview link for every pull request |
 | **API** (FastAPI, Python) | **Render Web Service Starter** (team has credits) | Never sleeps, 0.5 CPU / 512 MB; long-running jobs are fine (Vercel's serverless functions have time limits, so the API stays on Render) |
 | Baked benchmark data | Inside the website (`web/public/data`) | Loads instantly even if the API is busy |
-| Custom domain | planetes.xyz (Vercel) | Short link to share; the Vercel default URL stays as a fallback |
+| Custom domain | planetes.divergit.com (subdomain on Vercel) | Short link to share; the Vercel default URL stays as a fallback |
 
 **Decision:** web on Vercel (free), API on Render Starter (paid from team credits, no sleep). Render's disk is temporary (wiped on every deploy), so the persistent cache lives in Google Cloud Storage (below). If the API ever needs more memory, move to Render Standard (2 GB).
 

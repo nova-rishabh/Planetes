@@ -36,3 +36,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-08 | DOC_UPDATES | This set of rows |
 | 2026-11-08 | STATUS | G0 meeting moved to tonight Sun 8, 22:00 (was Mon 9, 10:30); daily 10:30 standup unchanged |
 | 2026-11-08 | 05, PM_PLAYBOOK, STATUS | For clarification: the G0 meeting is Mon 9 at 10:00 (not 10:30, and not Sun 22:00) |
+| 2026-11-08 | 02, 08, 09, DECISIONS, PM_PLAYBOOK, RUNBOOK, STATUS | Live URL is now planetes.divergit.com (planetes.xyz was not available); RUNBOOK domain steps rewritten for a subdomain CNAME |

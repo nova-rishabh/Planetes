@@ -7,7 +7,7 @@ Nov 8, 2026 · Owner: Rishabh · Applies to everything in `web/`, the demo video
 - **App name:** Planetes (from the Greek *planētēs*, "wanderer", the original word for planets: lights that move against the fixed stars).
 - **Team name on Space Apps:** Team Planetes. (A different team called just "Planetes" exists on the same challenge. Always share our direct link.)
 - **Tagline:** "Watch the infrared sky move."
-- **Live URL:** `planetes.xyz` (custom domain on Vercel). The Vercel default URL stays as a fallback.
+- **Live URL:** `planetes.divergit.com` (subdomain on Vercel). The Vercel default URL stays as a fallback.
 
 ## 2. Look and feel
 
