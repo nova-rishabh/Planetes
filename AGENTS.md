@@ -41,6 +41,8 @@ Specs: docs/ (PRD, TRD, Data Contract, Science brief). The Data Contract in cont
 9. UI fonts: never use Inter.
 10. No AI attribution in commits, PR descriptions, code comments or docs (no Co-Authored-By,
     'Generated with …' lines). AI use is disclosed only in docs/AI_USAGE.md.
+11. UI follows docs/09: tokens only (no raw hex), IBM Plex fonts,
+    no Inter/Roboto/Poppins/Montserrat/Space Grotesk, nothing that looks AI-generated (see docs/09 §3c).
 
 ## SPHEREx gotchas (read before touching data code)
 - Use cutouts (?center=RA,DECd&size=DEG), never full ~70 MB files.

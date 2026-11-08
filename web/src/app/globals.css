@@ -1,4 +1,4 @@
-/* Minimal placeholder styling; the design pass comes later. Fonts: Space Grotesk + IBM Plex Sans (never Inter). */
+/* Minimal placeholder styling; the design pass comes later. Fonts: IBM Plex Sans Condensed (headings) + IBM Plex Sans (body), per docs/09. */
 :root {
   --bg: #0b0d12;
   --fg: #e8eaf0;

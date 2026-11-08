@@ -16,6 +16,7 @@ A public web tool: type sky coordinates and watch real NASA SPHEREx infrared ima
 | 06 | [Role Guide](docs/06-Role-Guide.md) | Who owns what; deliverables D1.x–D4.x |
 | 07 | [AI Build Playbook](docs/07-AI-Build-Playbook.md) | How we use Antigravity / Codex safely; starter prompts |
 | 08 | [Demo, Pitch & Submission](docs/08-Demo-Pitch-Submission.md) | Video script, Q&A, submission checklist |
+| 09 | [Design & Brand](docs/09-Design-and-Brand.md) | Name, palette tokens, typography, layout, reference sites |
 
 Doc changes are logged in [docs/DOC_UPDATES.md](docs/DOC_UPDATES.md). **The docs in this repo are the current version.**
 
