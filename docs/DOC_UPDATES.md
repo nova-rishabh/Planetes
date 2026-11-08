@@ -34,3 +34,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-08 | STATUS | Live Vercel and Render URLs; all PM_PLAYBOOK §7 open items; R2 [VERIFY] replaced by trial-credit expiry |
 | 2026-11-08 | render.yaml | Declares `GCS_BUCKET=planetes-cache` and `GCP_SERVICE_ACCOUNT_JSON` (value set in the dashboard only) |
 | 2026-11-08 | DOC_UPDATES | This set of rows |
+| 2026-11-08 | STATUS | G0 meeting moved to tonight Sun 8, 22:00 (was Mon 9, 10:30); daily 10:30 standup unchanged |

@@ -17,7 +17,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 |---|---|---|
 | D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
 | Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8: `web/src/styles/tokens.css`, page uses tokens only |
-| D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due G0 (Mon 9, 10:30) |
+| D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Sun 8, 22:00) |
 | All other D-codes (docs/06) | — | Not started |
 | Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
 
@@ -32,12 +32,12 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
 - [ ] Camber: can teammates run jobs on Rishabh's account? Then close the docs/02 [VERIFY]
 - [ ] Science [VERIFY] at Monday standup (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
-- [ ] G0 Mon 9, 10:30: each person shows a working notebook/plot (Phase 0 tasks in docs/05)
+- [ ] G0 meeting Sun 8, 22:00 (moved from Mon 10:30): each person shows a working notebook/plot (Phase 0 tasks in docs/05)
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
 
 ## Next
 
-1. G0 (Mon 9, 10:30): real frames for at least one benchmark.
+1. G0 meeting (Sun 8, 22:00): real frames for at least one benchmark.
 2. Phase 1 (to G1 Tue 10, 23:00): D1.2 API jobs + D1.3 player; D2.1/D2.2; D3.1/D3.2; D4.1.
 
 ## Open [VERIFY] items
