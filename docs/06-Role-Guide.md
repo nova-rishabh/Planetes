@@ -38,7 +38,7 @@ Shivaansh: resolve + proper motion ──▶ Tirth: fetch + clean + align frames
 
 | Code | Deliverable | Pri | Phase | AI produces | You verify (acceptance) |
 | --- | --- | --- | --- | --- | --- |
-| D1.1 | Repo, AGENTS.md, contracts (JSON Schema → pydantic + TS types), CI, Vercel (web) + Render Blueprint (API) | Must | 0–1 | Scaffolding, schema files, generators, CI workflow | CI fails on an invalid payload; both services deploy from `main` |
+| D1.1 | Repo, AGENTS.md, contracts (JSON Schema → pydantic + TS types), CI, Vercel (web) + Render Blueprint (API). **Done (Nov 8).** | Must | 0–1 | Scaffolding, schema files, generators, CI workflow | CI fails on an invalid payload; both services deploy from `main` |
 | D1.2 | API: jobs, `/timelapse`, `/spectrum`, `/jobs`, `/frames`, `/overlays`, `/resolve`, `/health`, CORS, limits, errors | Must | 1–2 | FastAPI app wiring the `planetes` package | Every response validates against doc 03; a cold start shows a friendly message |
 | D1.3 | Player: coordinate input, 5 benchmark buttons, play/step/scrub/blink, frame metadata, flag overlay + legend; bake workflow | Must | 1 | Canvas/WebGL2 player component, GitHub Action for baking | Barnard's Star motion visible; smooth on a phone; baked benchmarks load < 3 s |
 | D1.4 | Mode switcher (exposures/stacks/difference/sum/colour), FOV control, URL state + `/embed`, spectrum chart, Aladin Lite panel | Must | 2 | UI components and URL sync | A copied link reproduces the exact view; the embed works in an iframe |

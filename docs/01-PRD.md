@@ -172,6 +172,7 @@ Priority: **Must** = required to submit · **Should** = strongly wanted · **Cou
 
 - Official challenge **Resources tab opens Nov 13**: re-check this PRD against it that day.
 - Submission deadline and time zone for our registered event (Tirth).
+- Registered under Universal Event; global deadline (confirm Nov 13).
 - Hosting decided: website on Vercel (free), API on Render Starter (team credits). See doc 02.
 
 ## Sources

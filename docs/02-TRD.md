@@ -34,10 +34,23 @@ Nov 7, 2026 · v2 (final for build) · Read 01 PRD first. Exact JSON/API shapes 
 | **Website** (Next.js) | **Vercel Hobby (free)** | Best Next.js host; global CDN, always on, automatic preview link for every pull request |
 | **API** (FastAPI, Python) | **Render Web Service Starter** (team has credits) | Never sleeps, 0.5 CPU / 512 MB; long-running jobs are fine (Vercel's serverless functions have time limits, so the API stays on Render) |
 | Baked benchmark data | Inside the website (`web/public/data`) | Loads instantly even if the API is busy |
+| Custom domain | planetes.xyz (Vercel) | Short link to share; the Vercel default URL stays as a fallback |
 
-**Decision:** web on Vercel (free), API on Render Starter (paid from team credits, no sleep). Render's disk is temporary, so the cache is best effort (lost on redeploy). That's acceptable. If the API ever needs more memory, move to Render Standard (2 GB).
+**Decision:** web on Vercel (free), API on Render Starter (paid from team credits, no sleep). Render's disk is temporary (wiped on every deploy), so the persistent cache lives in Cloudflare R2 (below). If the API ever needs more memory, move to Render Standard (2 GB).
 
 **Deploy:** `Vercel project linked to web/; one render.yaml Blueprint for the API`. API health check `/api/health`. Env vars: `ALLOWED_ORIGINS`, `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR`. CORS allows only our site origin.
+
+### Persistent cache
+
+Cloudflare R2 holds rendered frames and job results, because the Render disk is wiped on deploy. The local disk cache stays as a fast first layer. **[VERIFY]** free-tier storage and request limits.
+
+### Batch compute
+
+Camber runs the heavy offline work: benchmark bakes and validation V4–V7. **[VERIFY]** how jobs are launched and which team members can run them.
+
+### Monitoring (Should)
+
+Sentry (student tier) for API and web errors.
 
 ## 3. SPHEREx facts the code depends on
 
@@ -152,7 +165,7 @@ planetes/
 | Pipeline | Python 3.11, astropy, astroquery, pyvo, numpy, scipy, photutils, reproject, Pillow, sbpy, scikit-learn, pydantic v2, pytest |
 | API | FastAPI + uvicorn; background jobs via asyncio + thread pool; httpx for HTTP |
 | Web | Next.js (App Router, static export), TypeScript, Tailwind or CSS modules; canvas/WebGL2 player; uPlot or Observable Plot for spectra; Aladin Lite v3 from CDN |
-| Fonts | **Not Inter.** E.g. Space Grotesk / IBM Plex Sans + IBM Plex Mono (design doc to follow) |
+| Fonts | See docs/09 |
 | CI/CD | GitHub Actions; Vercel auto-deploys `web/` (preview link per PR); Render auto-deploys the API from `main` |
 
 ## 11. Open-source building blocks (credit every one)

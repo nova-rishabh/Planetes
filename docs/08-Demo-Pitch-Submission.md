@@ -70,7 +70,7 @@ From past guides, expect fields like these:
 - [ ] Project title: **Planetes**
 - [ ] High-level summary (≤ \~200 words): use §2, plus features
 - [ ] Project details: what it does, how it works, benefits, tools/languages used
-- [ ] **Link to final project** (live site on Vercel) + **public GitHub repo**
+- [ ] **Link to final project** (live site: https://planetes.xyz) + **public GitHub repo**
 - [ ] Demo video link (YouTube/Drive, public)
 - [ ] **Space agency data used:** SPHEREx QR2/QR3 via IRSA; plus Gaia DR3 (ESA), AllWISE (NASA), JPL SSD services
 - [ ] **References:** every dataset, library, tool, image (§7)
