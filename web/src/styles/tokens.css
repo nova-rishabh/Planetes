@@ -1,0 +1,33 @@
+/*
+ * Design tokens: palette C "Plate Archive" from docs/09 §3. Light theme only (docs/09 §7).
+ * Components use these variables and never raw hex.
+ */
+:root {
+  /* Page and panels */
+  --bg: #f4f2ef;
+  --surface: #ffffff;
+  --border: #dedcdc;
+
+  /* Text */
+  --ink: #191d23;
+  --ink-muted: #57707a;
+
+  /* Interactive: fill for shapes and the focus ring, text shade for words */
+  --ui: #7b919c;
+  --ui-text: #57707a;
+
+  /* Reserved for things that moved or changed */
+  --accent-fill: #e07a35;
+  --accent-text: #c2410c;
+
+  /* Sky frames sit on a dark plate (docs/09 §3) */
+  --plate: #191d23;
+  --on-ink: #ffffff;
+
+  /* Shape and spacing (docs/09 §5) */
+  --radius-panel: 12px;
+  --radius-control: 8px;
+  --radius-pill: 999px;
+
+  color-scheme: light;
+}
