@@ -62,3 +62,6 @@ Specs: docs/ (PRD, TRD, Data Contract, Science brief). The Data Contract in cont
 ## Definition of done
 Tests pass; output validates against contracts; a screenshot/plot on real SPHEREx data is in the PR;
 REFERENCES.md and AI_USAGE.md updated.
+
+## Project management
+Project management rules: docs/PM_PLAYBOOK.md.
