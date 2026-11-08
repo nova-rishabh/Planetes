@@ -35,8 +35,20 @@ Push (or merge a PR) to `main` → CI runs → **Vercel** builds `web/` (static 
 | Render (API) | `PYTHON_VERSION` | `3.11.9` (from `render.yaml`) |
 | Render (API) | `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR` | `60`, `8`, `/tmp/planetes-cache` (from `render.yaml`; read by the API from D1.2 on) |
 | Render (API) | `GIT_COMMIT` (optional) | Overrides `RENDER_GIT_COMMIT` for `code_version` |
+| Render (API) | `GCS_BUCKET` | `planetes-cache` |
+| Render (API) | `GCP_SERVICE_ACCOUNT_JSON` | Full JSON key of the cache service account. Secret: dashboard only |
 
 Secrets go only in the Vercel/Render dashboards, never in the repo.
+
+## Google Cloud Storage cache (one-time)
+
+1. console.cloud.google.com → create or pick the Planetes project; Billing shows the $300 trial credit.
+2. Cloud Storage → Buckets → Create: name `planetes-cache`, Region `asia-south1`, class Standard, uniform access, public access prevention on.
+3. Bucket → Lifecycle → Add rule → Delete object, Age 30 days.
+4. IAM & Admin → Service Accounts → Create `planetes-cache-writer`. Grant **no** project roles.
+5. Bucket → Permissions → Grant access → that service account → role **Storage Object Admin** (this bucket only).
+6. Service account → Keys → Add key → JSON. Paste it into Render as `GCP_SERVICE_ACCOUNT_JSON`, set `GCS_BUCKET=planetes-cache`, then delete the downloaded file.
+7. Billing → Budgets & alerts → budget $20 for this project, email alerts at 50/90/100 %. (Alerts only; they don't stop spending.)
 
 ## Custom domain (planetes.xyz)
 

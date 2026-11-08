@@ -20,3 +20,7 @@ services:
         value: "8"
       - key: CACHE_DIR
         value: /tmp/planetes-cache
+      - key: GCS_BUCKET
+        value: planetes-cache
+      - key: GCP_SERVICE_ACCOUNT_JSON
+        sync: false

@@ -36,13 +36,13 @@ Nov 7, 2026 · v2 (final for build) · Read 01 PRD first. Exact JSON/API shapes 
 | Baked benchmark data | Inside the website (`web/public/data`) | Loads instantly even if the API is busy |
 | Custom domain | planetes.xyz (Vercel) | Short link to share; the Vercel default URL stays as a fallback |
 
-**Decision:** web on Vercel (free), API on Render Starter (paid from team credits, no sleep). Render's disk is temporary (wiped on every deploy), so the persistent cache lives in Cloudflare R2 (below). If the API ever needs more memory, move to Render Standard (2 GB).
+**Decision:** web on Vercel (free), API on Render Starter (paid from team credits, no sleep). Render's disk is temporary (wiped on every deploy), so the persistent cache lives in Google Cloud Storage (below). If the API ever needs more memory, move to Render Standard (2 GB).
 
-**Deploy:** `Vercel project linked to web/; one render.yaml Blueprint for the API`. API health check `/api/health`. Env vars: `ALLOWED_ORIGINS`, `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR`. CORS allows only our site origin.
+**Deploy:** `Vercel project linked to web/; one render.yaml Blueprint for the API`. API health check `/api/health`. Env vars: `ALLOWED_ORIGINS`, `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR`, `GCS_BUCKET`, `GCP_SERVICE_ACCOUNT_JSON`. CORS allows only our site origin.
 
 ### Persistent cache
 
-Cloudflare R2 holds rendered frames and job results, because the Render disk is wiped on deploy. The local disk cache stays as a fast first layer. **[VERIFY]** free-tier storage and request limits.
+Google Cloud Storage bucket `planetes-cache` (region `asia-south1`) holds rendered frames and job results, because the Render disk is wiped on deploy. The local disk cache stays as a fast first layer. Paid from the team's Google Cloud $300 trial credit, with a $20 budget alert. A service account with Storage Object Admin on this bucket only; Render gets `GCS_BUCKET` and `GCP_SERVICE_ACCOUNT_JSON` as env vars (never in the repo). A lifecycle rule deletes objects after 30 days. Setup steps: docs/RUNBOOK.md. **[VERIFY]** trial credit expiry date.
 
 ### Batch compute
 

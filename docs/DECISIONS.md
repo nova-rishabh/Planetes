@@ -22,6 +22,6 @@ One line each: date, decision, reason. Newest last. Source doc in brackets.
 | 2026-11-08 | Light theme: printed-journal look, sky frames on a dark plate [09] | Dark space UIs look AI-generated |
 | 2026-11-08 | Palette C "Plate Archive" is the default; team vote open [09] | Passes WCAG AA; neutral paper lets the frames and the accent stand out |
 | 2026-11-08 | Custom domain planetes.xyz, Vercel URL as fallback [09, 02] | Another team named "Planetes" is on the same challenge; a direct link avoids mix-ups |
-| 2026-11-08 | Persistent cache in Cloudflare R2 [02] | Render's disk is wiped on every deploy |
+| 2026-11-08 | Persistent cache in Google Cloud Storage (`planetes-cache`, asia-south1); Render's disk is wiped on deploy [02] | GCS over R2: team already has Google Cloud credit |
 | 2026-11-08 | Camber for bakes and validation V4–V7 [02] | Keeps heavy batch work off the 512 MB API instance |
 | 2026-11-08 | Sentry student tier for monitoring (Should) [02] | See live errors during judging without digging through Render logs |

@@ -32,7 +32,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 | Doc | Item |
 |---|---|
-| 02 §2 | Cloudflare R2 free-tier storage and request limits |
+| 02 §2 | Google Cloud trial credit expiry date |
 | 02 §2 | Camber: how jobs launch and who can run them |
 | 02 §4.10 | MJy/sr → µJy: IRSA solid-angle pixel map vs a constant |
 | 02 §5 | TAP table and column names for QR3 |
