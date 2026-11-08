@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/job_created.schema.json",
+  "title": "JobCreated",
+  "description": "Response of POST /api/timelapse and POST /api/spectrum (docs/03 §3).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "job_id"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "job_id": { "$ref": "job.schema.json#/$defs/JobId" }
+  }
+}

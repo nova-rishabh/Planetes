@@ -39,6 +39,8 @@ Specs: docs/ (PRD, TRD, Data Contract, Science brief). The Data Contract in cont
 7. Cite every external code idea or library in docs/REFERENCES.md in the same PR.
 8. No secrets in the repo. No NASA logo/insignia in the UI.
 9. UI fonts: never use Inter.
+10. No AI attribution in commits, PR descriptions, code comments or docs (no Co-Authored-By,
+    'Generated with …' lines). AI use is disclosed only in docs/AI_USAGE.md.
 
 ## SPHEREx gotchas (read before touching data code)
 - Use cutouts (?center=RA,DECd&size=DEG), never full ~70 MB files.

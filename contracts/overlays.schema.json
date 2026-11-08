@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/overlays.schema.json",
+  "title": "Overlays",
+  "description": "GET /api/overlays: catalog sources moved to each frame date (docs/03 §5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "catalogs"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "catalogs": { "type": "array", "items": { "$ref": "#/$defs/OverlayCatalog" } }
+  },
+  "$defs": {
+    "OverlayCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "vizier", "ref_epoch_jyear", "sources"],
+      "properties": {
+        "name": { "type": "string" },
+        "vizier": { "type": ["string", "null"], "description": "VizieR catalogue ID." },
+        "ref_epoch_jyear": { "type": ["number", "null"] },
+        "sources": { "type": "array", "items": { "$ref": "#/$defs/OverlaySource" } }
+      }
+    },
+    "OverlaySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ra", "dec", "pm_ra_masyr", "pm_dec_masyr", "mag", "band", "at_mjd"],
+      "properties": {
+        "id": { "type": "string" },
+        "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+        "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+        "pm_ra_masyr": { "type": ["number", "null"] },
+        "pm_dec_masyr": { "type": ["number", "null"] },
+        "mag": { "type": ["number", "null"] },
+        "band": { "type": ["string", "null"] },
+        "at_mjd": {
+          "description": "Position [ra_deg, dec_deg] keyed by MJD (as a string).",
+          "type": "object",
+          "propertyNames": { "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      }
+    }
+  }
+}

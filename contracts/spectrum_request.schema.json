@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/spectrum_request.schema.json",
+  "title": "SpectrumRequest",
+  "description": "Body of POST /api/spectrum (docs/03 §4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ra", "dec"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+    "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+    "release": { "$ref": "common.schema.json#/$defs/RequestedRelease", "default": "auto" },
+    "method": {
+      "type": "string",
+      "enum": ["auto", "psf", "aperture"],
+      "default": "auto",
+      "description": "auto = PSF fit, fall back to aperture."
+    },
+    "pm": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/ProperMotion" }, { "type": "null" }],
+      "default": null
+    }
+  }
+}

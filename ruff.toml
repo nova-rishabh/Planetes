@@ -1,0 +1,15 @@
+# Ruff settings for all Python in the repo (pipeline/, api/, contracts/).
+target-version = "py311"
+line-length = 120
+src = ["pipeline/src", "."]
+extend-exclude = ["pipeline/src/planetes/contracts.py"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[lint.isort]
+known-first-party = ["planetes", "api"]
+
+[lint.per-file-ignores]
+# These scripts add contracts/ to sys.path before importing the shared helper.
+"contracts/*.py" = ["E402"]

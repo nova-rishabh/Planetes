@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/opinions.schema.json",
+  "title": "Opinions",
+  "description": "POST /api/opinions: Two Opinions (motion vs spectrum) for one object (docs/03 §5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "object", "motion", "spectrum", "verdict"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "object": { "$ref": "#/$defs/OpinionObject" },
+    "motion": { "$ref": "#/$defs/MotionOpinion" },
+    "spectrum": { "$ref": "#/$defs/SpectrumOpinion" },
+    "verdict": { "$ref": "#/$defs/Verdict" }
+  },
+  "$defs": {
+    "Quality": { "type": "string", "enum": ["good", "fair", "poor"] },
+    "OpinionObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ra", "dec"],
+      "properties": {
+        "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+        "dec": { "$ref": "common.schema.json#/$defs/DecDeg" }
+      }
+    },
+    "MotionTruth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "source"],
+      "properties": {
+        "value": { "type": ["number", "null"] },
+        "source": { "type": ["string", "null"] }
+      }
+    },
+    "MotionOpinion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value", "unit", "err", "pa_deg", "distance", "truth", "quality", "method"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["proper_motion", "sso_rate", "static", "unknown"] },
+        "value": { "type": ["number", "null"] },
+        "unit": { "type": ["string", "null"], "enum": ["arcsec/yr", "arcsec/hr", null] },
+        "err": { "type": ["number", "null"], "description": "Uncertainty of value, same unit." },
+        "pa_deg": { "type": ["number", "null"] },
+        "distance": { "$ref": "common.schema.json#/$defs/Distance" },
+        "truth": { "$ref": "#/$defs/MotionTruth" },
+        "quality": { "$ref": "#/$defs/Quality" },
+        "method": { "type": "string" }
+      }
+    },
+    "SpectrumOpinion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "class", "temperature_k", "distance", "quality", "method"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["template", "thermal", "none"] },
+        "class": { "type": ["string", "null"] },
+        "temperature_k": { "type": ["number", "null"] },
+        "distance": { "$ref": "common.schema.json#/$defs/Distance" },
+        "quality": { "$ref": "#/$defs/Quality" },
+        "method": { "type": "string" }
+      }
+    },
+    "Verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "class", "confidence", "reasons"],
+      "properties": {
+        "label": { "type": "string", "enum": ["agree", "disagree", "cant_tell"] },
+        "class": {
+          "type": "string",
+          "enum": ["nearby_star", "brown_dwarf", "asteroid", "variable", "artifact", "unknown"]
+        },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

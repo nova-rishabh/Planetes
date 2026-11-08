@@ -34,6 +34,42 @@ docs/                specs, references, AI usage, validation
 - Website: **Vercel** (project root `web/`)
 - API: **Render** Web Service Starter, via `render.yaml`
 
+## How to run locally
+
+Needs Python 3.11, Node 22 (see `web/.nvmrc`) and GNU Make. Commands run from the repo root unless noted.
+
+**Python package + API**
+```bash
+python3.11 -m venv .venv            # or: uv venv --python 3.11 .venv
+source .venv/bin/activate           # Windows: .venv\Scriptsctivate
+pip install -e "pipeline[dev]" -r api/requirements.txt
+ALLOWED_ORIGINS=http://localhost:3000 uvicorn api.main:app --reload --port 8000
+```
+Then open http://localhost:8000/api/health (live check of the IRSA TAP service). Optional env vars:
+`ALLOWED_ORIGINS` (comma-separated; unset = no cross-origin access), `GIT_COMMIT` (else Render's
+`RENDER_GIT_COMMIT`, else `dev`).
+
+**Web**
+```bash
+cd web
+cp .env.example .env.local          # NEXT_PUBLIC_API_BASE=http://localhost:8000
+npm ci
+npm run dev                         # http://localhost:3000
+```
+
+**Contracts** (JSON Schemas in `contracts/` are the source of truth)
+```bash
+make contracts    # regenerate pipeline/src/planetes/contracts.py and web/src/types/contracts.ts (needs npm ci in web/)
+make validate     # validate every JSON file in web/public/data against its schema
+```
+
+**Tests and checks**
+```bash
+cd pipeline && pytest -q -m "not network"   # add -m network for tests that call IRSA
+ruff check pipeline api contracts
+cd web && npm run lint && npm run typecheck && npm run test && npm run build
+```
+
 ## Team
 Rishabh Kataria (platform, integration, frontend) · Tirth (data & imaging, pitch) · Shivaansh (motion & orbits) · Shimaya (spectral science & ML, science lead)
 

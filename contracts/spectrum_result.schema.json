@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/spectrum_result.schema.json",
+  "title": "SpectrumResult",
+  "description": "Result of a spectrum job, also baked as data/targets/{id}/spectrum.json (docs/03 §5-§6).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "target", "points", "summary", "provenance"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "target": { "$ref": "#/$defs/SpectrumTarget" },
+    "points": { "type": "array", "items": { "$ref": "#/$defs/SpectrumPoint" } },
+    "summary": { "$ref": "#/$defs/SpectrumSummary" },
+    "provenance": { "$ref": "#/$defs/SpectrumProvenance" }
+  },
+  "$defs": {
+    "SpectrumTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ra", "dec", "pm"],
+      "properties": {
+        "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+        "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+        "pm": { "anyOf": [{ "$ref": "common.schema.json#/$defs/ProperMotion" }, { "type": "null" }] }
+      }
+    },
+    "SpectrumPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obs_id", "mjd", "detector", "wavelength_um", "bandwidth_um", "flux_ujy", "flux_err_ujy",
+        "snr", "flags", "saturated", "used", "reject_reason", "pair_id", "method", "ra", "dec"
+      ],
+      "properties": {
+        "obs_id": { "type": "string" },
+        "mjd": { "type": "number" },
+        "detector": { "$ref": "common.schema.json#/$defs/Detector" },
+        "wavelength_um": { "type": ["number", "null"] },
+        "bandwidth_um": { "type": ["number", "null"] },
+        "flux_ujy": { "type": ["number", "null"], "description": "null until measured." },
+        "flux_err_ujy": { "type": ["number", "null"] },
+        "snr": { "type": ["number", "null"] },
+        "flags": { "type": "integer", "minimum": 0, "description": "Raw FLAGS bitmask at the source position." },
+        "saturated": { "type": "boolean" },
+        "used": { "type": "boolean" },
+        "reject_reason": { "type": ["string", "null"] },
+        "pair_id": { "type": ["string", "null"], "description": "Simultaneous detector pair (D1&D4, D2&D5, D3&D6)." },
+        "method": { "type": ["string", "null"], "enum": ["psf", "aperture", null] },
+        "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+        "dec": { "$ref": "common.schema.json#/$defs/DecDeg" }
+      }
+    },
+    "SpectrumSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n_points", "n_used", "n_rejected", "bands_covered"],
+      "properties": {
+        "n_points": { "type": "integer", "minimum": 0 },
+        "n_used": { "type": "integer", "minimum": 0 },
+        "n_rejected": { "type": "integer", "minimum": 0 },
+        "bands_covered": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/Detector" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "SpectrumProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release", "code_version"],
+      "properties": {
+        "release": { "$ref": "common.schema.json#/$defs/Release" },
+        "code_version": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

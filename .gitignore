@@ -11,7 +11,10 @@ web/out/
 .vercel/
 .env
 .env.*
+!.env.example
 *.fits
 !pipeline/tests/data/*.fits
 cache/
 .DS_Store
+web/next-env.d.ts
+web/*.tsbuildinfo

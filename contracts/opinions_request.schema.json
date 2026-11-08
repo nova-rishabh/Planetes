@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/opinions_request.schema.json",
+  "title": "OpinionsRequest",
+  "description": "Body of POST /api/opinions (docs/03 §4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ra", "dec"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+    "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+    "spectrum_job_id": {
+      "anyOf": [{ "$ref": "job.schema.json#/$defs/JobId" }, { "type": "null" }],
+      "default": null
+    },
+    "pm": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/ProperMotion" }, { "type": "null" }],
+      "default": null
+    }
+  }
+}

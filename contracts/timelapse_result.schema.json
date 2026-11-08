@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/timelapse_result.schema.json",
+  "title": "TimelapseResult",
+  "description": "Result of a time-lapse job, also baked as data/targets/{id}/timelapse_{mode}.json (docs/03 §5-§6).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request", "grid", "epochs", "frames", "stretch", "flag_legend", "provenance"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "request": { "$ref": "timelapse_request.schema.json" },
+    "grid": { "$ref": "#/$defs/Grid" },
+    "epochs": { "type": "array", "items": { "$ref": "#/$defs/Epoch" } },
+    "frames": { "type": "array", "items": { "$ref": "#/$defs/Frame" } },
+    "stretch": {
+      "description": "Shared display stretch; null until computed.",
+      "anyOf": [{ "$ref": "#/$defs/Stretch" }, { "type": "null" }]
+    },
+    "flag_legend": { "type": "array", "items": { "$ref": "#/$defs/FlagLegendItem" } },
+    "provenance": { "$ref": "#/$defs/Provenance" }
+  },
+  "$defs": {
+    "Grid": {
+      "description": "Common north-up output grid every frame is reprojected onto.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projection", "crval_deg", "crpix", "cdelt_deg", "naxis", "north_up"],
+      "properties": {
+        "projection": { "type": "string", "enum": ["TAN"] },
+        "crval_deg": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+        "crpix": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2, "description": "Reference pixel, FITS 1-based convention." },
+        "cdelt_deg": { "type": "number", "exclusiveMinimum": 0 },
+        "naxis": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "minItems": 2, "maxItems": 2 },
+        "north_up": { "type": "boolean" }
+      }
+    },
+    "Epoch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "mjd_start", "mjd_end", "n_frames"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "mjd_start": { "type": "number" },
+        "mjd_end": { "type": "number" },
+        "n_frames": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "Frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "kind", "obs_id", "members", "release", "epoch_index", "mjd", "utc", "detector",
+        "wavelength_um", "bandwidth_um", "image_url", "flags_url", "flagged_frac",
+        "saturated_near_center", "target_xy", "notes"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^f_[0-9a-f]{12}$", "description": "f_ + first 12 hex of sha1(obs_id + cutout params)." },
+        "kind": { "type": "string", "enum": ["exposure", "stack", "difference", "sum", "color"] },
+        "obs_id": { "type": ["string", "null"], "description": "IVOA publisher DID; null for combined frames (see members)." },
+        "members": { "type": "array", "items": { "type": "string" }, "description": "obs_ids combined into this frame." },
+        "release": { "$ref": "common.schema.json#/$defs/Release" },
+        "epoch_index": { "type": ["integer", "null"], "minimum": 0 },
+        "mjd": { "type": ["number", "null"] },
+        "utc": { "type": ["string", "null"], "format": "date-time" },
+        "detector": { "anyOf": [{ "$ref": "common.schema.json#/$defs/Detector" }, { "type": "null" }] },
+        "wavelength_um": { "type": ["number", "null"] },
+        "bandwidth_um": { "type": ["number", "null"] },
+        "image_url": { "type": "string" },
+        "flags_url": { "type": ["string", "null"] },
+        "flagged_frac": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "saturated_near_center": { "type": ["boolean", "null"] },
+        "target_xy": {
+          "description": "Where the (propagated) target falls on the grid, pixels.",
+          "anyOf": [
+            { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+            { "type": "null" }
+          ]
+        },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "Stretch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "lo", "hi", "unit"],
+      "properties": {
+        "method": { "type": "string", "enum": ["linear", "asinh", "log"] },
+        "lo": { "type": "number" },
+        "hi": { "type": "number" },
+        "unit": { "type": "string", "description": "Unit of lo/hi, e.g. MJy/sr." }
+      }
+    },
+    "FlagLegendItem": {
+      "description": "One FLAGS bit, as read from the header MP_* keys.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bit", "name", "plain"],
+      "properties": {
+        "bit": { "type": "integer", "minimum": 0 },
+        "name": { "type": "string" },
+        "plain": { "type": ["string", "null"], "description": "Plain-language meaning." }
+      }
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tap_query", "generated_utc", "code_version"],
+      "properties": {
+        "tap_query": { "type": ["string", "null"] },
+        "generated_utc": { "type": "string", "format": "date-time" },
+        "code_version": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
