@@ -6,27 +6,39 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 | What | URL | State (Nov 8) |
 |---|---|---|
-| Website | https://planetes.xyz | Not live yet: the domain answers with a certificate for a different name. Add it in Vercel (docs/RUNBOOK.md) |
-| Website fallback | Vercel default URL | Not recorded in the repo yet; add it here |
-| API | Render service URL + `/api/health` | Not recorded in the repo yet; add it here |
+| Website | https://planetes.xyz | Not live yet: the domain serves a certificate for a different name. Steps in docs/RUNBOOK.md |
+| Website fallback | https://web-gamma-flame-16.vercel.app | Live (HTTP 200) |
+| API | https://planetes-api.onrender.com/api/health | Live: `status ok`, `irsa_tap ok`, `code_version 08b009b` (deploys from `main`) |
 | Repo | https://github.com/nova-rishabh/Planetes | Public |
 
 ## Deliverables
 
 | Code | Owner | State |
 |---|---|---|
-| D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8 |
+| D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
 | Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8: `web/src/styles/tokens.css`, page uses tokens only |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due G0 (Mon 9, 10:30) |
 | All other D-codes (docs/06) | — | Not started |
 | Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
 
+## Open items (PM_PLAYBOOK §7; tick when done)
+
+- [ ] Send the group message (palette vote + docs update) with `docs/assets/planetes-palettes-light.png` attached
+- [ ] Tirth: turn on "looking for team members", approve join requests, transfer Team Owner to Rishabh (private message not sent yet)
+- [ ] Everyone: create Space Apps accounts, register for 2026, join Team Planetes via the direct link
+- [ ] Team page About text says "starry discoveries": change it (no discovery claims) once Rishabh is owner
+- [ ] Palette vote by tonight (A · B · C, default C); then lock it in docs/09 and `tokens.css`
+- [ ] Domain planetes.xyz: claim, add to Vercel, DNS, then add to Render `ALLOWED_ORIGINS`
+- [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
+- [ ] Camber: can teammates run jobs on Rishabh's account? Then close the docs/02 [VERIFY]
+- [ ] Science [VERIFY] at Monday standup (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
+- [ ] G0 Mon 9, 10:30: each person shows a working notebook/plot (Phase 0 tasks in docs/05)
+- [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
+
 ## Next
 
-1. G0 (Mon 9, 10:30): real frames for at least one benchmark; site live on Vercel and API on Render.
-2. Point planetes.xyz at Vercel; record the Vercel and Render URLs above.
-3. Phase 1: D1.2 API jobs + D1.3 player; D2.1/D2.2; D3.1/D3.2; D4.1.
-4. Team vote on the palette (docs/09 §3; C is the default).
+1. G0 (Mon 9, 10:30): real frames for at least one benchmark.
+2. Phase 1 (to G1 Tue 10, 23:00): D1.2 API jobs + D1.3 player; D2.1/D2.2; D3.1/D3.2; D4.1.
 
 ## Open [VERIFY] items
 
