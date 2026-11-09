@@ -111,14 +111,34 @@ def extract_release(uri: str) -> str:
 
 
 def find_frames(
-    ra: float, dec: float, size_deg: float = 0.05, limit: int | None = None
+    ra: float,
+    dec: float,
+    size_deg: float = 0.05,
+    limit: int | None = None,
+    release: str = "auto",
 ) -> pd.DataFrame:
     """
-    Find SPHEREx image frames covering (ra, dec), keeping both QR2 and QR3.
-    Returns DataFrame matching contract fields:
-    obs_id, release, mjd, detector, frame_id, cutout_url.
+    Find SPHEREx image frames covering (ra, dec).
+    
+    Parameters
+    ----------
+    ra : float
+        Right Ascension in degrees (ICRS).
+    dec : float
+        Declination in degrees (ICRS).
+    size_deg : float
+        Cutout bounding size in degrees.
+    limit : int | None
+        Optional maximum number of frames to retrieve from TAP.
+    release : str
+        Data release to query ('auto' for QR2+QR3 combined, or 'QR2', 'QR3').
+        
+    Returns
+    -------
+    pd.DataFrame
+        Matching contract columns: obs_id, release, mjd, detector, frame_id, cutout_url.
     """
-    log.info(f"Querying IRSA TAP for frames at RA={ra:.6f}, Dec={dec:.6f}...")
+    log.info(f"Querying IRSA TAP for frames at RA={ra:.6f}, Dec={dec:.6f} (release={release})...")
 
     top_clause = f"TOP {limit} " if limit else ""
     adql = f"""
@@ -155,6 +175,11 @@ def find_frames(
         + df["uri"].astype(str)
         + f"?center={ra:.6f},{dec:.6f}d&size={size_deg}"
     )
+
+    # Filter release if explicitly requested and not 'auto'
+    if release and release.lower() != "auto":
+        target_rel = release.strip().upper()
+        df = df[df["release"].str.upper() == target_rel].reset_index(drop=True)
 
     # Epoch grouping (gaps > 1 day)
     df = df.sort_values(by="mjd").reset_index(drop=True)
@@ -230,10 +255,10 @@ def fetch_cutouts(
 
 
 if __name__ == "__main__":
-    # Test on Gaia DR3 2026 position for Barnard's Star
+    # Test on Gaia DR3 2026 position for Barnard's Star with release="auto"
     ra_b = 269.4461
     dec_b = 4.7703
-    df = find_frames(ra_b, dec_b)
+    df = find_frames(ra_b, dec_b, release="auto")
     print("\nDataFrame structure:")
     print(df.head())
     print("\nCounts by detector and release:")
