@@ -189,6 +189,6 @@ h3 { font-size: 0.875rem; margin: 1rem 0 0.5rem; color: var(--ink-muted); text-t
 .sky { margin-top: 1.5rem; }
 .sky .controls { margin-bottom: 0.75rem; }
 .sky-map { position: relative; height: 22rem; overflow: hidden; }
-.sky-msg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; text-align: center; color: var(--on-ink); font-size: 0.875rem; }
+.sky-msg { position: absolute; inset: 0; z-index: 10; background: var(--plate); display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; text-align: center; color: var(--on-ink); font-size: 0.875rem; }
 .sky .hint a { color: var(--ui-text); }
 .toggle:disabled { opacity: 0.5; cursor: default; }

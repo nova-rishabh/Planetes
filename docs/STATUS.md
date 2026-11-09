@@ -54,7 +54,7 @@ Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1
 |---|---|
 | 02 §2 | Google Cloud trial credit expiry date |
 | 02 §4.10 | MJy/sr → µJy: IRSA solid-angle pixel map vs a constant |
-| 02 §7 | SPHEREx and unWISE HiPS IDs (CDS unreachable from the dev PC Nov 9); check that the sky map shows tiles on the live site |
+| 02 §7 | SPHEREx and unWISE HiPS IDs; check that the sky map shows tiles once CDS is back (CDS timed out from Austria, Poland, Sweden and the USA on Nov 9, so it was down for everyone; IRSA's HiPS mirrors lack CORS, so they can't replace it in a browser) |
 | 02 §7, 06 | SPHEREx spacecraft-position header keys (for JPL SBIdent) |
 | 02 §11 | Licences: spxquery, obsutils `spherex`, IRSA tutorials, Gagné et al. templates (terms). Aladin Lite done (LGPL-3/GPL-3, loaded unbundled) |
 | 04 §1 | ε Indi Ba/Bb position (check against SIMBAD) |

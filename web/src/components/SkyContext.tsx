@@ -10,6 +10,19 @@ import { useEffect, useRef, useState } from "react";
  */
 const ALADIN_URL = "https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js";
 const LOAD_TIMEOUT_MS = 20000;
+/** Aladin resolves survey IDs through this CDS service (seen in its network calls). If it does not answer,
+ * the map cannot show images, so we say that instead of leaving a blank grey box. */
+const CDS_PROBE_URL = "https://alasky.unistra.fr/MocServer/query?ID=CDS/P/allWISE/color&get=id";
+const PROBE_TIMEOUT_MS = 8000;
+
+async function cdsReachable(): Promise<boolean> {
+  try {
+    const res = await fetch(CDS_PROBE_URL, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS), cache: "no-store" });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
 
 export const SURVEYS = [
   { id: "CDS/P/allWISE/color", label: "AllWISE", note: "infrared, 3.4–22 µm" },
@@ -49,6 +62,9 @@ export function SkyContext({ ra_deg, dec_deg, fov_deg }: { ra_deg: number; dec_d
 
   useEffect(() => {
     let alive = true;
+    cdsReachable().then((ok) => {
+      if (!ok && alive) setStatus("failed");
+    });
     withTimeout(
       loadAladin().then((A) => A.init.then(() => A)),
       LOAD_TIMEOUT_MS,
@@ -79,7 +95,7 @@ export function SkyContext({ ra_deg, dec_deg, fov_deg }: { ra_deg: number; dec_d
           view.current.gotoRaDec(ra_deg, dec_deg);
           view.current.setFoV(contextFov);
         }
-        setStatus("ready");
+        setStatus((s) => (s === "failed" ? s : "ready"));
       })
       .catch(() => alive && setStatus("failed"));
     return () => {
@@ -104,7 +120,7 @@ export function SkyContext({ ra_deg, dec_deg, fov_deg }: { ra_deg: number; dec_d
       </div>
       <div ref={el} className="sky-map plate" aria-hidden={status !== "ready"}>
         {status === "loading" ? <p className="sky-msg">Loading the sky map…</p> : null}
-        {status === "failed" ? <p className="sky-msg">The sky map service (CDS, Strasbourg) is not reachable right now.</p> : null}
+        {status === "failed" ? <p className="sky-msg">The sky survey images come from CDS (Strasbourg), which is not answering right now. Try again later.</p> : null}
       </div>
       <p className="hint">
         {SURVEYS.find((s) => s.id === survey)?.label} survey, {contextFov.toFixed(2)}° wide, centred on the time-lapse. Map:{" "}

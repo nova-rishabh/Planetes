@@ -50,3 +50,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | contracts (descriptions only), STATUS, REFERENCES, AI_USAGE | `release: auto` = QR2+QR3; `target_xy` pixel convention written down; STATUS has the D1.3 progress and Rishabh's no-dependency plan |
 | 2026-11-09 | STATUS, AI_USAGE | Spectrum chart and Two Opinions panel built; plan updated |
 | 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS, AI_USAGE | Sky context panel (Aladin Lite 3.8.2 from jsDelivr; AllWISE/2MASS/DSS2); Aladin licence noted; SPHEREx/unWISE HiPS IDs still to verify |
+| 2026-11-09 | STATUS | CDS outage noted (checked from 4 countries); IRSA HiPS mirrors can't be used in a browser (no CORS) |
