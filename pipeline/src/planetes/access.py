@@ -9,15 +9,8 @@ import concurrent.futures
 import hashlib
 import io
 import logging
-import os
 import re
-import sys
 import time
-from pathlib import Path
-from typing import Any
-
-# Ensure local planetes module is importable
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pandas as pd
 import requests
@@ -27,7 +20,6 @@ from urllib3.util.retry import Retry
 from planetes.cache import Cache, from_env
 
 log = logging.getLogger("planetes.access")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 IRSA_TAP_URL = "https://irsa.ipac.caltech.edu/TAP/sync"
 
@@ -96,8 +88,10 @@ def extract_detector(bandpass_name: str) -> int:
     """Extract detector integer (1-6) from bandpass name like SPHEREx-D1."""
     match = re.search(r"D(\d)", str(bandpass_name))
     if match:
-        return int(match.group(1))
-    return 1
+        det = int(match.group(1))
+        if 1 <= det <= 6:
+            return det
+    raise ValueError(f"Could not determine valid detector (1-6) from bandpass: '{bandpass_name}'")
 
 
 def extract_release(uri: str) -> str:
@@ -107,7 +101,7 @@ def extract_release(uri: str) -> str:
         return "QR3"
     elif "qr2" in uri_str:
         return "QR2"
-    return "QR2"
+    raise ValueError(f"Could not determine valid release (QR2/QR3) from URI: '{uri}'")
 
 
 def find_frames(
@@ -119,7 +113,7 @@ def find_frames(
 ) -> pd.DataFrame:
     """
     Find SPHEREx image frames covering (ra, dec).
-    
+
     Parameters
     ----------
     ra : float
@@ -132,7 +126,7 @@ def find_frames(
         Optional maximum number of frames to retrieve from TAP.
     release : str
         Data release to query ('auto' for QR2+QR3 combined, or 'QR2', 'QR3').
-        
+
     Returns
     -------
     pd.DataFrame
@@ -158,22 +152,16 @@ def find_frames(
 
     if df.empty:
         log.warning(f"No frames found at RA={ra}, Dec={dec}")
-        return pd.DataFrame(
-            columns=["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"]
-        )
+        return pd.DataFrame(columns=["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"])
 
     # Format required contract columns
     df["obs_id"] = df["obs_publisher_did"].astype(str)
     df["release"] = df["uri"].apply(extract_release)
     df["mjd"] = df["time_bounds_lower"].astype(float)
     df["detector"] = df["energy_bandpassname"].apply(extract_detector)
-    df["frame_id"] = df.apply(
-        lambda r: compute_frame_id(r["obs_id"], ra, dec, size_deg), axis=1
-    )
+    df["frame_id"] = df.apply(lambda r: compute_frame_id(r["obs_id"], ra, dec, size_deg), axis=1)
     df["cutout_url"] = (
-        "https://irsa.ipac.caltech.edu/"
-        + df["uri"].astype(str)
-        + f"?center={ra:.6f},{dec:.6f}d&size={size_deg}"
+        "https://irsa.ipac.caltech.edu/" + df["uri"].astype(str) + f"?center={ra:.6f},{dec:.6f}d&size={size_deg}"
     )
 
     # Filter release if explicitly requested and not 'auto'
@@ -186,12 +174,10 @@ def find_frames(
     time_diffs = df["mjd"].diff().fillna(0)
     df["epoch_group"] = (time_diffs > 1.0).cumsum()
 
-    log.info(
-        f"Retrieved {len(df)} total frames ({df['release'].value_counts().to_dict()}) across {df['epoch_group'].nunique()} survey epochs."
-    )
-    return df[
-        ["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"]
-    ]
+    counts = df["release"].value_counts().to_dict()
+    n_epochs = df["epoch_group"].nunique()
+    log.info(f"Retrieved {len(df)} total frames ({counts}) across {n_epochs} survey epochs.")
+    return df[["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"]]
 
 
 def download_single_cutout(
@@ -230,18 +216,12 @@ def fetch_cutouts(
         cache = from_env()
 
     results: dict[str, bytes] = {}
-    tasks = [
-        (row["cutout_url"], f"cutouts/{row['frame_id']}.fits")
-        for _, row in frames_df.iterrows()
-    ]
+    tasks = [(row["cutout_url"], f"cutouts/{row['frame_id']}.fits") for _, row in frames_df.iterrows()]
 
     log.info(f"Downloading {len(tasks)} cutouts (concurrency: {max_concurrent})...")
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrent) as executor:
-        future_map = {
-            executor.submit(download_single_cutout, url, key, cache, 3, 120): key
-            for url, key in tasks
-        }
+        future_map = {executor.submit(download_single_cutout, url, key, cache, 3, 120): key for url, key in tasks}
         for future in concurrent.futures.as_completed(future_map):
             key = future_map[future]
             try:

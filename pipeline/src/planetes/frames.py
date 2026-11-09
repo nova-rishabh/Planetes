@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import io
 import warnings
-from datetime import datetime, timezone
-from typing import Any, Tuple
+from datetime import UTC, datetime
+from typing import Any
 
 import numpy as np
 from astropy.io import fits
@@ -27,7 +27,7 @@ def make_reference_grid(
     dec_center: float,
     size_pixels: int = 64,
     pixel_scale_deg: float = SPHEREX_PIXEL_SCALE_DEG,
-) -> Tuple[WCS, Grid]:
+) -> tuple[WCS, Grid]:
     """Construct a common North-up TAN reference WCS and the matching Grid contract model."""
     center_pix_1based = (size_pixels + 1.0) / 2.0
 
@@ -58,7 +58,7 @@ def reproject_to_grid(
     data: np.ndarray,
     input_wcs: WCS,
     ref_wcs: WCS,
-    shape_out: Tuple[int, int] = (64, 64),
+    shape_out: tuple[int, int] = (64, 64),
     order: int = 1,
     cval: float = np.nan,
 ) -> np.ndarray:
@@ -79,7 +79,7 @@ def reproject_to_grid(
     return resampled.reshape(shape_out)
 
 
-def extract_wavelength(hdul: fits.HDUList) -> Tuple[float | None, float | None]:
+def extract_wavelength(hdul: fits.HDUList) -> tuple[float | None, float | None]:
     """Extract central wavelength and bandwidth (microns) via spectral WCS key 'W'."""
     image_hdu = hdul["IMAGE"] if "IMAGE" in hdul else hdul[0]
     with warnings.catch_warnings():
@@ -100,10 +100,10 @@ def process_frame(
     fits_bytes: bytes,
     frame_row: dict[str, Any],
     ref_wcs: WCS,
-    grid_shape: Tuple[int, int] = (64, 64),
-    target_coord: Tuple[float, float] | None = None,
+    grid_shape: tuple[int, int] = (64, 64),
+    target_coord: tuple[float, float] | None = None,
     subtract_zodi: bool = True,
-) -> Tuple[Frame, bytes, bytes]:
+) -> tuple[Frame, bytes, bytes]:
     """
     Process a raw SPHEREx FITS cutout:
     1. IMAGE - ZODI background subtraction
@@ -164,7 +164,7 @@ def process_frame(
     utc_val = None
     if mjd_val is not None:
         unix_ts = (mjd_val - 40587.0) * 86400.0
-        utc_val = datetime.fromtimestamp(unix_ts, tz=timezone.utc)
+        utc_val = datetime.fromtimestamp(unix_ts, tz=UTC)
 
     frame = Frame(
         id=frame_id,

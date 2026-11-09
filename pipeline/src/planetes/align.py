@@ -25,3 +25,16 @@ def align_single_frame(fits_bytes, frame_row, ref_wcs, grid_shape=(64, 64), targ
         target_coord=target_coord,
     )
     return frame, webp_bytes
+
+
+__all__ = [
+    "SPHEREX_PIXEL_SCALE_DEG",
+    "compute_target_xy",
+    "extract_wavelength",
+    "make_reference_grid",
+    "process_frame",
+    "reproject_to_grid",
+    "normalize_to_webp",
+    "render_flag_mask_png",
+    "align_single_frame",
+]

@@ -6,7 +6,6 @@ Handles stretch scaling, 8-bit quantization, and exporting .webp and .png flag m
 from __future__ import annotations
 
 import io
-from typing import Tuple
 
 import numpy as np
 from PIL import Image
@@ -18,7 +17,7 @@ def normalize_to_webp(
     image_data: np.ndarray,
     stretch_lo: float | None = None,
     stretch_hi: float | None = None,
-) -> Tuple[bytes, Stretch]:
+) -> tuple[bytes, Stretch]:
     """
     Scale a 2D float image array to 8-bit using a percentile stretch
     and encode it into .webp format.
