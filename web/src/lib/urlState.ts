@@ -26,7 +26,7 @@ export const DEFAULT_VIEW: ViewState = {
   ra_deg: null,
   dec_deg: null,
   fov_deg: FOV_DEFAULT_DEG,
-  mode: "stacks",
+  mode: "exposures",
   detectors: [1, 2, 3, 4, 5, 6],
   frame: 0,
   a: null,

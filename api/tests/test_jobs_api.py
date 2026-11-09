@@ -34,14 +34,45 @@ def _wait(c: TestClient, job_id: str) -> dict:
     raise AssertionError("job did not finish")
 
 
-def test_timelapse_job_reports_missing_pipeline(client: TestClient) -> None:
-    resp = client.post("/api/timelapse", json=VALID)
+def test_views_not_built_yet_say_so(client: TestClient) -> None:
+    resp = client.post("/api/timelapse", json={**VALID, "mode": "stacks"})
     assert resp.status_code == 200
     _validator("job_created.schema.json").validate(resp.json())
     job = _wait(client, resp.json()["job_id"])
     _validator("job.schema.json").validate(job)
     assert job["status"] == "error" and job["result"] is None
-    assert job["error"]["message"] == "Live time-lapses are not available yet."
+    assert job["error"]["code"] == "BAD_INPUT"
+
+
+@pytest.mark.network
+def test_real_barnard_timelapse(client: TestClient) -> None:
+    """Live IRSA: three D3 exposures of Barnard's Star, Gaia DR3 proper motion (source 4472832130942575872)."""
+    body = {
+        "ra": 269.44850252543836,
+        "dec": 4.739420051112412,
+        "fov_deg": 0.05,
+        "mode": "exposures",
+        "detectors": [3],
+        "max_frames": 3,
+        "pm": {"pm_ra_masyr": -801.5509783684709, "pm_dec_masyr": 10362.394206546573, "ref_epoch_jyear": 2016.0},
+    }
+    job_id = client.post("/api/timelapse", json=body).json()["job_id"]
+    for _ in range(1800):
+        job = client.get(f"/api/jobs/{job_id}").json()
+        if job["status"] in ("done", "error"):
+            break
+        time.sleep(0.5)
+    print("job:", job["status"], job["error"], job["progress"])
+    _validator("job.schema.json").validate(job)
+    assert job["status"] == "done"
+    frames = job["result"]["frames"]
+    assert 1 <= len(frames) <= 3
+    first = frames[0]
+    assert client.get(first["image_url"]).status_code == 200
+    assert client.get(first["flags_url"]).status_code == 200
+    # The star moves north (~10.4"/yr) through the time-lapse.
+    ys = [f["target_xy"][1] for f in frames]
+    assert ys == sorted(ys)
 
 
 def test_timelapse_limits(client: TestClient) -> None:

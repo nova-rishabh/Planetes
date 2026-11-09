@@ -19,6 +19,8 @@ dependencies = [
   "Pillow",
   "sbpy",
   "pydantic>=2",
+  "pandas",
+  "requests",
 ]
 
 [project.optional-dependencies]

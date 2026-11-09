@@ -149,7 +149,12 @@ async def start_timelapse(body: TimelapseRequest, request: Request) -> JobCreate
     if body.max_frames > max_frames:
         return error_response(413, "TOO_LARGE", f"max_frames is limited to {max_frames}", "Ask for fewer frames.")
     try:
-        job_id = request.app.state.jobs.submit("timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx))
+        cache = request.app.state.cache
+        version = code_version()
+        workers = env_int("IRSA_CONCURRENCY", 8)
+        job_id = request.app.state.jobs.submit(
+            "timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx, cache, version, workers)
+        )
     except TooManyJobs:
         return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
     return JobCreated(schema_version="1.0", job_id=job_id)
