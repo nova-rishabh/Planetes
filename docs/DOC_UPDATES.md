@@ -47,3 +47,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | GCS cache set up in project planetes-514208 (bucket, 30-day rule, service account, ₹1,800 budget); only the Render key paste is left |
 | 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | `main` protected by a ruleset (PR + green CI, admin bypass); GCS key is in Render |
 | 2026-11-09 | 02, AGENTS.md, DECISIONS, STATUS | For clarification: QR2 and QR3 cover different weeks, so time-lapses use both (not QR3-only); QR3 TAP names verified; STATUS notes PR #2 |
+| 2026-11-09 | contracts (descriptions only), STATUS, REFERENCES, AI_USAGE | `release: auto` = QR2+QR3; `target_xy` pixel convention written down; STATUS has the D1.3 progress and Rishabh's no-dependency plan |

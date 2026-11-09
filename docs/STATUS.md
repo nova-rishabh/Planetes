@@ -20,6 +20,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 | D2.1 access | Tirth | PR #2 (Nov 9): **real** IRSA TAP search + cutouts. Changes requested: keep QR2+QR3, contract fields/IDs, Barnard position, deps, tests. PR #1 (simulated) to close |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Mon 9, 10:00) |
 | D1.2 API (part 1) | Rishabh | **In progress** Nov 9: cache (local + GCS), job queue, `POST /timelapse`, `/jobs/{id}`, `/frames`. Live time-lapse needs D2.1 + D2.2 merged, then wiring in `api/timelapse.py` |
+| D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. Shows "not baked yet" until real frames exist. Left: bake workflow |
 | All other D-codes (docs/06) | — | Not started |
 | Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
 
@@ -40,6 +41,8 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
 
 ## Next
+
+Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1 (done) → D1.4 spectrum chart + Two Opinions panel against the contract → Aladin Lite context panel → About/How-it-works draft (Shimaya fact-checks) → README/submission draft. Then, as teammates merge: wire `access`/`frames`/`render` into `api/timelapse.py`, run the bake (GitHub Actions), `/spectrum`, `/resolve`, `/overlays`.
 
 1. G0 meeting (Mon 9, 10:00): real frames for at least one benchmark.
 2. Phase 1 (to G1 Tue 10, 23:00): D1.2 API jobs + D1.3 player; D2.1/D2.2; D3.1/D3.2; D4.1.
