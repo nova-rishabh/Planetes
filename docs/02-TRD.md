@@ -46,7 +46,7 @@ Google Cloud Storage bucket `planetes-cache` (region `asia-south1`) holds render
 
 ### Batch compute
 
-Camber runs the heavy offline work: benchmark bakes and validation V4–V7. **[VERIFY]** how jobs are launched and which team members can run them.
+Camber runs the benchmark bakes on Rishabh's free Camber Student plan (GitHub Student Developer Pack); only Rishabh runs jobs there. Validation notebooks use tiny cutouts and run on laptops. **[VERIFY]** the plan's monthly CPU-hour limit.
 
 ### Monitoring (Should)
 

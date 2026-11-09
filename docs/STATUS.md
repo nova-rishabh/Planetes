@@ -32,7 +32,8 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [x] Palette vote: **C "Plate Archive" chosen** (Nov 9); locked in docs/09, already in `tokens.css`
 - [ ] Domain planetes.divergit.com: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`
 - [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
-- [ ] Camber: 100 free credits per user (docs.cambercloud.com, Nov 9). Decide: own accounts per teammate (recommended) or a team via info@cambercloud.com. Then close the docs/02 [VERIFY]
+- [x] Camber: Rishabh's Student plan (GitHub Student Pack); only Rishabh runs bakes there, teammates need no account (Nov 9)
+- [ ] GitHub: add teammates as collaborators (Write) and protect `main` (docs/RISHABH_GUIDE.md)
 - [ ] Science [VERIFY] at Monday standup (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
 - [ ] G0 meeting Mon 9, 10:00: each person shows a working notebook/plot (Phase 0 tasks in docs/05)
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
@@ -47,7 +48,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 | Doc | Item |
 |---|---|
 | 02 §2 | Google Cloud trial credit expiry date |
-| 02 §2 | Camber: how jobs launch and who can run them |
+| 02 §2 | Camber Student plan monthly limits (Rishabh to read from the dashboard) |
 | 02 §4.10 | MJy/sr → µJy: IRSA solid-angle pixel map vs a constant |
 | 02 §5 | TAP table and column names for QR3 |
 | 02 §7 | Exact unWISE HiPS ID in Aladin |

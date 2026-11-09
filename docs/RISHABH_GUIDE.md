@@ -23,19 +23,19 @@ First check Render → `planetes-api` → Settings → **Region**. Singapore →
 
 ### GitHub: reviewing teammates' pull requests
 - [ ] Repo → **Pull requests** → open one → **Files changed**. The agent reviews each PR when you say "review PR #n" and drafts your comment.
-- [ ] Merge only when CI is green and the PR shows a real-data screenshot. Teammates working from a fork (Tirth: `t-valand/Planetes`) is fine.
-- [ ] Optional: Settings → Branches → add rule for `main` → **Require a pull request** + **Require status checks (CI)**, so nothing lands unchecked.
+- [ ] Merge only when CI is green and the PR shows a real-data screenshot.
+- [ ] Add teammates as collaborators: repo → Settings → **Collaborators** → **Add people** → their GitHub username → role **Write**. Tirth is `t-valand`; ask the others for theirs. They accept the email invite. (Without it, PRs come from forks and you must click **Approve and run workflows** before CI runs.)
+- [ ] Protect `main`: Settings → **Rules → Rulesets → New branch ruleset** → target `main` → tick **Require a pull request before merging** and **Require status checks to pass** (pick the CI jobs) → Create. Teammates then work on branches and open PRs; nobody pushes straight to `main`.
 
 ## 2. Space Apps team page
 - [ ] Send Tirth the private message (PM_PLAYBOOK §8): turn on joining, approve requests, make you Team Owner.
 - [ ] Once owner: change "starry discoveries" in the About text (no discovery claims).
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; tell the agent what they say.
 
-## 3. Camber (not urgent; needed from Thu for bakes and validation V4–V7)
-Facts from docs.cambercloud.com (checked Nov 9): every user gets **100 free credits** on sign-up (1 credit = $1). A small CPU node (XXSMALL, 4 cores, 16 GB) costs 0.16 credits/hour, so the free credits cover our bakes many times. Team Leaders add members by email on the Team page, but the docs don't say whether members share the credits; creating a team goes through info@cambercloud.com.
-- [ ] Sign up at app.cambercloud.com (Sign Up, top right).
-- [ ] Decide: **each teammate signs up with their own free credits** (agent's recommendation: no shared account or money needed), or you ask info@cambercloud.com for a team.
-- [ ] Tell the agent; it closes the docs/02 [VERIFY] and writes the bake job steps.
+## 3. Camber (not urgent; needed from Thu for the benchmark bakes)
+Rishabh has the free **Camber Student plan** from the GitHub Student Developer Pack (free while a student; monthly CPU-hour and storage limits). Decision: **only Rishabh runs Camber**, for the bakes (`bake.py` is his). Teammates don't need accounts: validation notebooks use tiny cutouts and run on their laptops.
+- [ ] Log in at app.cambercloud.com with GitHub and note the plan's monthly CPU hours and storage (Settings/Usage) for the agent.
+- [ ] Thu: the agent writes the bake job steps.
 
 ## 4. Later (Should, from Thu)
 - [ ] Sentry: free account at sentry.io, one project for the API and one for the web; DSNs go into Render/Vercel env vars (the agent adds the code).
