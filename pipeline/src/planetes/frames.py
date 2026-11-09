@@ -22,10 +22,10 @@ from planetes.contracts import Detector, FlagLegendItem, Frame, Grid, Naxi, Targ
 
 SPHEREX_PIXEL_SCALE_DEG = 6.2 / 3600.0
 
-# Flag categories by MP_* name (bit numbers are always read from the header, never assumed).
+# Flag categories by name (bit numbers are always read from the header, never assumed).
 # SOURCE marks pixels on a detected source and FULLSAMPLE a readout mode: information, not defects.
 SATURATED_FLAGS = frozenset({"OVERFLOW", "NONLINEAR"})
-COSMIC_FLAGS = frozenset({"TRANSIENT"})
+COSMIC_FLAGS = frozenset({"TRANSIENT", "SNOWBALL"})
 INFORMATIONAL_FLAGS = frozenset({"SOURCE", "FULLSAMPLE"})
 # Pixels around target_xy checked for saturation.
 SATURATION_RADIUS_PX = 2.0
@@ -101,13 +101,34 @@ def reproject_flags(
 
 
 def flag_bits(header: fits.Header) -> dict[str, int]:
-    """FLAGS bit numbers by name, from the MP_* header keys (e.g. MP_OVERFLOW = 1 -> {"OVERFLOW": 1})."""
-    return {k[3:]: int(v) for k, v in header.items() if k.startswith("MP_")}
+    """FLAGS bit numbers by name, read from the FLAGS header. Two layouts exist (checked Nov 9):
+    QR2 (VERSION 6.x): MP_OVERFLOW = 1 (the value is the bit number).
+    QR3 (VERSION 7.x): MSKN0001 = 'OVERFLOW', MSKM0001 = 2 (the value is the bit mask), MSKD0001 = description."""
+    bits = {k[3:]: int(v) for k, v in header.items() if k.startswith("MP_")}
+    for key, name in header.items():
+        if key.startswith("MSKN"):
+            mask = header.get("MSKM" + key[4:])
+            if isinstance(mask, int) and mask > 0 and mask & (mask - 1) == 0:
+                bits[str(name).strip()] = mask.bit_length() - 1
+    return bits
 
 
-def flag_legend(bits: dict[str, int]) -> list[FlagLegendItem]:
-    """Legend for TimelapseResult.flag_legend. Plain-language meanings are added by D4.1 (Shimaya)."""
-    return [FlagLegendItem(bit=b, name=n, plain=None) for n, b in sorted(bits.items(), key=lambda kv: kv[1])]
+def flag_descriptions(header: fits.Header) -> dict[str, str]:
+    """QR3 only: NASA's one-line description of each flag (MSKDnnnn), by name."""
+    out: dict[str, str] = {}
+    for key, name in header.items():
+        if key.startswith("MSKN"):
+            desc = header.get("MSKD" + key[4:])
+            if isinstance(desc, str) and desc.strip():
+                out[str(name).strip()] = desc.strip()
+    return out
+
+
+def flag_legend(bits: dict[str, int], descriptions: dict[str, str] | None = None) -> list[FlagLegendItem]:
+    """Legend for TimelapseResult.flag_legend. `plain` is NASA's description where the file has one (QR3);
+    simpler wording for the public comes from D4.1 (Shimaya)."""
+    desc = descriptions or {}
+    return [FlagLegendItem(bit=b, name=n, plain=desc.get(n)) for n, b in sorted(bits.items(), key=lambda kv: kv[1])]
 
 
 @dataclass
@@ -125,7 +146,7 @@ class FlagMasks:
 def classify_flags(flags: np.ndarray, bits: dict[str, int]) -> FlagMasks:
     """Split reprojected flags into saturated / cosmic-ray / other-bad masks. Informational bits are ignored."""
     if not bits:
-        raise ValueError("No MP_* flag definitions in the header; cannot interpret FLAGS")
+        raise ValueError("No flag definitions (MP_* or MSKN*) in the FLAGS header; cannot interpret FLAGS")
 
     def mask_of(names: frozenset[str] | set[str]) -> int:
         return sum(1 << b for n, b in bits.items() if n in names)
@@ -165,6 +186,7 @@ class PreparedFrame:
     image: np.ndarray
     masks: FlagMasks
     bits: dict[str, int]
+    descriptions: dict[str, str]
 
 
 def _require_row(row: dict[str, Any]) -> None:
@@ -195,7 +217,8 @@ def prepare_frame(
         header = hdul["IMAGE"].header
         image = hdul["IMAGE"].data.astype(np.float64) - hdul["ZODI"].data.astype(np.float64)
         flags = np.asarray(hdul["FLAGS"].data)
-        bits = flag_bits(hdul["FLAGS"].header) or flag_bits(header)
+        bits = flag_bits(hdul["FLAGS"].header)
+        descriptions = flag_descriptions(hdul["FLAGS"].header)
         wavelength_um, bandwidth_um = extract_wavelength(hdul)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=FITSFixedWarning)
@@ -246,4 +269,4 @@ def prepare_frame(
         target_xy=target_xy,
         notes=notes,
     )
-    return PreparedFrame(frame=frame, image=reproj_image, masks=masks, bits=bits)
+    return PreparedFrame(frame=frame, image=reproj_image, masks=masks, bits=bits, descriptions=descriptions)

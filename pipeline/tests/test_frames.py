@@ -13,6 +13,7 @@ from planetes.frames import (
     classify_flags,
     compute_target_xy,
     flag_bits,
+    flag_descriptions,
     make_reference_grid,
     prepare_frame,
 )
@@ -51,6 +52,16 @@ def test_flag_names_come_from_the_header():
     with fits.open(FIXTURE) as h:
         bits = flag_bits(h["FLAGS"].header)
     assert bits["SOURCE"] == 21 and bits["OVERFLOW"] == 1 and bits["TRANSIENT"] == 0
+
+
+def test_qr3_mask_keys_are_read():
+    from astropy.io import fits
+
+    h = fits.Header()
+    h["MSKN0021"], h["MSKM0021"], h["MSKD0021"] = "SOURCE", 2097152, "Pixel mapped to a known source"
+    h["MSKN0001"], h["MSKM0001"] = "OVERFLOW", 2
+    assert flag_bits(h) == {"SOURCE": 21, "OVERFLOW": 1}
+    assert flag_descriptions(h) == {"SOURCE": "Pixel mapped to a known source"}
 
 
 def test_source_bit_is_not_counted_as_bad():
