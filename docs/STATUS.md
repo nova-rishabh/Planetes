@@ -43,7 +43,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 ## Next
 
-Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1 (done) → D1.4 spectrum chart + Two Opinions panel (done) → Aladin Lite context panel (done; tiles unverified from the dev PC) → About/How-it-works draft (Shimaya fact-checks) → README/submission draft. Then, as teammates merge: wire `access`/`frames`/`render` into `api/timelapse.py`, run the bake (GitHub Actions), `/spectrum`, `/resolve`, `/overlays`.
+Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1 (done) → D1.4 spectrum chart + Two Opinions panel (done) → Aladin Lite context panel (done; images via ESASky) → About/How-it-works draft (Shimaya fact-checks) → README/submission draft. Then, as teammates merge: wire `access`/`frames`/`render` into `api/timelapse.py`, run the bake (GitHub Actions), `/spectrum`, `/resolve`, `/overlays`.
 
 1. G0 meeting (Mon 9, 10:00): real frames for at least one benchmark.
 2. Phase 1 (to G1 Tue 10, 23:00): D1.2 API jobs + D1.3 player; D2.1/D2.2; D3.1/D3.2; D4.1.
@@ -54,7 +54,7 @@ Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1
 |---|---|
 | 02 §2 | Google Cloud trial credit expiry date |
 | 02 §4.10 | MJy/sr → µJy: IRSA solid-angle pixel map vs a constant |
-| 02 §7 | SPHEREx and unWISE HiPS IDs; check that the sky map shows tiles once CDS is back (CDS timed out from Austria, Poland, Sweden and the USA on Nov 9, so it was down for everyone; IRSA's HiPS mirrors lack CORS, so they can't replace it in a browser) |
+| 02 §7 | SPHEREx and unWISE HiPS (none on ESASky; CDS was down Nov 9). Sky map images now come from ESASky and were seen working Nov 9 |
 | 02 §7, 06 | SPHEREx spacecraft-position header keys (for JPL SBIdent) |
 | 02 §11 | Licences: spxquery, obsutils `spherex`, IRSA tutorials, Gagné et al. templates (terms). Aladin Lite done (LGPL-3/GPL-3, loaded unbundled) |
 | 04 §1 | ε Indi Ba/Bb position (check against SIMBAD) |

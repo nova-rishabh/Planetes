@@ -6,28 +6,21 @@ import { useEffect, useRef, useState } from "react";
  * Sky context map (D1.4) with Aladin Lite v3 (CDS). Loaded at runtime from jsDelivr, pinned to the npm
  * release we checked (3.8.2), so the library is not part of our bundle. API names used here were read
  * from that release: default export A, A.init (promise), A.aladin(el, options), aladin.setBaseImageLayer(id),
- * aladin.gotoRaDec(ra, dec), aladin.setFoV(deg). Survey IDs are from its built-in list.
+ * aladin.gotoRaDec(ra, dec), aladin.setFoV(deg). Surveys are passed as full HiPS URLs.
  */
 const ALADIN_URL = "https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js";
 const LOAD_TIMEOUT_MS = 20000;
-/** Aladin resolves survey IDs through this CDS service (seen in its network calls). If it does not answer,
- * the map cannot show images, so we say that instead of leaving a blank grey box. */
-const CDS_PROBE_URL = "https://alasky.unistra.fr/MocServer/query?ID=CDS/P/allWISE/color&get=id";
-const PROBE_TIMEOUT_MS = 8000;
 
-async function cdsReachable(): Promise<boolean> {
-  try {
-    const res = await fetch(CDS_PROBE_URL, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS), cache: "no-store" });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
+/**
+ * ESA ESASky copies of the CDS surveys (their properties give creator_did ivo://CDS/P/allWISE/color,
+ * ivo://CDS/P/2MASS/color, ivo://CDS/P/DSS2/color; they send Access-Control-Allow-Origin: *, checked Nov 9).
+ * Full URLs because CDS itself was down worldwide on Nov 9 and IRSA's copies block browsers (no CORS).
+ */
+const ESASKY = "https://skies.esac.esa.int";
 export const SURVEYS = [
-  { id: "CDS/P/allWISE/color", label: "AllWISE", note: "infrared, 3.4–22 µm" },
-  { id: "CDS/P/2MASS/color", label: "2MASS", note: "near-infrared, 1.2–2.2 µm" },
-  { id: "CDS/P/DSS2/color", label: "DSS2", note: "visible light" },
+  { id: `${ESASKY}/AllWISEColor`, label: "AllWISE", note: "infrared, 3.4–22 µm" },
+  { id: `${ESASKY}/2MASSColor`, label: "2MASS", note: "near-infrared, 1.2–2.2 µm" },
+  { id: `${ESASKY}/DSSColor`, label: "DSS2", note: "visible light" },
 ] as const;
 
 interface AladinView {
@@ -48,6 +41,18 @@ function loadAladin(): Promise<AladinLib> {
   return libPromise;
 }
 
+/** Before showing the map we check the survey host answers, so an outage gives a message, not a grey box. */
+const PROBE_TIMEOUT_MS = 8000;
+
+async function hostReachable(surveyUrl: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${surveyUrl}/properties`, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS), cache: "no-store" });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   return Promise.race([p, new Promise<T>((_, reject) => setTimeout(() => reject(new Error("timeout")), ms))]);
 }
@@ -62,7 +67,7 @@ export function SkyContext({ ra_deg, dec_deg, fov_deg }: { ra_deg: number; dec_d
 
   useEffect(() => {
     let alive = true;
-    cdsReachable().then((ok) => {
+    hostReachable(SURVEYS[0].id).then((ok) => {
       if (!ok && alive) setStatus("failed");
     });
     withTimeout(
@@ -120,11 +125,11 @@ export function SkyContext({ ra_deg, dec_deg, fov_deg }: { ra_deg: number; dec_d
       </div>
       <div ref={el} className="sky-map plate" aria-hidden={status !== "ready"}>
         {status === "loading" ? <p className="sky-msg">Loading the sky map…</p> : null}
-        {status === "failed" ? <p className="sky-msg">The sky survey images come from CDS (Strasbourg), which is not answering right now. Try again later.</p> : null}
+        {status === "failed" ? <p className="sky-msg">The sky survey images (from ESA&apos;s ESASky) are not loading right now. Try again later.</p> : null}
       </div>
       <p className="hint">
         {SURVEYS.find((s) => s.id === survey)?.label} survey, {contextFov.toFixed(2)}° wide, centred on the time-lapse. Map:{" "}
-        <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noreferrer">Aladin Lite</a> (CDS, Strasbourg).
+        <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noreferrer">Aladin Lite</a> (CDS, Strasbourg); images via ESA ESASky.
       </p>
     </section>
   );

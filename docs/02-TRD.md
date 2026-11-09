@@ -116,7 +116,7 @@ Sentry (student tier) for API and web errors.
 ## 7. Overlays
 
 - **Gaia DR3** (VizieR `I/355/gaiadr3` or `astroquery.gaia`) and **AllWISE** (`II/328/allwise` or IRSA TAP `allwise_p3as_psd`). Return positions moved to each frame's epoch (Gaia's epoch is 2016.0).
-- **Aladin Lite v3 context panel (built Nov 9):** Aladin Lite 3.8.2 loaded at runtime from jsDelivr (not bundled). Surveys from its built-in list: `CDS/P/allWISE/color`, `CDS/P/2MASS/color`, `CDS/P/DSS2/color`. **\[VERIFY\]** SPHEREx HiPS IDs (`CDS/P/SPHEREx/…`) and an unWISE HiPS: not in the built-in list, and CDS's MocServer was unreachable from the dev PC on Nov 9.
+- **Aladin Lite v3 context panel (built Nov 9):** Aladin Lite 3.8.2 loaded at runtime from jsDelivr (not bundled). Surveys: ESA ESASky copies of `CDS/P/allWISE/color`, `CDS/P/2MASS/color`, `CDS/P/DSS2/color` (`https://skies.esac.esa.int/AllWISEColor`, `/2MASSColor`, `/DSSColor`; browser access allowed). CDS was down worldwide on Nov 9 and IRSA's copies block browsers (no CORS). **\[VERIFY\]** SPHEREx HiPS IDs (`CDS/P/SPHEREx/…`) and an unWISE HiPS: not in the built-in list, and CDS's MocServer was unreachable from the dev PC on Nov 9.
 - **Known asteroids/comets (Should):** JPL SBIdent using SPHEREx's own position as observer **\[VERIFY header keys\]**, or IMCCE SkyBoT with a geocentric observer for a quick approximation.
 
 ## 8. Two Opinions engine
