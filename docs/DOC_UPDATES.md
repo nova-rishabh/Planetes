@@ -43,3 +43,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | RISHABH_GUIDE (new), STATUS | Rishabh's setup checklist (GCS, domain, PR reviews, Space Apps page, Camber, Sentry); STATUS notes PR #1 and Camber facts |
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, STATUS | Camber is Rishabh-only (Student Pack plan), validation on laptops; guide adds GitHub collaborators + `main` protection |
 | 2026-11-09 | 02, DECISIONS, PM_PLAYBOOK, RISHABH_GUIDE, STATUS | Camber dropped: benchmark bakes run in GitHub Actions (laptop backup), validation notebooks on laptops |
+| 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, RUNBOOK, STATUS | GCS bucket region is us-west1 (Oregon, same as Render); planetes.divergit.com is live |

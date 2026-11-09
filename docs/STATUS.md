@@ -6,7 +6,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 | What | URL | State (Nov 8) |
 |---|---|---|
-| Website | https://planetes.divergit.com | Not live yet (no DNS record). Steps in docs/RUNBOOK.md |
+| Website | https://planetes.divergit.com | **Live** Nov 9 (HTTP 200 via Vercel). Render `ALLOWED_ORIGINS` still to add |
 | Website fallback | https://web-gamma-flame-16.vercel.app | Live (HTTP 200) |
 | API | https://planetes-api.onrender.com/api/health | Live: `status ok`, `irsa_tap ok`, `code_version 08b009b` (deploys from `main`) |
 | Repo | https://github.com/nova-rishabh/Planetes | Public |

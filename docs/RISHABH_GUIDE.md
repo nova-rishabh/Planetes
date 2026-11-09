@@ -5,7 +5,7 @@ Nov 9, 2026 · Every account and tool only Rishabh can set up, in order. Tick ea
 ## 1. Today (needed for G1, Tue 23:00)
 
 ### Google Cloud Storage cache (15 min)
-First check Render → `planetes-api` → Settings → **Region**. Singapore → bucket region `asia-south1`. Oregon → `us-west1`.
+Bucket region: `us-west1` (Oregon), the same region as the Render API.
 - [ ] console.cloud.google.com → project dropdown → **New Project** `planetes` → select it. Billing shows the $300 trial credit.
 - [ ] ☰ Cloud Storage → Buckets → **+ Create**: name `planetes-cache`, Location type **Region** (as above), class **Standard**, access **Uniform**, keep **Enforce public access prevention** ticked → Create.
 - [ ] Bucket → **Lifecycle** → Add a rule → **Delete object**, Age **30** days.

@@ -42,7 +42,7 @@ Nov 7, 2026 · v2 (final for build) · Read 01 PRD first. Exact JSON/API shapes 
 
 ### Persistent cache
 
-Google Cloud Storage bucket `planetes-cache` (region `asia-south1`) holds rendered frames and job results, because the Render disk is wiped on deploy. The local disk cache stays as a fast first layer. Paid from the team's Google Cloud $300 trial credit, with a $20 budget alert. A service account with Storage Object Admin on this bucket only; Render gets `GCS_BUCKET` and `GCP_SERVICE_ACCOUNT_JSON` as env vars (never in the repo). A lifecycle rule deletes objects after 30 days. Setup steps: docs/RUNBOOK.md. **[VERIFY]** trial credit expiry date.
+Google Cloud Storage bucket `planetes-cache` (region `us-west1`, Oregon, same region as the Render API) holds rendered frames and job results, because the Render disk is wiped on deploy. The local disk cache stays as a fast first layer. Paid from the team's Google Cloud $300 trial credit, with a $20 budget alert. A service account with Storage Object Admin on this bucket only; Render gets `GCS_BUCKET` and `GCP_SERVICE_ACCOUNT_JSON` as env vars (never in the repo). A lifecycle rule deletes objects after 30 days. Setup steps: docs/RUNBOOK.md. **[VERIFY]** trial credit expiry date.
 
 ### Batch compute
 
