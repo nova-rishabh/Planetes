@@ -1,12 +1,12 @@
 """
 Planetes Data Access Module (D2.1)
-NASA/IPAC IRSA TAP query, concurrent cutout downloads with caching,
-and multi-band real SPHEREx FITS visualization.
+NASA/IPAC IRSA TAP query and concurrent cutout retrieval for SPHEREx images.
 """
 
 from __future__ import annotations
 
 import concurrent.futures
+import hashlib
 import io
 import logging
 import os
@@ -19,11 +19,8 @@ from typing import Any
 # Ensure local planetes module is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import requests
-from astropy.io import fits
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -68,7 +65,6 @@ def query_irsa_tap(adql_query: str, timeout: int = 120) -> pd.DataFrame:
         "QUERY": adql_query.strip(),
     }
 
-    # Attempt POST first, then fall back to GET if the server forcibly drops POST
     for attempt in range(1, 4):
         try:
             resp = _SESSION.post(IRSA_TAP_URL, data=params, timeout=timeout)
@@ -89,31 +85,38 @@ def query_irsa_tap(adql_query: str, timeout: int = 120) -> pd.DataFrame:
     raise RuntimeError("Failed to query IRSA TAP after multiple attempts.")
 
 
-def print_irsa_schema() -> pd.DataFrame:
-    """Inspect and print real column names from SPHEREx tables for PR verification."""
-    print("=" * 60)
-    print("Fetching real IRSA TAP column names for SPHEREx...")
-    print("=" * 60)
-    query = """
-    SELECT table_name, column_name, datatype, description 
-    FROM tap_schema.columns 
-    WHERE table_name IN ('spherex.plane', 'spherex.artifact')
-    ORDER BY table_name, column_name
-    """
-    df = query_irsa_tap(query)
-    for _, row in df.iterrows():
-        print(
-            f"[{row['table_name']}] {row['column_name']:<25} ({row['datatype']}) - {row['description']}"
-        )
-    return df
+def compute_frame_id(obs_id: str, ra: float, dec: float, size_deg: float) -> str:
+    """Return f_ + first 12 hex characters of sha1(obs_id + cutout params)."""
+    hash_str = f"{obs_id}_{ra:.6f}_{dec:.6f}_{size_deg:.4f}"
+    digest = hashlib.sha1(hash_str.encode("utf-8")).hexdigest()[:12]
+    return f"f_{digest}"
+
+
+def extract_detector(bandpass_name: str) -> int:
+    """Extract detector integer (1-6) from bandpass name like SPHEREx-D1."""
+    match = re.search(r"D(\d)", str(bandpass_name))
+    if match:
+        return int(match.group(1))
+    return 1
+
+
+def extract_release(uri: str) -> str:
+    """Extract data release string (QR2, QR3) from artifact URI."""
+    uri_str = str(uri).lower()
+    if "qr3" in uri_str:
+        return "QR3"
+    elif "qr2" in uri_str:
+        return "QR2"
+    return "QR2"
 
 
 def find_frames(
     ra: float, dec: float, size_deg: float = 0.05, limit: int | None = None
 ) -> pd.DataFrame:
     """
-    Find SPHEREx image frames covering (ra, dec) and format cutout URLs.
-    Checks QR3 first, falls back to QR2 if no QR3 frames exist.
+    Find SPHEREx image frames covering (ra, dec), keeping both QR2 and QR3.
+    Returns DataFrame matching contract fields:
+    obs_id, release, mjd, detector, frame_id, cutout_url.
     """
     log.info(f"Querying IRSA TAP for frames at RA={ra:.6f}, Dec={dec:.6f}...")
 
@@ -124,6 +127,7 @@ def find_frames(
         p.energy_bandpassname,
         p.time_bounds_lower,
         p.time_bounds_upper,
+        p.obs_publisher_did,
         a.uri
     FROM spherex.artifact a
     JOIN spherex.plane p ON a.planeid = p.planeid
@@ -134,33 +138,35 @@ def find_frames(
 
     if df.empty:
         log.warning(f"No frames found at RA={ra}, Dec={dec}")
-        return df
+        return pd.DataFrame(
+            columns=["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"]
+        )
 
-    # Fallback check: QR3 then QR2
-    qr3_mask = df["uri"].str.contains("qr3", case=False, na=False)
-    if qr3_mask.any():
-        df = df[qr3_mask].copy()
-
-    def make_frame_id(uri: str) -> str:
-        base = os.path.basename(str(uri)).replace(".fits", "")
-        clean = re.sub(r"[^A-Za-z0-9_-]", "_", base)
-        return f"f_{clean}"
-
-    df["frame_id"] = df["uri"].apply(make_frame_id)
+    # Format required contract columns
+    df["obs_id"] = df["obs_publisher_did"].astype(str)
+    df["release"] = df["uri"].apply(extract_release)
+    df["mjd"] = df["time_bounds_lower"].astype(float)
+    df["detector"] = df["energy_bandpassname"].apply(extract_detector)
+    df["frame_id"] = df.apply(
+        lambda r: compute_frame_id(r["obs_id"], ra, dec, size_deg), axis=1
+    )
     df["cutout_url"] = (
         "https://irsa.ipac.caltech.edu/"
         + df["uri"].astype(str)
         + f"?center={ra:.6f},{dec:.6f}d&size={size_deg}"
     )
 
-    df = df.sort_values(by="time_bounds_lower").reset_index(drop=True)
-    time_diffs = df["time_bounds_lower"].diff().fillna(0)
+    # Epoch grouping (gaps > 1 day)
+    df = df.sort_values(by="mjd").reset_index(drop=True)
+    time_diffs = df["mjd"].diff().fillna(0)
     df["epoch_group"] = (time_diffs > 1.0).cumsum()
 
     log.info(
-        f"Retrieved {len(df)} frames grouped into {df['epoch_group'].nunique()} survey epochs."
+        f"Retrieved {len(df)} total frames ({df['release'].value_counts().to_dict()}) across {df['epoch_group'].nunique()} survey epochs."
     )
-    return df
+    return df[
+        ["obs_id", "release", "mjd", "detector", "frame_id", "cutout_url", "epoch_group"]
+    ]
 
 
 def download_single_cutout(
@@ -173,7 +179,6 @@ def download_single_cutout(
     """Download one cutout with local caching, retries, and a 2-minute timeout."""
     cached_data = cache.get(key)
     if cached_data is not None:
-        log.info(f"Loaded from cache: {key}")
         return key, cached_data
 
     for attempt in range(1, max_retries + 1):
@@ -181,7 +186,6 @@ def download_single_cutout(
             resp = _SESSION.get(url, timeout=timeout)
             if resp.status_code == 200 and len(resp.content) > 1000:
                 cache.put(key, resp.content, content_type="application/fits")
-                log.info(f"Downloaded and cached: {key} ({len(resp.content)} bytes)")
                 return key, resp.content
             log.warning(f"Attempt {attempt}: HTTP {resp.status_code} for {url}")
         except Exception as e:
@@ -193,17 +197,20 @@ def download_single_cutout(
 
 def fetch_cutouts(
     frames_df: pd.DataFrame,
-    max_concurrent: int = 6,
+    max_concurrent: int = 8,
     cache: Cache | None = None,
 ) -> dict[str, bytes]:
-    """Download cutouts concurrently with caching."""
+    """Download cutouts concurrently (max 8) with caching."""
     if cache is None:
         cache = from_env()
 
     results: dict[str, bytes] = {}
-    tasks = [(row["cutout_url"], f"cutouts/{row['frame_id']}.fits") for _, row in frames_df.iterrows()]
+    tasks = [
+        (row["cutout_url"], f"cutouts/{row['frame_id']}.fits")
+        for _, row in frames_df.iterrows()
+    ]
 
-    log.info(f"Downloading {len(tasks)} cutouts (max concurrency: {max_concurrent})...")
+    log.info(f"Downloading {len(tasks)} cutouts (concurrency: {max_concurrent})...")
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_concurrent) as executor:
         future_map = {
@@ -222,79 +229,12 @@ def fetch_cutouts(
     return results
 
 
-def plot_barnard_6band():
-    """Download 6 real SPHEREx detector cutouts for Barnard's Star (2026) and plot them."""
-    ra_barnard = 269.444747
-    dec_barnard = 4.743126
-
-    df = find_frames(ra_barnard, dec_barnard, size_deg=0.04)
-    if df.empty:
-        print("No frames available for Barnard's Star.")
-        return
-
-    # Select one unique frame per detector band: SPHEREx-D1 through D6
-    selected = []
-    for band in ["SPHEREx-D1", "SPHEREx-D2", "SPHEREx-D3", "SPHEREx-D4", "SPHEREx-D5", "SPHEREx-D6"]:
-        matching = df[df["energy_bandpassname"] == band]
-        if not matching.empty:
-            selected.append(matching.iloc[0])
-
-    if not selected:
-        selected_df = df.head(6)
-    else:
-        selected_df = pd.DataFrame(selected)
-
-    print("\nSelected one exposure for each detector band:")
-    for _, r in selected_df.iterrows():
-        print(f"  {r['energy_bandpassname']} -> {r['frame_id']}")
-
-    cache = from_env()
-    cutouts = fetch_cutouts(selected_df, max_concurrent=6, cache=cache)
-
-    fig, axes = plt.subplots(2, 3, figsize=(13, 8))
-    axes = axes.flatten()
-
-    for i, (_, row) in enumerate(selected_df.iterrows()):
-        band = row["energy_bandpassname"]
-        frame_id = row["frame_id"]
-        key = f"cutouts/{frame_id}.fits"
-        data_bytes = cutouts.get(key)
-
-        ax = axes[i]
-        if data_bytes:
-            try:
-                with fits.open(io.BytesIO(data_bytes)) as hdul:
-                    # HDU 0 or HDU 1 contains image array
-                    img_data = hdul[0].data
-                    if img_data is None and len(hdul) > 1:
-                        img_data = hdul[1].data
-                    
-                    if img_data is not None:
-                        clean_data = img_data[np.isfinite(img_data)]
-                        vmin, vmax = np.percentile(clean_data, [5, 98]) if len(clean_data) > 0 else (0, 1)
-                        im = ax.imshow(img_data, origin="lower", cmap="magma", vmin=vmin, vmax=vmax)
-                        ax.set_title(f"{band}\n{frame_id[:16]}...", fontsize=9)
-                        plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-                    else:
-                        ax.text(0.5, 0.5, "Empty Array", ha="center", va="center")
-                        ax.set_title(band)
-            except Exception as e:
-                ax.text(0.5, 0.5, f"FITS Error\n{e}", ha="center", va="center", fontsize=8)
-                ax.set_title(band)
-        else:
-            ax.text(0.5, 0.5, "Cutout Missing", ha="center", va="center")
-            ax.set_title(band)
-
-        ax.set_xticks([])
-        ax.set_yticks([])
-
-    plt.suptitle("Barnard's Star (2026 Coordinates) — Real SPHEREx Flight Cutouts", fontsize=14)
-    plt.tight_layout()
-    output_png = "barnard_real_spherex_6band.png"
-    plt.savefig(output_png, dpi=150)
-    print(f"\n[SUCCESS] 6-Panel Real Data Plot saved as: {output_png}")
-
-
 if __name__ == "__main__":
-    print_irsa_schema()
-    plot_barnard_6band()
+    # Test on Gaia DR3 2026 position for Barnard's Star
+    ra_b = 269.4461
+    dec_b = 4.7703
+    df = find_frames(ra_b, dec_b)
+    print("\nDataFrame structure:")
+    print(df.head())
+    print("\nCounts by detector and release:")
+    print(df.groupby(["release", "detector"]).size())
