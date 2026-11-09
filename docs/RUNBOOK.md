@@ -24,7 +24,7 @@ Checks before a PR: `pytest -q -m "not network"` (in `pipeline/`), `ruff check p
 
 ## Deploy flow
 
-Push (or merge a PR) to `main` → CI runs → **Vercel** builds `web/` (static export) and **Render** builds the API from `render.yaml` (`autoDeploy: true`). Every PR also gets a Vercel preview link. After a deploy, open `/api/health` on Render and the site, and check the status badge reads "NASA archive: ok".
+`main` is protected: changes arrive by PR and need green CI (`python`, `contracts`, `web`); admins can bypass. Merge a PR (or an admin pushes) to `main` → CI runs → **Vercel** builds `web/` (static export) and **Render** builds the API from `render.yaml` (`autoDeploy: true`). Every PR also gets a Vercel preview link. After a deploy, open `/api/health` on Render and the site, and check the status badge reads "NASA archive: ok".
 
 ## Environment variables
 
