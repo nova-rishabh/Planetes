@@ -29,5 +29,12 @@
   --radius-control: 8px;
   --radius-pill: 999px;
 
+  /* Spectrum chart, one colour per SPHEREx visit: Okabe–Ito colour-blind-safe set (docs/09 §3). */
+  --epoch-1: #0072b2;
+  --epoch-2: #e69f00;
+  --epoch-3: #009e73;
+  --epoch-4: #cc79a7;
+  --epoch-5: #d55e00;
+  --epoch-6: #56b4e9;
   color-scheme: light;
 }

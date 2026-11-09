@@ -3,7 +3,7 @@
  * both end as { result, baseUrl }, and frame URLs are resolved against baseUrl (docs/03 §6).
  */
 
-import type { ErrorBody, Job, TimelapseRequest, TimelapseResult } from "@/types/contracts";
+import type { ErrorBody, Job, SpectrumResult, TimelapseRequest, TimelapseResult } from "@/types/contracts";
 import type { BenchmarkId } from "./benchmarks";
 import type { Mode } from "./urlState";
 
@@ -144,4 +144,33 @@ export async function runLive(
     onUpdate(loading(job.progress?.stage ?? job.status, job.progress?.done ?? 0, job.progress?.total ?? null));
   }
   return { kind: "error", message: "The job is taking too long", hint: "Try a smaller field of view or fewer frames." };
+}
+
+/** Any other baked JSON for a benchmark (spectrum.json, opinions.json), checked with `parse`. */
+export async function loadBakedJson<T>(
+  id: BenchmarkId,
+  file: string,
+  origin: string,
+  parse: (body: unknown) => T | null,
+  signal?: AbortSignal,
+  fetchFn: FetchFn = fetch,
+): Promise<{ kind: "ready"; value: T } | { kind: "missing" } | { kind: "error"; message: string }> {
+  try {
+    const res = await fetchFn(new URL(`/data/targets/${id}/${file}`, origin).toString(), { signal });
+    if (res.status === 404) return { kind: "missing" };
+    if (!res.ok) return { kind: "error", message: `HTTP ${res.status}` };
+    const value = parse(await json(res));
+    return value ? { kind: "ready", value } : { kind: "error", message: "does not match the data contract" };
+  } catch (e) {
+    if (signal?.aborted) throw e;
+    return { kind: "error", message: "could not be loaded" };
+  }
+}
+
+/** Accept a body only if it has the SpectrumResult fields the chart reads. */
+export function parseSpectrum(body: unknown): SpectrumResult | null {
+  if (typeof body !== "object" || body === null) return null;
+  const b = body as Record<string, unknown>;
+  if (b.schema_version !== "1.0" || !Array.isArray(b.points) || typeof b.summary !== "object" || b.summary === null) return null;
+  return body as SpectrumResult;
 }

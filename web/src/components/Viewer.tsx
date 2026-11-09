@@ -6,6 +6,7 @@ import { BENCHMARKS, benchmarkName } from "@/lib/benchmarks";
 import { formatPosition, parsePosition } from "@/lib/coords";
 import { loadBaked, runLive, type LoadState } from "@/lib/timelapse";
 import { FOV_MAX_DEG, FOV_MIN_DEG, MODES, parseView, serializeView, type Mode, type ViewState } from "@/lib/urlState";
+import { ObjectPanels } from "./ObjectPanels";
 import { Player } from "./Player";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
@@ -192,6 +193,7 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
       ) : (
         <LoadView state={state} onRetry={() => setAttempt((n) => n + 1)} />
       )}
+      {!embed && heading ? <ObjectPanels key={target ?? "position"} target={target} /> : null}
     </div>
   );
 }
