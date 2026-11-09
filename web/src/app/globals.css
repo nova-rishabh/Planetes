@@ -184,3 +184,11 @@ h3 { font-size: 0.875rem; margin: 1rem 0 0.5rem; color: var(--ink-muted); text-t
 .verdict[data-tone="agree"] .verdict-symbol, .verdict[data-tone="agree"] .opinion-head { color: var(--ui-text); }
 .verdict[data-tone="disagree"] .verdict-symbol, .verdict[data-tone="disagree"] .opinion-head { color: var(--accent-text); }
 .verdict[data-tone="cant_tell"] .verdict-symbol { color: var(--ink-muted); }
+
+/* Sky context map */
+.sky { margin-top: 1.5rem; }
+.sky .controls { margin-bottom: 0.75rem; }
+.sky-map { position: relative; height: 22rem; overflow: hidden; }
+.sky-msg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; text-align: center; color: var(--on-ink); font-size: 0.875rem; }
+.sky .hint a { color: var(--ui-text); }
+.toggle:disabled { opacity: 0.5; cursor: default; }

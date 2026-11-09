@@ -8,6 +8,7 @@ import { loadBaked, runLive, type LoadState } from "@/lib/timelapse";
 import { FOV_MAX_DEG, FOV_MIN_DEG, MODES, parseView, serializeView, type Mode, type ViewState } from "@/lib/urlState";
 import { ObjectPanels } from "./ObjectPanels";
 import { Player } from "./Player";
+import { SkyContext } from "./SkyContext";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const FOV_CHOICES = [0.03, 0.05, 0.1, 0.2, 0.3, 0.5].filter((f) => f >= FOV_MIN_DEG && f <= FOV_MAX_DEG);
@@ -126,6 +127,14 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
     update({ target: null, ra_deg: r.pos.ra_deg, dec_deg: r.pos.dec_deg });
   };
 
+  // Benchmarks have no typed position: the map uses the position recorded in the loaded time-lapse.
+  const skyPos =
+    ra_deg !== null && dec_deg !== null
+      ? { ra_deg, dec_deg }
+      : state.kind === "ready"
+        ? { ra_deg: state.result.request.ra, dec_deg: state.result.request.dec }
+        : null;
+
   const heading = target
     ? benchmarkName(target)
     : ra_deg !== null && dec_deg !== null
@@ -194,6 +203,7 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
         <LoadView state={state} onRetry={() => setAttempt((n) => n + 1)} />
       )}
       {!embed && heading ? <ObjectPanels key={target ?? "position"} target={target} /> : null}
+      {!embed && skyPos ? <SkyContext ra_deg={skyPos.ra_deg} dec_deg={skyPos.dec_deg} fov_deg={fov_deg} /> : null}
     </div>
   );
 }
