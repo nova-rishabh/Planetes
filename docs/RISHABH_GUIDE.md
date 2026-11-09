@@ -5,14 +5,14 @@ Nov 9, 2026 · Every account and tool only Rishabh can set up, in order. Tick ea
 ## 1. Today (needed for G1, Tue 23:00)
 
 ### Google Cloud Storage cache (15 min)
-Bucket region: `us-west1` (Oregon), the same region as the Render API.
-- [ ] console.cloud.google.com → project dropdown → **New Project** `planetes` → select it. Billing shows the $300 trial credit.
-- [ ] ☰ Cloud Storage → Buckets → **+ Create**: name `planetes-cache`, Location type **Region** (as above), class **Standard**, access **Uniform**, keep **Enforce public access prevention** ticked → Create.
-- [ ] Bucket → **Lifecycle** → Add a rule → **Delete object**, Age **30** days.
-- [ ] ☰ IAM & Admin → Service Accounts → **+ Create**: `planetes-cache-writer` → **skip roles** → Done.
-- [ ] Bucket → **Permissions** → Grant access → paste the service account email → role **Storage Object Admin** → Save.
+Bucket region: `us-west1` (Oregon), the same region as the Render API. The agent did the ticked steps with the gcloud CLI on Nov 9 (budget is ₹1,800 ≈ $20, since the billing account is in INR).
+- [x] console.cloud.google.com → project dropdown → **New Project** `planetes` → select it. Billing shows the $300 trial credit.
+- [x] ☰ Cloud Storage → Buckets → **+ Create**: name `planetes-cache`, Location type **Region** (as above), class **Standard**, access **Uniform**, keep **Enforce public access prevention** ticked → Create.
+- [x] Bucket → **Lifecycle** → Add a rule → **Delete object**, Age **30** days.
+- [x] ☰ IAM & Admin → Service Accounts → **+ Create**: `planetes-cache-writer` → **skip roles** → Done.
+- [x] Bucket → **Permissions** → Grant access → paste the service account email → role **Storage Object Admin** → Save.
 - [ ] Service account → **Keys** → Add key → JSON. Render → `planetes-api` → Environment: paste the whole file as `GCP_SERVICE_ACCOUNT_JSON`, keep `GCS_BUCKET=planetes-cache` → Save. **Delete the downloaded file.**
-- [ ] ☰ Billing → Budgets & alerts → **Create budget**: project `planetes`, $20, alerts at 50/90/100 %.
+- [x] ☰ Billing → Budgets & alerts → **Create budget**: project `planetes`, $20, alerts at 50/90/100 %.
 - [ ] Check: Render → Logs shows `Cache: local /tmp/planetes-cache + GCS bucket planetes-cache`.
 
 ### Custom domain planetes.divergit.com (10 min + DNS wait)

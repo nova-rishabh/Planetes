@@ -44,3 +44,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, STATUS | Camber is Rishabh-only (Student Pack plan), validation on laptops; guide adds GitHub collaborators + `main` protection |
 | 2026-11-09 | 02, DECISIONS, PM_PLAYBOOK, RISHABH_GUIDE, STATUS | Camber dropped: benchmark bakes run in GitHub Actions (laptop backup), validation notebooks on laptops |
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, RUNBOOK, STATUS | GCS bucket region is us-west1 (Oregon, same as Render); planetes.divergit.com is live |
+| 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | GCS cache set up in project planetes-514208 (bucket, 30-day rule, service account, ₹1,800 budget); only the Render key paste is left |

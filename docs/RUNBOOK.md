@@ -43,6 +43,9 @@ Secrets go only in the Vercel/Render dashboards, never in the repo.
 
 ## Google Cloud Storage cache (one-time)
 
+**Done Nov 9** in project `planetes-514208`: bucket `gs://planetes-cache` (us-west1, uniform access, public access prevented, soft delete off, 30-day delete rule), service account `planetes-cache-writer` with Storage Object Admin on the bucket only, budget ₹1,800 (≈ $20; the billing account is in INR) with alerts at 50/90/100 %. Steps below are for redoing it.
+
+
 1. console.cloud.google.com → create or pick the Planetes project; Billing shows the $300 trial credit.
 2. Cloud Storage → Buckets → Create: name `planetes-cache`, Region `us-west1` (Oregon, same as Render), class Standard, uniform access, public access prevention on.
 3. Bucket → Lifecycle → Add rule → Delete object, Age 30 days.
