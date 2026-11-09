@@ -17,7 +17,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 |---|---|---|
 | D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
 | Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8; palette C locked by team vote Nov 9 |
-| D2.1 access (Tirth) | Tirth | PR #1 open Nov 9: script plots **simulated** cutouts, no IRSA query yet; changes requested |
+| D2.1 access | Tirth | PR #2 (Nov 9): **real** IRSA TAP search + cutouts. Changes requested: keep QR2+QR3, contract fields/IDs, Barnard position, deps, tests. PR #1 (simulated) to close |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Mon 9, 10:00) |
 | D1.2 API (part 1) | Rishabh | **In progress** Nov 9: cache (local + GCS), job queue, `POST /timelapse`, `/jobs/{id}`, `/frames`. Live time-lapse needs D2.1 + D2.2 merged, then wiring in `api/timelapse.py` |
 | All other D-codes (docs/06) | — | Not started |
@@ -50,7 +50,6 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 |---|---|
 | 02 §2 | Google Cloud trial credit expiry date |
 | 02 §4.10 | MJy/sr → µJy: IRSA solid-angle pixel map vs a constant |
-| 02 §5 | TAP table and column names for QR3 |
 | 02 §7 | Exact unWISE HiPS ID in Aladin |
 | 02 §7, 06 | SPHEREx spacecraft-position header keys (for JPL SBIdent) |
 | 02 §11 | Licences: spxquery, obsutils `spherex`, IRSA tutorials, Aladin Lite v3 (GPL-3 expected), Gagné et al. templates (terms) |

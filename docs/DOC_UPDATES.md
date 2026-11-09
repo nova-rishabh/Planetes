@@ -46,3 +46,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, RUNBOOK, STATUS | GCS bucket region is us-west1 (Oregon, same as Render); planetes.divergit.com is live |
 | 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | GCS cache set up in project planetes-514208 (bucket, 30-day rule, service account, ₹1,800 budget); only the Render key paste is left |
 | 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | `main` protected by a ruleset (PR + green CI, admin bypass); GCS key is in Render |
+| 2026-11-09 | 02, AGENTS.md, DECISIONS, STATUS | For clarification: QR2 and QR3 cover different weeks, so time-lapses use both (not QR3-only); QR3 TAP names verified; STATUS notes PR #2 |
