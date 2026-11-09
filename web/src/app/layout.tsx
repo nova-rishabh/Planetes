@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
 import "./globals.css";
 
 const heading = IBM_Plex_Sans_Condensed({
@@ -15,6 +15,13 @@ const body = IBM_Plex_Sans({
   display: "swap",
 });
 
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Planetes",
   description: "Watch real NASA SPHEREx infrared images of any patch of sky as a time-lapse.",
@@ -22,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable}`}>
+    <html lang="en" className={`${heading.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );
