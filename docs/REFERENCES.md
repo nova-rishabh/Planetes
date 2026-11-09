@@ -6,6 +6,7 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 - NASA SPHEREx Quick Release Spectral Images, NASA/IPAC Infrared Science Archive (IRSA). QR2: doi:10.26131/IRSA652; QR3: doi:10.26131/IRSA662. Use IRSA's acknowledgement sentence from the SPHEREx QR overview page.
 - ESA Gaia DR3 (Gaia Collaboration); AllWISE (NASA/IPAC); unWISE imagery.
 - CDS Strasbourg: SIMBAD, VizieR, Sesame, Aladin Lite, HiPS (incl. CDS-built SPHEREx HiPS).
+- Sky context panel: Aladin Lite 3.8.2 (CDS; npm `aladin-lite`, LGPL-3 files / GPL-3 per README), loaded unmodified from jsDelivr; HiPS surveys AllWISE colour, 2MASS colour, DSS2 colour (built by CDS), served from ESA ESASky (skies.esac.esa.int).
 - JPL Solar System Dynamics: SBIdent, Horizons.
 
 ## Software
@@ -22,7 +23,8 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 - pytest (MIT), ruff (MIT): tests and lint.
 - FastAPI (MIT), uvicorn (BSD-3), httpx (BSD-3): API server and the IRSA health probe.
 - Next.js (MIT), React (MIT), TypeScript (Apache-2.0), ESLint + eslint-config-next (MIT), Vitest (MIT): web app and checks.
-- IBM Plex Sans and IBM Plex Sans Condensed (IBM), SIL Open Font License 1.1, via `next/font/google`.
+- IBM Plex Sans, IBM Plex Sans Condensed and IBM Plex Mono (IBM), SIL Open Font License 1.1, via `next/font/google`.
+- WiseView (Backyard Worlds): idea for the simple A/B blink control (no code used).
 - google-cloud-storage (Apache-2.0): persistent cache in the `planetes-cache` bucket (`planetes/cache.py`).
 - GNU Make (GPL-3, build tool only, not shipped).
 

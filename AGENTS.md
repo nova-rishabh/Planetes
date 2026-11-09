@@ -46,7 +46,7 @@ Specs: docs/ (PRD, TRD, Data Contract, Science brief). The Data Contract in cont
 
 ## SPHEREx gotchas (read before touching data code)
 - Use cutouts (?center=RA,DECd&size=DEG), never full ~70 MB files.
-- Prefer TAP (spherex.artifact JOIN spherex.plane) over SIA (SIA lags ~1 day). Query QR3, fall back to QR2.
+- Prefer TAP (spherex.artifact JOIN spherex.plane) over SIA (SIA lags ~1 day). QR2 and QR3 cover different weeks: use both, prefer QR3 only for the same exposure, record the release.
 - IMAGE is MJy/sr and NOT zodi-subtracted: subtract the ZODI extension.
 - FLAGS meanings come from header MP_* keys; never hard-code bit meanings.
 - Wavelength per pixel: WCS(header, fobj=hdul, key="W"); set .sip = None.
