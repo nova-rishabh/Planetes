@@ -1,7 +1,7 @@
 import io
+
 import numpy as np
 from astropy.io import fits
-from astropy.wcs import WCS
 
 from planetes.align import (
     align_single_frame,
