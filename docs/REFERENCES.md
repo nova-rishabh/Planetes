@@ -23,6 +23,7 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 - FastAPI (MIT), uvicorn (BSD-3), httpx (BSD-3): API server and the IRSA health probe.
 - Next.js (MIT), React (MIT), TypeScript (Apache-2.0), ESLint + eslint-config-next (MIT), Vitest (MIT): web app and checks.
 - IBM Plex Sans and IBM Plex Sans Condensed (IBM), SIL Open Font License 1.1, via `next/font/google`.
+- google-cloud-storage (Apache-2.0): persistent cache in the `planetes-cache` bucket (`planetes/cache.py`).
 - GNU Make (GPL-3, build tool only, not shipped).
 
 ## Science papers

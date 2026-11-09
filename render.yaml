@@ -18,6 +18,8 @@ services:
         value: "60"
       - key: IRSA_CONCURRENCY
         value: "8"
+      - key: JOB_WORKERS
+        value: "2"
       - key: CACHE_DIR
         value: /tmp/planetes-cache
       - key: GCS_BUCKET

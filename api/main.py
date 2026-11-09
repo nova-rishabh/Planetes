@@ -1,25 +1,34 @@
-"""Planetes API. Only GET /api/health exists in D1.1; the rest arrives in D1.2 (docs/06)."""
+"""Planetes API (docs/03 §3). D1.2 so far: /health, POST /timelapse, /jobs/{id}, /frames/{id}.webp and flags.png."""
 
 from __future__ import annotations
 
 import logging
 import os
+import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Literal
 
 import httpx
 from fastapi import APIRouter, FastAPI, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from planetes.contracts import Error, ErrorBody, Health
+from planetes import cache as cache_mod
+from planetes.contracts import Error, ErrorBody, Health, Job, JobCreated, TimelapseRequest
 
 from .irsa_status import CachedProbe
+from .jobs import JobManager, TooManyJobs
+from .timelapse import run_timelapse
 
 log = logging.getLogger("planetes.api")
+
+FRAME_ID_RE = re.compile(r"^f_[0-9a-f]{12}$")
+# Frame ids are hashes of obs_id + cutout params, so a frame's bytes never change: cache for a year.
+IMMUTABLE = "public, max-age=31536000, immutable"
 
 ErrorCode = Literal["BAD_INPUT", "NOT_FOUND", "NO_COVERAGE", "IRSA_TIMEOUT", "IRSA_ERROR", "TOO_LARGE", "INTERNAL"]
 
@@ -33,6 +42,21 @@ def code_version() -> str:
     if render:
         return render[:7]
     return "dev"
+
+
+def env_int(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, "").strip() or default)
+    except ValueError:
+        return default
+
+
+def client_ip(request: Request) -> str:
+    """Rightmost X-Forwarded-For entry (added by Render's proxy), else the socket peer."""
+    fwd = [p.strip() for p in request.headers.get("x-forwarded-for", "").split(",") if p.strip()]
+    if fwd:
+        return fwd[-1]
+    return request.client.host if request.client else "unknown"
 
 
 def allowed_origins() -> list[str]:
@@ -60,7 +84,12 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     async with httpx.AsyncClient(headers={"User-Agent": "planetes-api"}) as client:
         app.state.http = client
         app.state.irsa_probe = CachedProbe()
-        yield
+        app.state.cache = cache_mod.from_env()
+        app.state.jobs = JobManager(workers=env_int("JOB_WORKERS", 2), per_client=3)
+        try:
+            yield
+        finally:
+            app.state.jobs.shutdown()
 
 
 app = FastAPI(
@@ -110,8 +139,47 @@ async def health(request: Request) -> Health:
         code_version=code_version(),
         irsa_tap=irsa,
         default_release="QR3",
-        cache_entries=0,
+        cache_entries=request.app.state.cache.local_count(),
     )
+
+
+@router.post("/timelapse", response_model=JobCreated)
+async def start_timelapse(body: TimelapseRequest, request: Request) -> JobCreated | JSONResponse:
+    max_frames = env_int("MAX_FRAMES", 60)
+    if body.max_frames > max_frames:
+        return error_response(413, "TOO_LARGE", f"max_frames is limited to {max_frames}", "Ask for fewer frames.")
+    try:
+        job_id = request.app.state.jobs.submit("timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx))
+    except TooManyJobs:
+        return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
+    return JobCreated(schema_version="1.0", job_id=job_id)
+
+
+@router.get("/jobs/{job_id}", response_model=Job)
+async def get_job(job_id: str, request: Request) -> Job | JSONResponse:
+    job = request.app.state.jobs.get(job_id)
+    if job is None:
+        return error_response(404, "NOT_FOUND", "No such job", "Jobs are kept for an hour; start a new one.")
+    return job
+
+
+async def _frame_file(request: Request, frame_id: str, suffix: str, media_type: str) -> Response:
+    if not FRAME_ID_RE.match(frame_id):
+        return error_response(404, "NOT_FOUND", "No such frame")
+    data = await run_in_threadpool(request.app.state.cache.get, f"frames/{frame_id}{suffix}")
+    if data is None:
+        return error_response(404, "NOT_FOUND", "Frame not rendered or no longer cached", "Run the time-lapse again.")
+    return Response(content=data, media_type=media_type, headers={"Cache-Control": IMMUTABLE})
+
+
+@router.get("/frames/{frame_id}.webp", response_class=Response)
+async def frame_image(frame_id: str, request: Request) -> Response:
+    return await _frame_file(request, frame_id, ".webp", "image/webp")
+
+
+@router.get("/frames/{frame_id}/flags.png", response_class=Response)
+async def frame_flags(frame_id: str, request: Request) -> Response:
+    return await _frame_file(request, frame_id, "_flags.png", "image/png")
 
 
 app.include_router(router)

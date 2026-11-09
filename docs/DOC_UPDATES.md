@@ -38,3 +38,5 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-08 | 05, PM_PLAYBOOK, STATUS | For clarification: the G0 meeting is Mon 9 at 10:00 (not 10:30, and not Sun 22:00) |
 | 2026-11-08 | 02, 08, 09, DECISIONS, PM_PLAYBOOK, RUNBOOK, STATUS | Live URL is now planetes.divergit.com (planetes.xyz was not available); RUNBOOK domain steps rewritten for a subdomain CNAME |
 | 2026-11-09 | 09, DECISIONS, STATUS, PM_PLAYBOOK | Palette C "Plate Archive" locked by team vote; A/B columns removed from doc 09 |
+| 2026-11-09 | RUNBOOK, render.yaml | New `JOB_WORKERS` env var (default 2) for the API job queue |
+| 2026-11-09 | STATUS, REFERENCES, AI_USAGE | D1.2 part 1 in progress; google-cloud-storage credited; AI use logged |

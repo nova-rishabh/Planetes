@@ -34,6 +34,7 @@ Push (or merge a PR) to `main` → CI runs → **Vercel** builds `web/` (static 
 | Render (API) | `ALLOWED_ORIGINS` | Comma-separated site origins: `https://planetes.divergit.com` plus the Vercel default URL. Unset = no cross-origin access |
 | Render (API) | `PYTHON_VERSION` | `3.11.9` (from `render.yaml`) |
 | Render (API) | `MAX_FRAMES`, `IRSA_CONCURRENCY`, `CACHE_DIR` | `60`, `8`, `/tmp/planetes-cache` (from `render.yaml`; read by the API from D1.2 on) |
+| Render (API) | `JOB_WORKERS` | `2`: jobs that run at the same time; more wait in the queue (each client may have 3 unfinished jobs) |
 | Render (API) | `GIT_COMMIT` (optional) | Overrides `RENDER_GIT_COMMIT` for `code_version` |
 | Render (API) | `GCS_BUCKET` | `planetes-cache` |
 | Render (API) | `GCP_SERVICE_ACCOUNT_JSON` | Full JSON key of the cache service account. Secret: dashboard only |
