@@ -6,7 +6,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 
 | What | URL | State (Nov 8) |
 |---|---|---|
-| Website | https://planetes.divergit.com | **Live** Nov 9 (HTTP 200 via Vercel). Render `ALLOWED_ORIGINS` still to add |
+| Website | https://planetes.divergit.com | **Live** Nov 9 (HTTP 200 via Vercel); API CORS allows it |
 | Website fallback | https://web-gamma-flame-16.vercel.app | Live (HTTP 200) |
 | API | https://planetes-api.onrender.com/api/health | Live: `status ok`, `irsa_tap ok`, `code_version 08b009b` (deploys from `main`) |
 | Repo | https://github.com/nova-rishabh/Planetes | Public |
@@ -30,7 +30,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [ ] Everyone: create Space Apps accounts, register for 2026, join Team Planetes via the direct link
 - [ ] Team page About text says "starry discoveries": change it (no discovery claims) once Rishabh is owner
 - [x] Palette vote: **C "Plate Archive" chosen** (Nov 9); locked in docs/09, already in `tokens.css`
-- [ ] Domain planetes.divergit.com: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`
+- [x] Domain planetes.divergit.com live, Render `ALLOWED_ORIGINS` set (Nov 9)
 - [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
 - [x] Camber dropped (Nov 9): bakes run in GitHub Actions, validation on laptops
 - [ ] GitHub: add teammates as collaborators (Write) and protect `main` (docs/RISHABH_GUIDE.md)
