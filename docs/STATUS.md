@@ -17,9 +17,9 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 |---|---|---|
 | D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
 | Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8; palette C locked by team vote Nov 9 |
-| D2.1 access | Tirth | PR #2 (Nov 9): **real** IRSA TAP search + cutouts. Changes requested: keep QR2+QR3, contract fields/IDs, Barnard position, deps, tests. PR #1 (simulated) to close |
+| D2.1 access + D2.2 frames/render | Tirth (fixes: Rishabh) | **Done** Nov 9: Tirth's PRs #2/#3 plus review fixes (flags, saturation, shared stretch, QR3 flag keys), merged via `rishabh/d2.2-review-fixes`. Live time-lapse works end to end (59 real D3 frames of Barnard in ~2.5 min) |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Mon 9, 10:00) |
-| D1.2 API (part 1) | Rishabh | **In progress** Nov 9: cache (local + GCS), job queue, `POST /timelapse`, `/jobs/{id}`, `/frames`. Live time-lapse needs D2.1 + D2.2 merged, then wiring in `api/timelapse.py` |
+| D1.2 API (part 1) | Rishabh | **Live time-lapse wired** Nov 9: cache (local + GCS), job queue, `POST /timelapse` runs access → frames → render, `/jobs/{id}`, `/frames`. Single exposures only until D2.3 |
 | D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. Shows "not baked yet" until real frames exist. Left: bake workflow |
 | D1.4/D1.5 spectrum chart + Two Opinions panel | Rishabh | **Built** Nov 9 against the contract; show "no baked … yet" until `spectrum.json` / `opinions.json` exist |
 | All other D-codes (docs/06) | — | Not started |

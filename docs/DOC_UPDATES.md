@@ -52,3 +52,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS, AI_USAGE | Sky context panel (Aladin Lite 3.8.2 from jsDelivr; AllWISE/2MASS/DSS2); Aladin licence noted; SPHEREx/unWISE HiPS IDs still to verify |
 | 2026-11-09 | STATUS | CDS outage noted (checked from 4 countries); IRSA HiPS mirrors can't be used in a browser (no CORS) |
 | 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS | Sky map images switched to ESA ESASky (CDS down, IRSA copies have no CORS) |
+| 2026-11-09 | AGENTS.md, STATUS, DECISIONS, AI_USAGE | QR3 flag keys (MSKN/MSKM/MSKD) and SOURCE-is-not-a-defect in the gotchas; D2.1/D2.2 done; live time-lapse wired |

@@ -90,9 +90,21 @@ def test_missing_row_field_raises():
         prepare_frame(FIXTURE.read_bytes(), {**ROW, "release": None}, ref_wcs, (8, 8))
 
 
+def test_saturated_core_is_covered(prepared):
+    # The 4 raw no-value pixels of this cutout are all OVERFLOW; after resampling every no-value pixel inside
+    # the exposure must be marked saturated (so it is drawn white, not as a black hole).
+    from scipy.ndimage import binary_dilation
+
+    near_edge = binary_dilation(prepared.masks.outside, iterations=2)  # resampling edge, not the star
+    nan_inside = ~np.isfinite(prepared.image) & ~near_edge
+    assert nan_inside.any()
+    assert (prepared.masks.saturated | ~nan_inside).all()
+
+
 def test_render_shared_stretch(prepared):
     stretch = shared_stretch([prepared.image])
     assert stretch is not None and stretch.method == "asinh" and stretch.hi > stretch.lo
     assert to_webp(prepared.image, stretch)[:4] == b"RIFF"
+    assert to_webp(prepared.image, stretch, prepared.masks.saturated)[:4] == b"RIFF"
     assert render_flag_mask_png(prepared.masks)[:8] == b"\x89PNG\r\n\x1a\n"
     assert shared_stretch([np.full((2, 2), np.nan)]) is None

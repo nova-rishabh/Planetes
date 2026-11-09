@@ -226,6 +226,10 @@ def prepare_frame(
 
     reproj_image = reproject_to_grid(image, input_wcs, ref_wcs, grid_shape)
     masks = classify_flags(reproject_flags(flags, input_wcs, ref_wcs, grid_shape), bits)
+    # Bilinear resampling spreads each saturated no-value pixel to its neighbours; resample the raw saturation
+    # mask the same way so every output pixel it touched is marked saturated too.
+    sat_raw = classify_flags(flags.astype(np.int64), bits).saturated.astype(np.float64)
+    masks.saturated |= reproject_to_grid(sat_raw, input_wcs, ref_wcs, grid_shape) > 0
 
     covered = ~masks.outside
     n_covered = int(covered.sum())

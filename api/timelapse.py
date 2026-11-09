@@ -117,7 +117,7 @@ def run_timelapse(
     if stretch is None:
         raise JobError("NO_COVERAGE", "The images cover this spot but contain no valid pixels")
     for p in prepared:
-        cache.put(f"frames/{p.frame.id}.webp", render.to_webp(p.image, stretch), "image/webp")
+        cache.put(f"frames/{p.frame.id}.webp", render.to_webp(p.image, stretch, p.masks.saturated), "image/webp")
         cache.put(f"frames/{p.frame.id}_flags.png", render.render_flag_mask_png(p.masks), "image/png")
 
     by_epoch: dict[int, list[float]] = {}

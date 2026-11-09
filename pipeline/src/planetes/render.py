@@ -39,11 +39,16 @@ def shared_stretch(images: Sequence[np.ndarray]) -> Stretch | None:
     return Stretch(method="asinh", lo=lo, hi=hi, unit="MJy/sr")
 
 
-def to_webp(image: np.ndarray, stretch: Stretch) -> bytes:
-    """8-bit lossless WebP, north up (FITS row 0 is south, image row 0 is the top). No-data pixels are black."""
+def to_webp(image: np.ndarray, stretch: Stretch, saturated: np.ndarray | None = None) -> bytes:
+    """8-bit lossless WebP, north up (FITS row 0 is south, image row 0 is the top). No-data pixels are black,
+    except saturated ones (a bright star's core has no valid value): those are drawn white, as the sky is there
+    brighter than the detector can measure. The flag overlay marks them."""
     x = (image - stretch.lo) / (stretch.hi - stretch.lo)
     v = np.arcsinh(ASINH_K * np.clip(x, 0.0, None)) / np.arcsinh(ASINH_K)
-    px = (np.clip(np.nan_to_num(v, nan=0.0), 0.0, 1.0) * 255.0).astype(np.uint8)
+    v = np.nan_to_num(v, nan=0.0)
+    if saturated is not None:
+        v = np.where(saturated & ~np.isfinite(image), 1.0, v)
+    px = (np.clip(v, 0.0, 1.0) * 255.0).astype(np.uint8)
     buf = io.BytesIO()
     Image.fromarray(np.flipud(px)).save(buf, format="WEBP", lossless=True)
     return buf.getvalue()
