@@ -77,7 +77,7 @@ class FlagLegendItem(BaseModel):
 class TargetXy(RootModel[list[float]]):
     root: list[float] = Field(..., max_length=2, min_length=2)
     """
-    Where the (propagated) target falls on the grid, pixels.
+    Where the (propagated) target falls on the grid: 0-based pixel (x, y), x east-to-west as drawn, y increasing north (origin lower-left, numpy origin='lower'). Rendered images have north at the top.
     """
 
 
@@ -248,7 +248,7 @@ class SpectrumRequest(BaseModel):
     """
     release: Literal["auto", "QR3", "QR2"] = "auto"
     """
-    Release to query. auto = QR3, then fall back to QR2.
+    Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
     """
     method: Literal["auto", "psf", "aperture"] = "auto"
     """
@@ -322,7 +322,7 @@ class TimelapseRequest(BaseModel):
     )
     release: Literal["auto", "QR3", "QR2"] = "auto"
     """
-    Release to query. auto = QR3, then fall back to QR2.
+    Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
     """
     mjd_start: float | None = None
     mjd_end: float | None = None
@@ -390,7 +390,7 @@ class Frame(BaseModel):
     saturated_near_center: bool | None
     target_xy: TargetXy | None
     """
-    Where the (propagated) target falls on the grid, pixels.
+    Where the (propagated) target falls on the grid: 0-based pixel (x, y), x east-to-west as drawn, y increasing north (origin lower-left, numpy origin='lower'). Rendered images have north at the top.
     """
     notes: list[str]
 

@@ -46,7 +46,7 @@ export type RaDeg = number;
  */
 export type Quality = "good" | "fair" | "poor";
 /**
- * Release to query. auto = QR3, then fall back to QR2.
+ * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
  *
  * This interface was referenced by `PlanetesContracts`'s JSON-Schema
  * via the `definition` "RequestedRelease".
@@ -140,7 +140,7 @@ export interface Frame {
   flagged_frac: number | null;
   saturated_near_center: boolean | null;
   /**
-   * Where the (propagated) target falls on the grid, pixels.
+   * Where the (propagated) target falls on the grid: 0-based pixel (x, y), x east-to-west as drawn, y increasing north (origin lower-left, numpy origin='lower'). Rendered images have north at the top.
    */
   target_xy: [number, number] | null;
   notes: string[];
@@ -269,7 +269,7 @@ export interface TimelapseRequest {
     | [Detector, Detector, Detector, Detector, Detector]
     | [Detector, Detector, Detector, Detector, Detector, Detector];
   /**
-   * Release to query. auto = QR3, then fall back to QR2.
+   * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
    */
   release?: "auto" | "QR3" | "QR2";
   mjd_start?: number | null;
@@ -563,7 +563,7 @@ export interface SpectrumRequest {
   ra: RaDeg;
   dec: DecDeg;
   /**
-   * Release to query. auto = QR3, then fall back to QR2.
+   * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
    */
   release?: "auto" | "QR3" | "QR2";
   /**
