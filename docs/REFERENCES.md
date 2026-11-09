@@ -6,6 +6,7 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 - NASA SPHEREx Quick Release Spectral Images, NASA/IPAC Infrared Science Archive (IRSA). QR2: doi:10.26131/IRSA652; QR3: doi:10.26131/IRSA662. Use IRSA's acknowledgement sentence from the SPHEREx QR overview page.
 - ESA Gaia DR3 (Gaia Collaboration); AllWISE (NASA/IPAC); unWISE imagery.
 - CDS Strasbourg: SIMBAD, VizieR, Sesame, Aladin Lite, HiPS (incl. CDS-built SPHEREx HiPS).
+- Sky context panel: Aladin Lite 3.8.2 (CDS; npm `aladin-lite`, LGPL-3 files / GPL-3 per README), loaded unmodified from jsDelivr; HiPS surveys AllWISE colour, 2MASS colour, DSS2 colour served by CDS.
 - JPL Solar System Dynamics: SBIdent, Horizons.
 
 ## Software

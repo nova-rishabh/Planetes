@@ -116,7 +116,7 @@ Sentry (student tier) for API and web errors.
 ## 7. Overlays
 
 - **Gaia DR3** (VizieR `I/355/gaiadr3` or `astroquery.gaia`) and **AllWISE** (`II/328/allwise` or IRSA TAP `allwise_p3as_psd`). Return positions moved to each frame's epoch (Gaia's epoch is 2016.0).
-- **Aladin Lite v3 context panel:** HiPS `CDS/P/SPHEREx/QR2/D1` … `D6` (SPHEREx all-sky per detector), unWISE colour, DSS2 colour; VizieR catalogue layers. **\[VERIFY\]** the exact unWISE HiPS ID in Aladin's HiPS list.
+- **Aladin Lite v3 context panel (built Nov 9):** Aladin Lite 3.8.2 loaded at runtime from jsDelivr (not bundled). Surveys from its built-in list: `CDS/P/allWISE/color`, `CDS/P/2MASS/color`, `CDS/P/DSS2/color`. **\[VERIFY\]** SPHEREx HiPS IDs (`CDS/P/SPHEREx/…`) and an unWISE HiPS: not in the built-in list, and CDS's MocServer was unreachable from the dev PC on Nov 9.
 - **Known asteroids/comets (Should):** JPL SBIdent using SPHEREx's own position as observer **\[VERIFY header keys\]**, or IMCCE SkyBoT with a geocentric observer for a quick approximation.
 
 ## 8. Two Opinions engine
@@ -178,7 +178,7 @@ planetes/
 | obsutils `spherex` module (R. Stein) | Reference method for ePSF forced photometry | **\[VERIFY\]** |
 | IRSA SPHEREx tutorials (intro, cutouts, PSF, Source Discovery Tool) | Patterns for access, PSF zones, D2−D4 red-source subtraction | **\[VERIFY\]** |
 | sbpy (`sbpy.thermal`) | NEATM thermal model | BSD-3 |
-| Aladin Lite v3 (CDS) | Sky context panel | **\[VERIFY\]** (GPL-3 expected) |
+| Aladin Lite v3 (CDS) | Sky context panel | npm 3.8.2 ships LGPL-3 licence files but its README says GPL-3; we load it unmodified at runtime from jsDelivr, not bundled, and credit it |
 | CDS HiPS: SPHEREx D1–D6, unWISE, DSS2 | Context imagery | per HiPS licence (ODbL for CDS-built SPHEREx HiPS) |
 | Gaia DR3, AllWISE | Overlays and proper motions | ESA / NASA open data |
 | SPHEREx ultracool-dwarf templates (Gagné et al. 2026, mocadb.ca) | Brown-dwarf typing | **\[VERIFY\]** terms |
