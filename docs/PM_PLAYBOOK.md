@@ -82,7 +82,7 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 - [x] **Palette vote:** C Plate Archive chosen (Nov 9), locked in docs/09 and tokens.css.
 - [ ] **Domain** `planetes.divergit.com`: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`.
 - [ ] **Google Cloud Storage cache** (replaces the earlier R2 idea): steps in docs/RUNBOOK.md.
-- [ ] **Camber**: can teammates run jobs on Rishabh's account? Ask Rishabh, update docs/02 [VERIFY].
+- [x] **Camber:** dropped Nov 9. Bakes run in GitHub Actions (docs/02).
 - [ ] **Science [VERIFY] at Monday standup** (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
 - [ ] **G0 Mon 9, 10:00:** each person shows a working notebook/plot (Phase 0 tasks in docs/05).
 - [ ] **Nov 13:** read the Resources tab and Submission/Judging guides; update docs/01 and docs/08 (video length, required fields, AI-use disclosure).

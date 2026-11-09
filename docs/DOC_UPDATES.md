@@ -42,3 +42,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | STATUS, REFERENCES, AI_USAGE | D1.2 part 1 in progress; google-cloud-storage credited; AI use logged |
 | 2026-11-09 | RISHABH_GUIDE (new), STATUS | Rishabh's setup checklist (GCS, domain, PR reviews, Space Apps page, Camber, Sentry); STATUS notes PR #1 and Camber facts |
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, STATUS | Camber is Rishabh-only (Student Pack plan), validation on laptops; guide adds GitHub collaborators + `main` protection |
+| 2026-11-09 | 02, DECISIONS, PM_PLAYBOOK, RISHABH_GUIDE, STATUS | Camber dropped: benchmark bakes run in GitHub Actions (laptop backup), validation notebooks on laptops |

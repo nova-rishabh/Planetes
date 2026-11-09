@@ -32,12 +32,7 @@ First check Render → `planetes-api` → Settings → **Region**. Singapore →
 - [ ] Once owner: change "starry discoveries" in the About text (no discovery claims).
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; tell the agent what they say.
 
-## 3. Camber (not urgent; needed from Thu for the benchmark bakes)
-Rishabh has the free **Camber Student plan** from the GitHub Student Developer Pack (free while a student; monthly CPU-hour and storage limits). Decision: **only Rishabh runs Camber**, for the bakes (`bake.py` is his). Teammates don't need accounts: validation notebooks use tiny cutouts and run on their laptops.
-- [ ] Log in at app.cambercloud.com with GitHub and note the plan's monthly CPU hours and storage (Settings/Usage) for the agent.
-- [ ] Thu: the agent writes the bake job steps.
-
-## 4. Later (Should, from Thu)
+## 3. Later (Should, from Thu)
 - [ ] Sentry: free account at sentry.io, one project for the API and one for the web; DSNs go into Render/Vercel env vars (the agent adds the code).
 
 ## No account needed

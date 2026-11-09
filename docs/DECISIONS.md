@@ -24,6 +24,6 @@ One line each: date, decision, reason. Newest last. Source doc in brackets.
 | 2026-11-08 | Custom domain planetes.divergit.com, Vercel URL as fallback [09, 02] | Another team named "Planetes" is on the same challenge; a direct link avoids mix-ups. planetes.xyz was not available |
 | 2026-11-08 | Persistent cache in Google Cloud Storage (`planetes-cache`, asia-south1); Render's disk is wiped on deploy [02] | GCS over R2: team already has Google Cloud credit |
 | 2026-11-08 | Camber for bakes and validation V4–V7 [02] | Keeps heavy batch work off the 512 MB API instance |
-| 2026-11-09 | Camber: only Rishabh, on his Student Pack plan; validation runs on laptops [02] | Free; teammates need no extra account; bakes are Rishabh's (`bake.py`) |
+| 2026-11-09 | Camber dropped: bakes run in GitHub Actions (laptop as backup), validation on laptops [02] | The jobs are small; one less account and tool to learn; Actions is already set up and free |
 | 2026-11-08 | Sentry student tier for monitoring (Should) [02] | See live errors during judging without digging through Render logs |
 | 2026-11-09 | Palette C "Plate Archive" locked; A and B dropped [09] | Team vote; already in `web/src/styles/tokens.css`, so no UI change |

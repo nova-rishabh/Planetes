@@ -46,7 +46,7 @@ Google Cloud Storage bucket `planetes-cache` (region `asia-south1`) holds render
 
 ### Batch compute
 
-Camber runs the benchmark bakes on Rishabh's free Camber Student plan (GitHub Student Developer Pack); only Rishabh runs jobs there. Validation notebooks use tiny cutouts and run on laptops. **[VERIFY]** the plan's monthly CPU-hour limit.
+The benchmark bakes run as a manually started GitHub Actions workflow (free for public repos), which commits the results to `web/public/data`. Rishabh's laptop is the backup. Validation notebooks use tiny cutouts and run on teammates' laptops. No separate cloud compute account.
 
 ### Monitoring (Should)
 
