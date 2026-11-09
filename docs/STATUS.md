@@ -16,7 +16,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 | Code | Owner | State |
 |---|---|---|
 | D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
-| Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8: `web/src/styles/tokens.css`, page uses tokens only |
+| Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8; palette C locked by team vote Nov 9 |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Mon 9, 10:00) |
 | All other D-codes (docs/06) | — | Not started |
 | Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
@@ -27,7 +27,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [ ] Tirth: turn on "looking for team members", approve join requests, transfer Team Owner to Rishabh (private message not sent yet)
 - [ ] Everyone: create Space Apps accounts, register for 2026, join Team Planetes via the direct link
 - [ ] Team page About text says "starry discoveries": change it (no discovery claims) once Rishabh is owner
-- [ ] Palette vote by tonight (A · B · C, default C); then lock it in docs/09 and `tokens.css`
+- [x] Palette vote: **C "Plate Archive" chosen** (Nov 9); locked in docs/09, already in `tokens.css`
 - [ ] Domain planetes.divergit.com: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`
 - [ ] Google Cloud Storage cache: bucket, service account, lifecycle, budget alert (docs/RUNBOOK.md)
 - [ ] Camber: can teammates run jobs on Rishabh's account? Then close the docs/02 [VERIFY]

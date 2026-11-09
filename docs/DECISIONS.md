@@ -25,3 +25,4 @@ One line each: date, decision, reason. Newest last. Source doc in brackets.
 | 2026-11-08 | Persistent cache in Google Cloud Storage (`planetes-cache`, asia-south1); Render's disk is wiped on deploy [02] | GCS over R2: team already has Google Cloud credit |
 | 2026-11-08 | Camber for bakes and validation V4–V7 [02] | Keeps heavy batch work off the 512 MB API instance |
 | 2026-11-08 | Sentry student tier for monitoring (Should) [02] | See live errors during judging without digging through Render logs |
+| 2026-11-09 | Palette C "Plate Archive" locked; A and B dropped [09] | Team vote; already in `web/src/styles/tokens.css`, so no UI change |

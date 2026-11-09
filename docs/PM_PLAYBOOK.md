@@ -79,7 +79,7 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 - [ ] **Tirth:** turn on "looking for team members" on the Team Planetes page, approve join requests, then transfer Team Owner to Rishabh (About tab → Team Owner → select → Publish). Rishabh has not messaged him yet (text in §8).
 - [ ] **Everyone:** create Space Apps accounts, register for 2026, join Team Planetes via the direct link.
 - [ ] **Team page About text** says "starry discoveries": change it (no discovery claims) once Rishabh is owner.
-- [ ] **Palette vote** by tonight (A Lab Notebook · B Clear Sky · C Plate Archive, default C). Then lock it in docs/09 and tokens.css.
+- [x] **Palette vote:** C Plate Archive chosen (Nov 9), locked in docs/09 and tokens.css.
 - [ ] **Domain** `planetes.divergit.com`: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`.
 - [ ] **Google Cloud Storage cache** (replaces the earlier R2 idea): steps in docs/RUNBOOK.md.
 - [ ] **Camber**: can teammates run jobs on Rishabh's account? Ask Rishabh, update docs/02 [VERIFY].

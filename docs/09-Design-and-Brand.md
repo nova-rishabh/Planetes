@@ -13,20 +13,20 @@ Nov 8, 2026 · Owner: Rishabh · Applies to everything in `web/`, the demo video
 
 **Light theme.** Dark space UIs are what every AI-made astronomy site looks like, so we go the other way: a printed-journal look. Warm off-white paper, near-black ink, thin rules, and the dark SPHEREx frames sitting on the page like photographic plates in a paper. One warm accent is reserved for **things that moved or changed**. No gradients, no glows, no NASA insignia.
 
-## 3. Colour palette (team vote open; default C "Plate Archive")
+## 3. Colour palette: C "Plate Archive" (locked Nov 9 by team vote)
 
-All text pairs below meet WCAG AA (4.5:1) on the background. Accent colours come in two shades: a **fill** for markers and shapes, and a darker **text** shade for words.
+Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs below meet WCAG AA (4.5:1) on the background. Accent colours come in two shades: a **fill** for markers and shapes, and a darker **text** shade for words.
 
-| Token | A · Lab Notebook | B · Clear Sky | C · Plate Archive (default) | Use |
-|---|---|---|---|---|
-| `bg` | `#FFF8EF` | `#F8FFFE` | `#F4F2EF` | Page |
-| `surface` | `#FFFFFF` | `#FFFFFF` | `#FFFFFF` | Panels, cards |
-| `border` | `#FFE4C7` | `#D5EFEA` | `#DEDCDC` | Rules, inputs, chart grid |
-| `ink` | `#1F1D2B` | `#0B3D3B` | `#191D23` | Text, primary buttons (white text) |
-| `ink-muted` | `#5C5866` | `#4B6363` | `#57707A` | Labels, metadata |
-| `ui` | `#1F1D2B` | `#0F766E` | `#7B919C` (fills) / `#57707A` (text) | Links, focus ring, active states |
-| `accent-fill` | `#FF7A00` | `#E2611B` | `#E07A35` | "Moved" marker, change highlights |
-| `accent-text` | `#C2410C` | `#C2410C` | `#C2410C` | Accent words |
+| Token | Value | Use |
+|---|---|---|
+| `bg` | `#F4F2EF` | Page |
+| `surface` | `#FFFFFF` | Panels, cards |
+| `border` | `#DEDCDC` | Rules, inputs, chart grid |
+| `ink` | `#191D23` | Text, primary buttons (white text) |
+| `ink-muted` | `#57707A` | Labels, metadata |
+| `ui` | `#7B919C` (fills) / `#57707A` (text) | Links, focus ring, active states |
+| `accent-fill` | `#E07A35` | "Moved" marker, change highlights |
+| `accent-text` | `#C2410C` | Accent words |
 
 **Semantic colours** (always with an icon and a word, never colour alone): Agree = `ui` colour + ✓, Disagree = `accent-text` + ✕, Can't tell = `ink-muted` + ?.
 **Flag overlay** on sky frames: saturated `#F4A62A`, cosmic ray `#F04770`, other flagged `#FFD167` (these sit on the dark frame, not on the page).
