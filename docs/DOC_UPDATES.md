@@ -61,3 +61,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-11 | HANDOFF | First steps for the next session; ε Indi B baked |
 | 2026-11-11 | STATUS, HANDOFF | All 5 benchmarks baked |
 | 2026-11-12 | RUNBOOK, STATUS | "Bake benchmarks" GitHub Action: re-bake any benchmark from the Actions tab |
+| 2026-11-11 | STATUS | After the 10 pm call: who is on what for G2, Role 4 change, About page live |
