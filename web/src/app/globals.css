@@ -192,3 +192,18 @@ h3 { font-size: 0.875rem; margin: 1rem 0 0.5rem; color: var(--ink-muted); text-t
 .sky-msg { position: absolute; inset: 0; z-index: 10; background: var(--plate); display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; text-align: center; color: var(--on-ink); font-size: 0.875rem; }
 .sky .hint a { color: var(--ui-text); }
 .toggle:disabled { opacity: 0.5; cursor: default; }
+
+/* About page */
+.about { max-width: 48rem; }
+.about section { margin-bottom: 2rem; }
+.about p, .about li, .about dd { max-width: 40rem; }
+.about a { color: var(--ui-text); }
+.about-figs { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
+.about-fig { margin: 0; font-size: 0.75rem; color: var(--ink-muted); }
+.about-plate { padding: 0.5rem; width: fit-content; }
+.about-img { display: block; image-rendering: pixelated; }
+.about-obs { word-break: break-all; }
+.about-dl dt { font-weight: 600; margin-top: 0.75rem; }
+.about-dl dd { margin: 0.25rem 0 0; }
+.masthead-side { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.about .btn, .masthead-side .btn { display: inline-flex; align-items: center; text-decoration: none; }
