@@ -30,3 +30,9 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 
 ## Science papers
 See docs/04-Science-Validation.md, Sources section.
+
+### Added in D3.1 (star resolution and epoch propagation)
+- SIMBAD (CDS Strasbourg): https://simbad.cds.unistra.fr/simbad/ — object identification and fallback astrometry.
+- ESA Gaia Archive, Gaia DR3: https://gea.esac.esa.int/archive/ — astrometric positions, proper motions, parallaxes and reference epochs.
+- Astropy `SkyCoord.apply_space_motion`: https://docs.astropy.org/en/stable/coordinates/apply_space_motion.html — epoch propagation.
+- Astroquery SIMBAD and Gaia modules: https://astroquery.readthedocs.io/en/latest/ — Python access to the catalog services.
