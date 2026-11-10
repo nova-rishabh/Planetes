@@ -54,3 +54,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS | Sky map images switched to ESA ESASky (CDS down, IRSA copies have no CORS) |
 | 2026-11-09 | AGENTS.md, STATUS, DECISIONS, AI_USAGE | QR3 flag keys (MSKN/MSKM/MSKD) and SOURCE-is-not-a-defect in the gotchas; D2.1/D2.2 done; live time-lapse wired |
 | 2026-11-11 | STATUS | Collaborator invites dropped; work arrives as fork PRs or zips |
+| 2026-11-11 | pipeline/notebooks/data | Tirth's 350-row IRSA photometry export added for V4 and D4.1, with a provenance note |
