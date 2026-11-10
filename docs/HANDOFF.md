@@ -44,8 +44,8 @@ G1 slipped. **G2 Thu Nov 12, 22:00**: stacks/difference, benchmarks baked, overl
 3. D4.4 verdict engine `verdict.py` per docs/04 §2–§5 (v_t = 4.74·μ·d; 5–150 km/s agree, 150–400 agree+note, >400 disagree; asteroid ranges overlap), tests per rule branch, output `Opinions.verdict`.
 
 ## First things to do in the new session
-1. `git pull`. **PR #5 is merged** (D3.1 fix, bake, D4.4 verdict). Barnard and ε Indi B are baked and committed.
-2. **Finish the bake:** `python -m api.bake rdra rwaur wise0855` (~3 min each; needs IRSA + SIMBAD Harvard mirror). Delete any half-written `web/public/data/targets/<id>/` first if it has no `timelapse_exposures.json`. Then `python contracts/validate.py`, open the site at `/?target=<id>`, commit, push.
+1. `git pull`. **PR #5 is merged** (D3.1 fix, bake, D4.4 verdict). **All 5 benchmarks are baked** (60 real frames each, contract-valid). Re-bake any time with `python -m api.bake <id>`.
+2. Check the 5 benchmark buttons on the live site load (WISE 0855 is faint below 3.5 µm: expect little in D1–D3).
 3. Ask Rishabh how the 10 pm call went (Tirth's D2.3/D2.4 status, Shivaansh's D3.2, the new Role 4 person's name), then write tomorrow's tasks (PM_PLAYBOOK §5).
 
 ## Progress log

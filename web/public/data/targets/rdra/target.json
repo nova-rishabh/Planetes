@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "query": "R Dra",
+  "name": "V* R Dra",
+  "ra": 248.16737836729,
+  "dec": 66.75500674547,
+  "ref_epoch_jyear": 2016.0,
+  "pm_ra_masyr": -20.643,
+  "pm_dec_masyr": 6.149,
+  "parallax_mas": 1.2509,
+  "source": "SIMBAD + Gaia DR3 1648328016354496384"
+}
