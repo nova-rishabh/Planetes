@@ -19,6 +19,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 | Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8; palette C locked by team vote Nov 9 |
 | D2.1 access + D2.2 frames/render | Tirth (fixes: Rishabh) | **Done** Nov 9: Tirth's PRs #2/#3 plus review fixes (flags, saturation, shared stretch, QR3 flag keys), merged via `rishabh/d2.2-review-fixes`. Live time-lapse works end to end (59 real D3 frames of Barnard in ~2.5 min) |
 | D2.1 access · D3.1 resolve · D4.1/D4.3 prototypes | Tirth · Shivaansh · Shimaya | Phase 0, due at the G0 meeting (Mon 9, 10:00) |
+| D3.1 resolve | Shivaansh (fixes: Rishabh) | **Done** Nov 11: 5 benchmarks resolve (Gaia DR3 via IRSA for Barnard, ε Indi B, R Dra; SIMBAD for WISE 0855, RW Aur). Barnard 1.86" from its core in a real 2026 frame |
 | D1.2 API (part 1) | Rishabh | **Live time-lapse wired** Nov 9: cache (local + GCS), job queue, `POST /timelapse` runs access → frames → render, `/jobs/{id}`, `/frames`. Single exposures only until D2.3 |
 | D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. Shows "not baked yet" until real frames exist. Left: bake workflow |
 | D1.4/D1.5 spectrum chart + Two Opinions panel | Rishabh | **Built** Nov 9 against the contract; show "no baked … yet" until `spectrum.json` / `opinions.json` exist |
@@ -57,6 +58,6 @@ Rishabh's work that needs nobody else (Nov 9 plan, in order): D1.3 player part 1
 | 02 §7 | SPHEREx and unWISE HiPS (none on ESASky; CDS was down Nov 9). Sky map images now come from ESASky and were seen working Nov 9 |
 | 02 §7, 06 | SPHEREx spacecraft-position header keys (for JPL SBIdent) |
 | 02 §11 | Licences: spxquery, obsutils `spherex`, IRSA tutorials, Gagné et al. templates (terms). Aladin Lite done (LGPL-3/GPL-3, loaded unbundled) |
-| 04 §1 | ε Indi Ba/Bb position (check against SIMBAD) |
+| 04 §1 | WISE 0855 and RW Aur positions come from SIMBAD (epoch J2000, no Gaia id): check against AllWISE |
 | 04 §1 | R Draconis epoch coverage near the north ecliptic pole |
 | 01 §10 | Global deadline under Universal Event (confirm Nov 13) |
