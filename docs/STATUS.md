@@ -36,7 +36,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 - [x] Google Cloud Storage cache: project `planetes-514208`, key in Render (Nov 9)
 - [x] Camber dropped (Nov 9): bakes run in GitHub Actions, validation on laptops
 - [x] GitHub: `main` protected (PR + green CI; admin bypass), Nov 9
-- [ ] GitHub: add teammates as collaborators (Write) once they send usernames
+- [x] GitHub collaborators: dropped Nov 11 (no usernames shared). Teammates send PRs from their forks (Rishabh approves CI) or zips
 - [ ] Science [VERIFY] at Monday standup (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
 - [ ] G0 meeting Mon 9, 10:00: each person shows a working notebook/plot (Phase 0 tasks in docs/05)
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
