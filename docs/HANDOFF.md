@@ -1,4 +1,4 @@
-# Handoff for the next AI session (Nov 11, 2026, evening IST)
+# Handoff for the next AI session (Nov 11, 2026, ~10 pm IST)
 
 Read first: `CLAUDE.md`, `AGENTS.md`, `docs/PM_PLAYBOOK.md`, `docs/STATUS.md`, then this file. You are Rishabh's coding agent **and** project manager (PM_PLAYBOOK). Rishabh is busy: short numbered actions, ready-to-paste messages, ask only when a decision is his.
 
@@ -42,6 +42,11 @@ G1 slipped. **G2 Thu Nov 12, 22:00**: stacks/difference, benchmarks baked, overl
 1. D3.1: branch `shivaansh/d3.1-resolve` has Shivaansh's zip (commit 59d7dac) merged with main. Fixes needed: degrees not hourangle; `pmra/pmdec/plx_value/ids` fields; SIMBAD epoch J2000; Gaia match by DR3 ID from `ids` (not nearest-within-30″); coordinate input keeps the user's position; Harvard mirror fallback; benchmark names above; loosen one test tolerance (1e-6 → 0.1 mas). Then live test + Barnard within 2″ of a real 2026 frame.
 2. Bake: `bake.py` (Rishabh-owned) writing `web/public/data/targets/{id}/timelapse_exposures.json` + frames + `target.json`, contract-valid; start with Barnard.
 3. D4.4 verdict engine `verdict.py` per docs/04 §2–§5 (v_t = 4.74·μ·d; 5–150 km/s agree, 150–400 agree+note, >400 disagree; asteroid ranges overlap), tests per rule branch, output `Opinions.verdict`.
+
+## First things to do in the new session
+1. `git pull`. **PR #5 is merged** (D3.1 fix, bake, D4.4 verdict). **All 5 benchmarks are baked** (60 real frames each, contract-valid). Re-bake any time with `python -m api.bake <id>`.
+2. Check the 5 benchmark buttons on the live site load (WISE 0855 is faint below 3.5 µm: expect little in D1–D3).
+3. Ask Rishabh how the 10 pm call went (Tirth's D2.3/D2.4 status, Shivaansh's D3.2, the new Role 4 person's name), then write tomorrow's tasks (PM_PLAYBOOK §5).
 
 ## Progress log
 - Nov 11: **D3.1 done** on branch `shivaansh/d3.1-resolve`, PR #5 (18 tests incl. live pass; 5 benchmarks resolve; Barnard 1.86\" in a real 2026 frame). Gaia now via IRSA `gaia_dr3_source` (ESA 503; astroquery.gaia broken by ESA release 3.15).
