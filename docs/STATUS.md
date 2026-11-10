@@ -22,7 +22,7 @@ Updated Nov 8, 2026 · Owner: Rishabh · Update this whenever a deliverable land
 | D3.1 resolve | Shivaansh (fixes: Rishabh) | **Done** Nov 11: 5 benchmarks resolve (Gaia DR3 via IRSA for Barnard, ε Indi B, R Dra; SIMBAD for WISE 0855, RW Aur). Barnard 1.86" from its core in a real 2026 frame |
 | D4.4 verdict engine | Rishabh (took over from Role 4) | **Built** Nov 11 (`verdict.py`, rules + tests). Needs real motion (D3.3) and spectrum (D4.1/D4.3/D4.2) opinions as input |
 | D1.2 API (part 1) | Rishabh | **Live time-lapse wired** Nov 9: cache (local + GCS), job queue, `POST /timelapse` runs access → frames → render, `/jobs/{id}`, `/frames`. Single exposures only until D2.3 |
-| D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. All 5 benchmarks baked Nov 11 (`api/bake.py`). Left: GitHub Action for re-baking |
+| D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. All 5 benchmarks baked Nov 11 (`api/bake.py`), live Nov 12. Re-bake from GitHub Actions ("Bake benchmarks", docs/RUNBOOK.md) |
 | D1.4/D1.5 spectrum chart + Two Opinions panel | Rishabh | **Built** Nov 9 against the contract; show "no baked … yet" until `spectrum.json` / `opinions.json` exist |
 | All other D-codes (docs/06) | — | Not started |
 | Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
