@@ -46,4 +46,5 @@ G1 slipped. **G2 Thu Nov 12, 22:00**: stacks/difference, benchmarks baked, overl
 ## Progress log
 - Nov 11: **D3.1 done** on branch `shivaansh/d3.1-resolve`, PR #5 (18 tests incl. live pass; 5 benchmarks resolve; Barnard 1.86\" in a real 2026 frame). Gaia now via IRSA `gaia_dr3_source` (ESA 503; astroquery.gaia broken by ESA release 3.15).
 - Nov 11: **Bake** `python -m api.bake <id>` (`api/bake.py`) uses the live pipeline; Barnard baked (60 frames, 414 KB, contract-valid; `contracts/validate.py` now maps target.json → resolved). Loads instantly at `/?target=barnard`. In PR #5. **Next: bake wise0855, epsindib, rwaur, rdra** (each ~3 min; WISE 0855 is faint below 3.5 µm).
-- Next after that: D4.4 verdict engine (`pipeline/src/planetes/verdict.py`, docs/04 §2–§5), then a GitHub Action for baking, then help Tirth's D2.4/D2.3 land.
+- Nov 11: **D4.4 verdict engine built** (`pipeline/src/planetes/verdict.py`, `decide(motion, spectrum, saturated)`, 6 rule tests) in PR #5. Not yet wired into an API `/opinions` endpoint or bake (`opinions.json`): needs D3.3 motion + D4.x spectrum opinions first.
+- Next after that: (done) D4.4 verdict engine (`pipeline/src/planetes/verdict.py`, docs/04 §2–§5), then a GitHub Action for baking, then help Tirth's D2.4/D2.3 land.

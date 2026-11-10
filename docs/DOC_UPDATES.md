@@ -57,3 +57,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-11 | pipeline/notebooks/data | Tirth's 350-row IRSA photometry export added for V4 and D4.1, with a provenance note |
 | 2026-11-11 | STATUS, AI_USAGE, HANDOFF (new) | D3.1 done; handoff file for the next AI session |
 | 2026-11-11 | HANDOFF, contracts/validate.py | Barnard baked; target.json validated against the Resolved schema |
+| 2026-11-11 | STATUS, AI_USAGE, HANDOFF | D4.4 verdict engine built |
