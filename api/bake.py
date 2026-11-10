@@ -1,0 +1,81 @@
+"""Bake benchmark targets into web/public/data (docs/03 §6) with the same pipeline as the live API.
+
+    python -m api.bake barnard [rdra ...]     (from the repo root; needs network to IRSA and SIMBAD)
+
+Writes, per target: target.json (Resolved), timelapse_exposures.json (TimelapseResult) and frames/*.webp|png.
+Frame URLs are relative (./frames/...), so the web app loads baked and live results the same way.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+from planetes.cache import Cache
+from planetes.contracts import ProperMotion, TimelapseRequest
+from planetes.resolve import BENCHMARK_QUERIES, resolve
+
+from .main import code_version
+from .timelapse import run_timelapse
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "web" / "public" / "data" / "targets"
+CUTOUT_CACHE = ROOT / ".planetes-cache"
+FOV_DEG = 0.1
+MAX_FRAMES = 60
+
+
+class _SplitCache(Cache):
+    """Downloaded cutouts go to the local cache; rendered frames go into the baked target folder."""
+
+    def __init__(self, target_dir: Path) -> None:
+        super().__init__(target_dir)
+        self._cutouts = Cache(CUTOUT_CACHE)
+
+    def get(self, key: str) -> bytes | None:
+        return self._cutouts.get(key) if key.startswith("cutouts/") else super().get(key)
+
+    def put(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> None:
+        if key.startswith("cutouts/"):
+            self._cutouts.put(key, data, content_type)
+        else:
+            super().put(key, data, content_type)
+
+
+class _Progress:
+    def progress(self, done: int, total: int | None, stage: str | None) -> None:
+        print(f"  {stage} {done}/{total if total is not None else '?'}", flush=True)
+
+    def partial(self, result: object) -> None:  # not needed offline
+        pass
+
+
+def bake(target_id: str) -> Path:
+    out = DATA / target_id
+    out.mkdir(parents=True, exist_ok=True)
+    star = resolve(BENCHMARK_QUERIES[target_id])
+    (out / "target.json").write_text(star.to_contract().model_dump_json(indent=2), encoding="utf-8")
+
+    pm = None
+    if star.pm_ra_masyr is not None and star.pm_dec_masyr is not None and star.ref_epoch_jyear is not None:
+        pm = ProperMotion(
+            pm_ra_masyr=star.pm_ra_masyr, pm_dec_masyr=star.pm_dec_masyr, ref_epoch_jyear=star.ref_epoch_jyear
+        )
+    req = TimelapseRequest(
+        ra=star.ra_deg, dec=star.dec_deg, fov_deg=FOV_DEG, mode="exposures", max_frames=MAX_FRAMES, pm=pm
+    )
+    result = run_timelapse(req, _Progress(), _SplitCache(out), code_version())  # type: ignore[arg-type]
+    for f in result.frames:
+        f.image_url = f"./frames/{f.id}.webp"
+        f.flags_url = f"./frames/{f.id}_flags.png"
+    (out / "timelapse_exposures.json").write_text(
+        json.dumps(result.model_dump(mode="json"), separators=(",", ":")), encoding="utf-8"
+    )
+    return out
+
+
+if __name__ == "__main__":
+    for tid in sys.argv[1:] or ["barnard"]:
+        print(f"Baking {tid}…", flush=True)
+        print("  wrote", bake(tid))

@@ -18,6 +18,7 @@ DATA_DIR = REPO_ROOT / "web" / "public" / "data"
 
 # Path patterns relative to web/public/data (docs/03 §6) -> schema file.
 RULES: list[tuple[str, str]] = [
+    ("targets/*/target.json", "resolved.schema.json"),
     ("targets/*/timelapse_*.json", "timelapse_result.schema.json"),
     ("targets/*/spectrum.json", "spectrum_result.schema.json"),
     ("targets/*/overlays.json", "overlays.schema.json"),
