@@ -52,7 +52,7 @@ Needs Python 3.11, Node 22 (see `web/.nvmrc`) and GNU Make. Commands run from th
 **Python package + API**
 ```bash
 python3.11 -m venv .venv            # or: uv venv --python 3.11 .venv
-source .venv/bin/activate           # Windows: .venv\Scriptsctivate
+source .venv/bin/activate           # Windows: .venv\Scripts\activate
 pip install -e "pipeline[dev]" -r api/requirements.txt
 ALLOWED_ORIGINS=http://localhost:3000 uvicorn api.main:app --reload --port 8000
 ```
