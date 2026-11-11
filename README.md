@@ -4,6 +4,15 @@ NASA Space Apps Challenge 2026 · Challenge: **Planet X and SPHEREx** · Team Pl
 
 A public web tool: type sky coordinates and watch real NASA SPHEREx infrared images of that patch play as a short time-lapse. Moving and changing objects pop out, and for each one Planetes gives **two independent opinions** (how it moves, and what its 102-colour spectrum says) and shows whether they agree.
 
+**Try it:** https://planetes.divergit.com · API health: https://planetes-api.onrender.com/api/health
+
+## What works today
+- Any RA/Dec → every SPHEREx exposure of that spot (QR2 + QR3, from IRSA) as a time-lapse: play, step, scrub, blink two frames, quality flags, per-frame date/detector/wavelength.
+- The five challenge targets (Barnard's Star, ε Indi B, WISE 0855, RW Aur, R Dra) baked from real data, so they load instantly.
+- Shareable URLs and an `/embed` page; sky-context map (Aladin Lite); [About](https://planetes.divergit.com/about) page.
+- `POST /api/opinions` (Two Opinions contract); it answers "can't tell" with reasons until the motion fit and spectrum typer are in.
+- In progress: detector stacks and differences, Gaia/AllWISE overlays, spectra on the fly, Two Opinions results, Validation page.
+
 ## Docs (read in this order)
 | # | Doc | What it covers |
 |---|---|---|
@@ -17,6 +26,7 @@ A public web tool: type sky coordinates and watch real NASA SPHEREx infrared ima
 | 07 | [AI Build Playbook](docs/07-AI-Build-Playbook.md) | How we use Antigravity / Codex safely; starter prompts |
 | 08 | [Demo, Pitch & Submission](docs/08-Demo-Pitch-Submission.md) | Video script, Q&A, submission checklist |
 | 09 | [Design & Brand](docs/09-Design-and-Brand.md) | Name, palette tokens, typography, layout, reference sites |
+| — | [Submission draft](docs/SUBMISSION.md) | Text for the Space Apps form |
 
 Doc changes are logged in [docs/DOC_UPDATES.md](docs/DOC_UPDATES.md). **The docs in this repo are the current version.**
 
@@ -72,7 +82,7 @@ cd web && npm run lint && npm run typecheck && npm run test && npm run build
 ```
 
 ## Team
-Rishabh Kataria (platform, integration, frontend) · Tirth (data & imaging, pitch) · Shivaansh (motion & orbits) · Shimaya (spectral science & ML, science lead)
+Rishabh Kataria (platform, integration, frontend) · Tirth (data & imaging, pitch) · Shivaansh (motion & orbits)
 
 ## Credits
 Every data source, library and tool is listed in [docs/REFERENCES.md](docs/REFERENCES.md). AI tool use is disclosed in [docs/AI_USAGE.md](docs/AI_USAGE.md). This project is not endorsed by NASA.
