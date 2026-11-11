@@ -28,6 +28,8 @@ DUPUY2012_SCATTER_MAG = 0.40
 J_ZERO_POINT_JY = 1594.0  # 2MASS J, Cohen et al. 2003
 J_BAND_UM = (1.11, 1.39)
 MIN_POINTS = 8
+# Calibration/aperture systematics added in quadrature to the pixel noise (2MASS cross-check agreed within ~4%).
+SYSTEMATIC_FRAC = 0.05
 
 
 @dataclass
@@ -80,7 +82,7 @@ def fit_type(points: list[SpectrumPoint]) -> TypeFit | None:
     lam = np.array([p.wavelength_um for p in pts], dtype=float)
     bw = np.array([p.bandwidth_um or 0.0 for p in pts], dtype=float)
     f = np.array([p.flux_ujy for p in pts], dtype=float)
-    s = np.array([p.flux_err_ujy for p in pts], dtype=float)
+    s = np.hypot(np.array([p.flux_err_ujy for p in pts], dtype=float), SYSTEMATIC_FRAC * np.abs(f))
     results: list[tuple[float, str, float]] = []
     for spt, (tw, tf) in load_standards().items():
         t = np.array([_band_average(tw, tf, c, b) for c, b in zip(lam, bw, strict=True)])

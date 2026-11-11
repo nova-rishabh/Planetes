@@ -114,8 +114,8 @@ def measure(fits_bytes: bytes, ra_deg: float, dec_deg: float) -> PointFlux:
         x, y = (float(v) for v in wcs.world_to_pixel_values(ra_deg, dec_deg))
         wavelength_um, bandwidth_um = extract_wavelength(hdul)
         ny, nx = image.shape
-        r_out = ANNULUS_PX[1]
-        if not (r_out <= x <= nx - 1 - r_out and r_out <= y <= ny - 1 - r_out):
+        edge = APERTURE_PX + 1.0  # aperture fully inside; the sky check below needs enough annulus pixels
+        if not (edge <= x <= nx - 1 - edge and edge <= y <= ny - 1 - edge):
             return PointFlux(None, None, 0, wavelength_um=wavelength_um, bandwidth_um=bandwidth_um, problem="outside")
         corr = aperture_correction(hdul, x, y)
 

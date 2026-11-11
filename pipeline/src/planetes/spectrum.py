@@ -31,7 +31,8 @@ from .frames import INFORMATIONAL_FLAGS
 from .photometry import PointFlux, measure
 
 MIN_SNR = 3.0
-CUTOUT_DEG = 0.04  # ~23 SPHEREx pixels: room for the aperture and the sky annulus
+MISSION_MID_MJD = 61041.0  # 2026-01-01, middle of the SPHEREx data so far
+CUTOUT_DEG = 0.05  # ~29 SPHEREx pixels: room for the aperture, the sky annulus and the motion
 PAIRS = {1: "14", 4: "14", 2: "25", 5: "25", 3: "36", 6: "36"}
 
 REASONS = {
@@ -142,7 +143,9 @@ def build_spectrum(
 ) -> SpectrumResult:
     if progress:
         progress(0, None, "searching")
-    frames = find_frames(req.ra, req.dec, size_deg=CUTOUT_DEG, release=req.release)
+    # Centre the search on where the object is during the mission (fast movers drift out of a 2016-centred cutout).
+    centre_ra, centre_dec = positions_at(req, [MISSION_MID_MJD])[0]
+    frames = find_frames(centre_ra % 360.0, centre_dec, size_deg=CUTOUT_DEG, release=req.release)
     if progress:
         progress(0, len(frames), "downloading")
     cutouts = fetch_cutouts(frames, max_concurrent=workers, cache=cache) if len(frames) else {}
