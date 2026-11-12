@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
-import type { Frame, TimelapseResult } from "@/types/contracts";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import type { Frame, Overlays, TimelapseResult } from "@/types/contracts";
+import { markersFor } from "@/lib/overlays";
 import { initialPlayer, playerReducer, SPEEDS_FPS } from "@/lib/player";
 import { resolveAsset } from "@/lib/timelapse";
 import { FrameMeta } from "./FrameMeta";
@@ -14,6 +15,8 @@ interface Props {
   blinkB?: number | null;
   /** Reports the frame and blink choice when playback stops, for the shareable URL. */
   onSettle?: (s: { frame: number; a: number; b: number }) => void;
+  /** Gaia DR3 / AllWISE stars moved to each frame date (overlays.json); null when not available. */
+  overlays?: Overlays | null;
 }
 
 type Loaded = { image?: HTMLImageElement; flags?: HTMLImageElement };
@@ -28,6 +31,9 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+/** Canvas pixels per SPHEREx grid pixel, so markers can be thinner than one 6-arcsec pixel. */
+const UPSCALE = 8;
+
 function cssVar(el: Element, name: string): string {
   return getComputedStyle(el).getPropertyValue(name).trim();
 }
@@ -40,7 +46,8 @@ function frameLabel(f: Frame): string {
  * Time-lapse player (D1.3): frames on a dark plate, play/step/scrub/speed/loop, A/B blink and the flag
  * overlay. Frames are already stretched images on the common grid (docs/03 §5), drawn pixel for pixel.
  */
-export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB = null, onSettle }: Props) {
+export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB = null, onSettle, overlays = null }: Props) {
+  const [showStars, setShowStars] = useState(true);
   const frames = result.frames;
   const [s, dispatch] = useReducer(playerReducer, undefined, () =>
     playerReducer(initialPlayer(), {
@@ -85,12 +92,26 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx || !frame) return;
+    ctx.setTransform(UPSCALE, 0, 0, UPSCALE, 0, 0);
     ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = cssVar(canvas, "--plate");
     ctx.fillRect(0, 0, w, h);
     const entry = cache.current.get(frame.id);
     if (entry?.image) ctx.drawImage(entry.image, 0, 0, w, h);
     if (s.showFlags && entry?.flags) ctx.drawImage(entry.flags, 0, 0, w, h);
+    if (showStars && overlays && typeof frame.mjd === "number") {
+      const r = 1.6;
+      ctx.lineWidth = 1.5 / UPSCALE;
+      for (const m of markersFor(overlays, result.grid, frame.mjd)) {
+        const x = m.x + 0.5;
+        const y = h - (m.y + 0.5);
+        ctx.strokeStyle = cssVar(canvas, m.catalog === "AllWISE" ? "--epoch-3" : "--epoch-6");
+        ctx.beginPath();
+        if (m.catalog === "AllWISE") ctx.rect(x - r, y - r, 2 * r, 2 * r);
+        else ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
     if (frame.target_xy) {
       // target_xy: 0-based pixel (x right, y north/up, origin at the lower-left like numpy origin="lower").
       const x = frame.target_xy[0] + 0.5;
@@ -98,7 +119,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
       const gap = Math.max(3, w / 40);
       const len = Math.max(4, w / 25);
       ctx.strokeStyle = cssVar(canvas, "--accent-fill");
-      ctx.lineWidth = Math.max(1, w / 240);
+      ctx.lineWidth = 2 / UPSCALE;
       ctx.beginPath();
       ctx.moveTo(x - gap - len, y);
       ctx.lineTo(x - gap, y);
@@ -106,7 +127,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
       ctx.lineTo(x, y - gap);
       ctx.stroke();
     }
-  }, [frame, s.showFlags, w, h, loadedCount]);
+  }, [frame, s.showFlags, w, h, loadedCount, showStars, overlays, result.grid]);
 
   // Playback clock.
   useEffect(() => {
@@ -147,11 +168,12 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
   return (
     <section className="player" onKeyDown={onKey} tabIndex={0} aria-label="Time-lapse player">
       <figure className="plate player-figure">
-        <canvas ref={canvasRef} width={w} height={h} className="player-canvas" role="img" aria-label={`Frame ${s.index + 1} of ${frames.length}: ${frameLabel(frame)}`} />
+        <canvas ref={canvasRef} width={w * UPSCALE} height={h * UPSCALE} className="player-canvas" role="img" aria-label={`Frame ${s.index + 1} of ${frames.length}: ${frameLabel(frame)}`} />
         <figcaption className="caption">
           Fig. 1 · {frameLabel(frame)}
           {frame.utc ? ` · ${frame.utc.replace("T", " ").replace(/:\d\d(\.\d+)?Z$/, " UTC")}` : ""}
           {s.blink.on ? ` · blinking ${s.blink.showingB ? "B" : "A"}` : ""}
+          {overlays && showStars ? " · ○ Gaia DR3 □ AllWISE, moved to this date" : ""}
         </figcaption>
       </figure>
 
@@ -187,6 +209,9 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </label>
         <button type="button" className="toggle" aria-pressed={s.loop} onClick={() => dispatch({ type: "toggleLoop" })}>Loop</button>
         <button type="button" className="toggle" aria-pressed={s.showFlags} onClick={() => dispatch({ type: "toggleFlags" })}>Flags</button>
+        {overlays ? (
+          <button type="button" className="toggle" aria-pressed={showStars} onClick={() => setShowStars((v) => !v)}>Catalogue stars</button>
+        ) : null}
       </div>
 
       <div className="controls" role="group" aria-label="Blink two frames">
