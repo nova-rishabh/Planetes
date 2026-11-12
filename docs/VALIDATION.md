@@ -13,4 +13,4 @@ Tests are defined in docs/04-Science-Validation.md §7. Fill a row only with rea
 | V7 | Thermometer | not run yet | | D4.2 back in scope (Nov 12, DECISIONS). `thermal.py` built and model-tested (geometry, recovery of a model distance); V7 needs real D3/D6 pairs of ≥ 20 known asteroids from D3.4 |
 | V8 | Variables | not run yet | | |
 | V9 | False-alarm control | not run yet | | |
-| V10 | Reproducibility | not run yet | | Attempted Nov 13 from a clean clone with an empty cache: IRSA TAP returned 503 (archive outage). Note: IRSA no longer lists QR2 (DR1 replaced it), so a re-bake can't be byte-identical; the test is now whether the type and distance hold on DR1 data |
+| V10 | Reproducibility | pass | | Nov 13: clean clone of `rishabh/dr1`, empty cache, `python -m api.bake --spectrum epsindib`. IRSA now serves DR1 instead of QR2, so the input differs: 458 exposures (was 445), 154 used (was 160). Same answer: ε Indi B typed T3 (χ²_red 2.42 vs 2.46), distance 2.55–3.69 pc vs committed 2.55–3.68 pc |
