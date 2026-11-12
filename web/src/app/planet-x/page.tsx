@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteNav } from "@/components/SiteNav";
 import { PlanetXCalculator } from "@/components/PlanetXCalculator";
 
 export const metadata: Metadata = {
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function PlanetX() {
   return (
     <main className="app about px-page">
+      <SiteNav current="/planet-x" />
       <header className="masthead">
         <div>
           <h1>Planet X reality check</h1>
@@ -18,7 +20,7 @@ export default function PlanetX() {
             it up. These are what-if numbers, not observations.
           </p>
         </div>
-        <Link href="/" className="btn">
+        <Link href="/viewer" className="btn">
           Back to the viewer
         </Link>
       </header>
