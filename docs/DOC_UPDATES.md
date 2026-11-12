@@ -71,3 +71,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-12 | VALIDATION | V3 note: WISE 0855 blended with a G 16.3 star; blend check added, spectra re-baked |
 | 2026-11-12 | 04 §6, DECISIONS | Planet X brightness formula corrected; cuts reversed (all wow items back); new /planet-x page |
 | 2026-11-12 | VALIDATION, REFERENCES, AI_USAGE | V7 back to “not run yet”; thermometer sources and Amish's draft credited |
+| 2026-11-12 | REMAINING_WORK (new) | Everything left before submission, priorities, owners, hours, Fri Nov 13 checkpoints |
