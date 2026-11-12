@@ -24,7 +24,7 @@ Checks before a PR: `pytest -q -m "not network"` (in `pipeline/`), `ruff check p
 
 ## Deploy flow
 
-Push (or merge a PR) to `main` → CI runs → **Vercel** builds `web/` (static export) and **Render** builds the API from `render.yaml` (`autoDeploy: true`). Every PR also gets a Vercel preview link. After a deploy, open `/api/health` on Render and the site, and check the status badge reads "NASA archive: ok".
+`main` is protected: changes arrive by PR and need green CI (`python`, `contracts`, `web`); admins can bypass. Merge a PR (or an admin pushes) to `main` → CI runs → **Vercel** builds `web/` (static export) and **Render** builds the API from `render.yaml` (`autoDeploy: true`). Every PR also gets a Vercel preview link. After a deploy, open `/api/health` on Render and the site, and check the status badge reads "NASA archive: ok".
 
 ## Environment variables
 
@@ -74,3 +74,10 @@ Secrets go only in the Vercel/Render dashboards, never in the repo.
 2. The baked benchmarks keep working; nothing in the demo depends on a live call.
 3. Keep building on cached data and committed fixtures. Never swap in fake frames or numbers.
 4. Post in the group with the time and what failed; retry later (retries already back off).
+
+## Re-bake the benchmarks
+
+1. GitHub → Actions → **Bake benchmarks** → Run workflow. Leave all 5 ids, or list only the ones to redo.
+2. It bakes with the live pipeline (~3 min per target), validates against `contracts/`, and pushes a `bake/<run id>` branch.
+3. Open the PR from the link in the run summary (Actions may not open PRs itself), check the frames, merge.
+4. Locally instead: `python -m api.bake <id> [<id> ...]` from the repo root.

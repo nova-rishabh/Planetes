@@ -1,4 +1,4 @@
-"""Planetes API (docs/03 §3). D1.2 so far: /health, POST /timelapse, /jobs/{id}, /frames/{id}.webp and flags.png."""
+"""Planetes API (docs/03 §3): /health, POST /timelapse, POST /spectrum, /jobs/{id}, /frames/{id}.webp and flags.png."""
 
 from __future__ import annotations
 
@@ -18,7 +18,8 @@ from fastapi.responses import JSONResponse, Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from planetes import cache as cache_mod
-from planetes.contracts import Error, ErrorBody, Health, Job, JobCreated, TimelapseRequest
+from planetes import spectrum
+from planetes.contracts import Error, ErrorBody, Health, Job, JobCreated, SpectrumRequest, TimelapseRequest
 
 from .irsa_status import CachedProbe
 from .jobs import JobManager, TooManyJobs
@@ -149,7 +150,34 @@ async def start_timelapse(body: TimelapseRequest, request: Request) -> JobCreate
     if body.max_frames > max_frames:
         return error_response(413, "TOO_LARGE", f"max_frames is limited to {max_frames}", "Ask for fewer frames.")
     try:
-        job_id = request.app.state.jobs.submit("timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx))
+        cache = request.app.state.cache
+        version = code_version()
+        workers = env_int("IRSA_CONCURRENCY", 8)
+        job_id = request.app.state.jobs.submit(
+            "timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx, cache, version, workers)
+        )
+    except TooManyJobs:
+        return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
+    return JobCreated(schema_version="1.0", job_id=job_id)
+
+
+@router.post("/spectrum", response_model=JobCreated)
+async def start_spectrum(body: SpectrumRequest, request: Request) -> JobCreated | JSONResponse:
+    try:
+        cache = request.app.state.cache
+        version = code_version()
+        workers = env_int("IRSA_CONCURRENCY", 8)
+        job_id = request.app.state.jobs.submit(
+            "spectrum",
+            client_ip(request),
+            lambda ctx: spectrum.build_spectrum(
+                body,
+                cache=cache,
+                code_version=version,
+                concurrency=workers,
+                progress_cb=ctx.progress,
+            ),
+        )
     except TooManyJobs:
         return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
     return JobCreated(schema_version="1.0", job_id=job_id)
@@ -183,3 +211,4 @@ async def frame_flags(frame_id: str, request: Request) -> Response:
 
 
 app.include_router(router)
+

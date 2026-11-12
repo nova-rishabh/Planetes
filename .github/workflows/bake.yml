@@ -1,0 +1,74 @@
+name: Bake benchmarks
+
+# Re-bakes benchmark targets into web/public/data/targets with the live pipeline (api/bake.py),
+# validates them against contracts/, and pushes the result to a bake/* branch for review.
+# Run it from the Actions tab: "Bake benchmarks" -> Run workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: "Space-separated ids: barnard wise0855 epsindib rwaur rdra"
+        required: true
+        default: "barnard wise0855 epsindib rwaur rdra"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bake
+  cancel-in-progress: false
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            pipeline/pyproject.toml
+            api/requirements.txt
+      - name: Install
+        run: |
+          pip install -e "pipeline[dev]"
+          pip install -r api/requirements.txt
+      - name: Check target ids
+        env:
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          for t in $TARGETS; do
+            case "$t" in barnard|wise0855|epsindib|rwaur|rdra) ;; *) echo "::error::Unknown target '$t'"; exit 1;; esac
+          done
+      - name: Bake (real SPHEREx data from IRSA)
+        env:
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          export GIT_COMMIT="$(git rev-parse --short=7 HEAD)"
+          python -m api.bake $TARGETS
+      - name: Validate against contracts
+        run: make validate
+      - name: Push to a bake branch and open a PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          git add web/public/data/targets
+          if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
+          branch="bake/${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -q -m "Re-bake benchmarks: $TARGETS"
+          git push -q origin "$branch"
+          url="https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1"
+          if gh pr create --base main --head "$branch" --title "Re-bake benchmarks: $TARGETS" \
+               --body "Baked by run ${GITHUB_RUN_ID} at $(git rev-parse --short=7 HEAD~1); contract-valid."; then
+            echo "PR opened." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Open the PR here: $url" >> "$GITHUB_STEP_SUMMARY"
+          fi

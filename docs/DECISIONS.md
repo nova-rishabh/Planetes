@@ -28,3 +28,7 @@ One line each: date, decision, reason. Newest last. Source doc in brackets.
 | 2026-11-09 | Camber dropped: bakes run in GitHub Actions (laptop as backup), validation on laptops [02] | The jobs are small; one less account and tool to learn; Actions is already set up and free |
 | 2026-11-08 | Sentry student tier for monitoring (Should) [02] | See live errors during judging without digging through Render logs |
 | 2026-11-09 | Palette C "Plate Archive" locked; A and B dropped [09] | Team vote; already in `web/src/styles/tokens.css`, so no UI change |
+| 2026-11-09 | Aladin Lite loaded at runtime from jsDelivr, pinned 3.8.2, not bundled [02] | Keeps 2.4 MB of GPL/LGPL code out of our bundle; pinned so the API we checked doesn't change |
+| 2026-11-09 | Sky map images from ESA ESASky, not CDS or IRSA [02] | CDS was down worldwide on Nov 9; IRSA's HiPS copies block browsers (no CORS); ESASky serves the same surveys with CORS |
+| 2026-11-09 | Time-lapses use QR2 **and** QR3 frames; QR3 wins only for the same exposure [02] | Checked at Barnard's Star: the releases cover different weeks, so "QR3 only" would drop two-thirds of the frames |
+| 2026-11-09 | Rishabh finished D2.2 review fixes in Tirth's files so G1 can ship; Tirth away until Wed [06] | G1 (Tue 23:00) needs live frames; the changes are listed in the PR and Tirth's commits are kept |

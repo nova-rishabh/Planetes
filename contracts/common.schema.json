@@ -15,7 +15,7 @@
       "enum": ["QR2", "QR3"]
     },
     "RequestedRelease": {
-      "description": "Release to query. auto = QR3, then fall back to QR2.",
+      "description": "Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.",
       "type": "string",
       "enum": ["auto", "QR3", "QR2"]
     },

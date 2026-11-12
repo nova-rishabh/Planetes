@@ -11,7 +11,7 @@ Bucket region: `us-west1` (Oregon), the same region as the Render API. The agent
 - [x] Bucket → **Lifecycle** → Add a rule → **Delete object**, Age **30** days.
 - [x] ☰ IAM & Admin → Service Accounts → **+ Create**: `planetes-cache-writer` → **skip roles** → Done.
 - [x] Bucket → **Permissions** → Grant access → paste the service account email → role **Storage Object Admin** → Save.
-- [ ] Service account → **Keys** → Add key → JSON. Render → `planetes-api` → Environment: paste the whole file as `GCP_SERVICE_ACCOUNT_JSON`, keep `GCS_BUCKET=planetes-cache` → Save. **Delete the downloaded file.**
+- [x] Service account → **Keys** → Add key → JSON. Render → `planetes-api` → Environment: paste the whole file as `GCP_SERVICE_ACCOUNT_JSON`, keep `GCS_BUCKET=planetes-cache` → Save. **Delete the downloaded file.**
 - [x] ☰ Billing → Budgets & alerts → **Create budget**: project `planetes`, $20, alerts at 50/90/100 %.
 - [ ] Check: Render → Logs shows `Cache: local /tmp/planetes-cache + GCS bucket planetes-cache`.
 
@@ -25,7 +25,7 @@ Bucket region: `us-west1` (Oregon), the same region as the Render API. The agent
 - [ ] Repo → **Pull requests** → open one → **Files changed**. The agent reviews each PR when you say "review PR #n" and drafts your comment.
 - [ ] Merge only when CI is green and the PR shows a real-data screenshot.
 - [ ] Add teammates as collaborators: repo → Settings → **Collaborators** → **Add people** → their GitHub username → role **Write**. Tirth is `t-valand`; ask the others for theirs. They accept the email invite. (Without it, PRs come from forks and you must click **Approve and run workflows** before CI runs.)
-- [ ] Protect `main`: Settings → **Rules → Rulesets → New branch ruleset** → target `main` → tick **Require a pull request before merging** and **Require status checks to pass** (pick the CI jobs) → Create. Teammates then work on branches and open PRs; nobody pushes straight to `main`.
+- [x] Protect `main`: ruleset "Protect main" (Nov 9). Changes need a PR with green CI (`python`, `contracts`, `web`); no force-push or deleting `main`. Repo admins (Rishabh) can bypass, so small doc fixes can still go straight to `main`.
 
 ## 2. Space Apps team page
 - [ ] Send Tirth the private message (PM_PLAYBOOK §8): turn on joining, approve requests, make you Team Owner.

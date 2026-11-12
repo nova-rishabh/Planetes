@@ -15,6 +15,7 @@ dependencies = [
   "numpy",
   "scipy",
   "photutils",
+  "reproject",
   "Pillow",
   "sbpy",
   "pydantic>=2",

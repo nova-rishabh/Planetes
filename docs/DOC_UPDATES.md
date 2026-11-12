@@ -45,3 +45,20 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-09 | 02, DECISIONS, PM_PLAYBOOK, RISHABH_GUIDE, STATUS | Camber dropped: benchmark bakes run in GitHub Actions (laptop backup), validation notebooks on laptops |
 | 2026-11-09 | 02, DECISIONS, RISHABH_GUIDE, RUNBOOK, STATUS | GCS bucket region is us-west1 (Oregon, same as Render); planetes.divergit.com is live |
 | 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | GCS cache set up in project planetes-514208 (bucket, 30-day rule, service account, ₹1,800 budget); only the Render key paste is left |
+| 2026-11-09 | RUNBOOK, STATUS, RISHABH_GUIDE | `main` protected by a ruleset (PR + green CI, admin bypass); GCS key is in Render |
+| 2026-11-09 | 02, AGENTS.md, DECISIONS, STATUS | For clarification: QR2 and QR3 cover different weeks, so time-lapses use both (not QR3-only); QR3 TAP names verified; STATUS notes PR #2 |
+| 2026-11-09 | contracts (descriptions only), STATUS, REFERENCES, AI_USAGE | `release: auto` = QR2+QR3; `target_xy` pixel convention written down; STATUS has the D1.3 progress and Rishabh's no-dependency plan |
+| 2026-11-09 | STATUS, AI_USAGE | Spectrum chart and Two Opinions panel built; plan updated |
+| 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS, AI_USAGE | Sky context panel (Aladin Lite 3.8.2 from jsDelivr; AllWISE/2MASS/DSS2); Aladin licence noted; SPHEREx/unWISE HiPS IDs still to verify |
+| 2026-11-09 | STATUS | CDS outage noted (checked from 4 countries); IRSA HiPS mirrors can't be used in a browser (no CORS) |
+| 2026-11-09 | 02, REFERENCES, DECISIONS, STATUS | Sky map images switched to ESA ESASky (CDS down, IRSA copies have no CORS) |
+| 2026-11-09 | AGENTS.md, STATUS, DECISIONS, AI_USAGE | QR3 flag keys (MSKN/MSKM/MSKD) and SOURCE-is-not-a-defect in the gotchas; D2.1/D2.2 done; live time-lapse wired |
+| 2026-11-11 | STATUS | Collaborator invites dropped; work arrives as fork PRs or zips |
+| 2026-11-11 | pipeline/notebooks/data | Tirth's 350-row IRSA photometry export added for V4 and D4.1, with a provenance note |
+| 2026-11-11 | STATUS, AI_USAGE, HANDOFF (new) | D3.1 done; handoff file for the next AI session |
+| 2026-11-11 | HANDOFF, contracts/validate.py | Barnard baked; target.json validated against the Resolved schema |
+| 2026-11-11 | STATUS, AI_USAGE, HANDOFF | D4.4 verdict engine built |
+| 2026-11-11 | HANDOFF | First steps for the next session; ε Indi B baked |
+| 2026-11-11 | STATUS, HANDOFF | All 5 benchmarks baked |
+| 2026-11-12 | RUNBOOK, STATUS | "Bake benchmarks" GitHub Action: re-bake any benchmark from the Actions tab |
+| 2026-11-11 | STATUS | After the 10 pm call: who is on what for G2, Role 4 change, About page live |

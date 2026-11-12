@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "query": "eps Ind B",
+  "name": "* eps Ind B",
+  "ra": 331.07645259656,
+  "dec": -56.79381206688,
+  "ref_epoch_jyear": 2016.0,
+  "pm_ra_masyr": 3981.977,
+  "pm_dec_masyr": -2466.832,
+  "parallax_mas": 270.658,
+  "source": "SIMBAD + Gaia DR3 6412596012146801152"
+}

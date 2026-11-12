@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "query": "Barnard's Star",
+  "name": "NAME Barnard's star",
+  "ra": 269.44850252544,
+  "dec": 4.73942005111,
+  "ref_epoch_jyear": 2016.0,
+  "pm_ra_masyr": -801.551,
+  "pm_dec_masyr": 10362.394,
+  "parallax_mas": 546.9759,
+  "source": "SIMBAD + Gaia DR3 4472832130942575872"
+}

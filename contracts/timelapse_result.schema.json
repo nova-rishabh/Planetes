@@ -70,7 +70,7 @@
         "flagged_frac": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
         "saturated_near_center": { "type": ["boolean", "null"] },
         "target_xy": {
-          "description": "Where the (propagated) target falls on the grid, pixels.",
+          "description": "Where the (propagated) target falls on the grid: 0-based pixel (x, y), x east-to-west as drawn, y increasing north (origin lower-left, numpy origin='lower'). Rendered images have north at the top.",
           "anyOf": [
             { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
             { "type": "null" }

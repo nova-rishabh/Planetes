@@ -54,7 +54,7 @@ Sentry (student tier) for API and web errors.
 
 ## 3. SPHEREx facts the code depends on
 
-- **Releases:** QR1 retired (Feb 2026). **QR2** (Oct 2025 onward) and **QR3** (Sep 2026 onward), with weekly additions. SIA collections: `spherex_qr3`, `spherex_qr2` (plus `_deep`). **Query QR3 first, fall back to QR2, and record the release on every frame.**
+- **Releases:** QR1 retired (Feb 2026). **QR2** (Oct 2025 onward) and **QR3** (Sep 2026 onward), with weekly additions. SIA collections: `spherex_qr3`, `spherex_qr2` (plus `_deep`). **QR2 and QR3 cover different weeks** (checked Nov 9 at Barnard's Star: QR2 MJD 60902–61165, 240 frames; QR3 MJD 61268–61305, 119 frames), so a time-lapse uses **both**. Prefer the QR3 copy only if the same exposure appears in both, and record the release on every frame. Both live in the same TAP tables; the release is in `obs_publisher_did` (`ivo://irsa.ipac/spherex_qr3?…`) and the `uri` path (`ibe/data/spherex/qr3/…`).
 - **One file per detector per pointing (6 per pointing, about 70 MB each).** Some pointings lack some detectors. **Always use cutouts.**
 - **Multi-extension FITS:** `IMAGE` (MJy/sr, zodi NOT subtracted), `FLAGS` (bitmap; meanings in header `MP_*` keys), `VARIANCE`, `ZODI` (model to subtract), PSF data, `WCS-WAVE` (wavelength lookup).
 - **PSF format changed:** files with `VERSION` < 7.0 have a `PSF` cube (11×11 grid, 121 PSFs, 101×101, 10× oversampled). **Version ≥ 7.0 (QR3) has an `EPSF` binary table** (one row per zone, e.g. 441 zones on a 21×21 grid; 33×33 arrays, 5× oversampled; columns `XCENTER`, `YCENTER`, `CWAVE`, `EPSF`…). Pick the zone nearest the source in **parent-image** pixels, using `CRPIX1A`/`CRPIX2A` from the cutout. Don't pass the oversampled PSF straight to fitting tools: shift, integrate onto the native pixel grid, then normalise.
@@ -90,7 +90,7 @@ Sentry (student tier) for API and web errors.
 ## 5. Live request flow
 
 1. **Resolve:** name → position and proper motion (CDS Sesame / SIMBAD via astroquery). Plain coordinates skip this.
-2. **Find frames (TAP):** `spherex.artifact` JOIN `spherex.plane`, `CONTAINS(POINT(ra,dec), p.poly)`, optional detector filter `energy_bandpassname = 'SPHEREx-D{n}'`, order by `time_bounds_lower`. **\[VERIFY\]** table and column names for QR3.
+2. **Find frames (TAP):** `spherex.artifact` JOIN `spherex.plane`, `CONTAINS(POINT(ra,dec), p.poly)`, optional detector filter `energy_bandpassname = 'SPHEREx-D{n}'`, order by `time_bounds_lower`. Checked Nov 9: the same tables return QR2 and QR3 rows; `a.uri` is relative (prefix `https://irsa.ipac.caltech.edu/`); `p.obs_publisher_did` is the obs_id.
 3. **Plan:** group frames into **epochs** (gap > 30 days starts a new epoch) and by detector. Cap at `MAX_FRAMES` (default 60) for display. The spectrum job uses all frames.
 4. **Fetch cutouts** in parallel (≤ 8 at once, retries, 120 s timeout): `…fits?center={ra},{dec}d&size={deg}`. Display FOV from the user (default 0.1° = 6′). Spectrum cutouts are tiny (\~0.02°).
 5. **Process each frame:** IMAGE − ZODI → mask chosen flag bits → wavelength at centre → **reproject** onto a common north-up TAN grid (`reproject.reproject_interp`, pixel scale \~3″ for smooth display) → store float32 array + variance.
@@ -116,7 +116,7 @@ Sentry (student tier) for API and web errors.
 ## 7. Overlays
 
 - **Gaia DR3** (VizieR `I/355/gaiadr3` or `astroquery.gaia`) and **AllWISE** (`II/328/allwise` or IRSA TAP `allwise_p3as_psd`). Return positions moved to each frame's epoch (Gaia's epoch is 2016.0).
-- **Aladin Lite v3 context panel:** HiPS `CDS/P/SPHEREx/QR2/D1` … `D6` (SPHEREx all-sky per detector), unWISE colour, DSS2 colour; VizieR catalogue layers. **\[VERIFY\]** the exact unWISE HiPS ID in Aladin's HiPS list.
+- **Aladin Lite v3 context panel (built Nov 9):** Aladin Lite 3.8.2 loaded at runtime from jsDelivr (not bundled). Surveys: ESA ESASky copies of `CDS/P/allWISE/color`, `CDS/P/2MASS/color`, `CDS/P/DSS2/color` (`https://skies.esac.esa.int/AllWISEColor`, `/2MASSColor`, `/DSSColor`; browser access allowed). CDS was down worldwide on Nov 9 and IRSA's copies block browsers (no CORS). **\[VERIFY\]** SPHEREx HiPS IDs (`CDS/P/SPHEREx/…`) and an unWISE HiPS: not in the built-in list, and CDS's MocServer was unreachable from the dev PC on Nov 9.
 - **Known asteroids/comets (Should):** JPL SBIdent using SPHEREx's own position as observer **\[VERIFY header keys\]**, or IMCCE SkyBoT with a geocentric observer for a quick approximation.
 
 ## 8. Two Opinions engine
@@ -178,7 +178,7 @@ planetes/
 | obsutils `spherex` module (R. Stein) | Reference method for ePSF forced photometry | **\[VERIFY\]** |
 | IRSA SPHEREx tutorials (intro, cutouts, PSF, Source Discovery Tool) | Patterns for access, PSF zones, D2−D4 red-source subtraction | **\[VERIFY\]** |
 | sbpy (`sbpy.thermal`) | NEATM thermal model | BSD-3 |
-| Aladin Lite v3 (CDS) | Sky context panel | **\[VERIFY\]** (GPL-3 expected) |
+| Aladin Lite v3 (CDS) | Sky context panel | npm 3.8.2 ships LGPL-3 licence files but its README says GPL-3; we load it unmodified at runtime from jsDelivr, not bundled, and credit it |
 | CDS HiPS: SPHEREx D1–D6, unWISE, DSS2 | Context imagery | per HiPS licence (ODbL for CDS-built SPHEREx HiPS) |
 | Gaia DR3, AllWISE | Overlays and proper motions | ESA / NASA open data |
 | SPHEREx ultracool-dwarf templates (Gagné et al. 2026, mocadb.ca) | Brown-dwarf typing | **\[VERIFY\]** terms |
