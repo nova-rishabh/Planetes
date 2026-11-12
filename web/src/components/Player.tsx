@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
-import type { Frame, TimelapseResult } from "@/types/contracts";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import type { Frame, Overlays, TimelapseResult } from "@/types/contracts";
+import { markersFor } from "@/lib/overlays";
 import { initialPlayer, playerReducer, SPEEDS_FPS } from "@/lib/player";
 import { resolveAsset } from "@/lib/timelapse";
 import { FrameMeta } from "./FrameMeta";
@@ -14,6 +15,8 @@ interface Props {
   blinkB?: number | null;
   /** Reports the frame and blink choice when playback stops, for the shareable URL. */
   onSettle?: (s: { frame: number; a: number; b: number }) => void;
+  /** Gaia DR3 / AllWISE stars moved to each frame date (overlays.json); null when not available. */
+  overlays?: Overlays | null;
 }
 
 type Loaded = { image?: HTMLImageElement; flags?: HTMLImageElement };
@@ -40,7 +43,8 @@ function frameLabel(f: Frame): string {
  * Time-lapse player (D1.3): frames on a dark plate, play/step/scrub/speed/loop, A/B blink and the flag
  * overlay. Frames are already stretched images on the common grid (docs/03 §5), drawn pixel for pixel.
  */
-export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB = null, onSettle }: Props) {
+export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB = null, onSettle, overlays = null }: Props) {
+  const [showStars, setShowStars] = useState(true);
   const frames = result.frames;
   const [s, dispatch] = useReducer(playerReducer, undefined, () =>
     playerReducer(initialPlayer(), {
@@ -91,6 +95,19 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     const entry = cache.current.get(frame.id);
     if (entry?.image) ctx.drawImage(entry.image, 0, 0, w, h);
     if (s.showFlags && entry?.flags) ctx.drawImage(entry.flags, 0, 0, w, h);
+    if (showStars && overlays && typeof frame.mjd === "number") {
+      const r = Math.max(2, w / 45);
+      ctx.lineWidth = Math.max(1, w / 300);
+      for (const m of markersFor(overlays, result.grid, frame.mjd)) {
+        const x = m.x + 0.5;
+        const y = h - (m.y + 0.5);
+        ctx.strokeStyle = cssVar(canvas, m.catalog === "AllWISE" ? "--epoch-3" : "--epoch-6");
+        ctx.beginPath();
+        if (m.catalog === "AllWISE") ctx.rect(x - r, y - r, 2 * r, 2 * r);
+        else ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
     if (frame.target_xy) {
       // target_xy: 0-based pixel (x right, y north/up, origin at the lower-left like numpy origin="lower").
       const x = frame.target_xy[0] + 0.5;
@@ -106,7 +123,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
       ctx.lineTo(x, y - gap);
       ctx.stroke();
     }
-  }, [frame, s.showFlags, w, h, loadedCount]);
+  }, [frame, s.showFlags, w, h, loadedCount, showStars, overlays, result.grid]);
 
   // Playback clock.
   useEffect(() => {
@@ -152,6 +169,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
           Fig. 1 · {frameLabel(frame)}
           {frame.utc ? ` · ${frame.utc.replace("T", " ").replace(/:\d\d(\.\d+)?Z$/, " UTC")}` : ""}
           {s.blink.on ? ` · blinking ${s.blink.showingB ? "B" : "A"}` : ""}
+          {overlays && showStars ? " · ○ Gaia DR3 □ AllWISE, moved to this date" : ""}
         </figcaption>
       </figure>
 
@@ -187,6 +205,9 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </label>
         <button type="button" className="toggle" aria-pressed={s.loop} onClick={() => dispatch({ type: "toggleLoop" })}>Loop</button>
         <button type="button" className="toggle" aria-pressed={s.showFlags} onClick={() => dispatch({ type: "toggleFlags" })}>Flags</button>
+        {overlays ? (
+          <button type="button" className="toggle" aria-pressed={showStars} onClick={() => setShowStars((v) => !v)}>Catalogue stars</button>
+        ) : null}
       </div>
 
       <div className="controls" role="group" aria-label="Blink two frames">

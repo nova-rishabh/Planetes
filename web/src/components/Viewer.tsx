@@ -4,7 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { BENCHMARKS, benchmarkName } from "@/lib/benchmarks";
 import { formatPosition, parsePosition } from "@/lib/coords";
-import { loadBaked, runLive, type LoadState } from "@/lib/timelapse";
+import { loadBaked, loadBakedJson, runLive, type LoadState } from "@/lib/timelapse";
+import { parseOverlays } from "@/lib/overlays";
+import type { Overlays } from "@/types/contracts";
 import { FOV_MAX_DEG, FOV_MIN_DEG, MODES, parseView, serializeView, type Mode, type ViewState } from "@/lib/urlState";
 import { ObjectPanels } from "./ObjectPanels";
 import { Player } from "./Player";
@@ -77,6 +79,19 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
 
   const { target, ra_deg, dec_deg, fov_deg, mode, detectors } = view;
   const detKey = detectors.join(",");
+  const [baked, setBaked] = useState<{ target: string; value: Overlays } | null>(null);
+  const overlays = target && baked?.target === target ? baked.value : null;
+
+  // Catalogue stars for baked targets (overlays.json). Missing or invalid -> no markers, never invented ones.
+  useEffect(() => {
+    if (!target) return;
+    const ctrl = new AbortController();
+    loadBakedJson(target, "overlays.json", window.location.origin, parseOverlays, ctrl.signal).then(
+      (r) => r.kind === "ready" && setBaked({ target, value: r.value }),
+      () => {},
+    );
+    return () => ctrl.abort();
+  }, [target]);
 
   useEffect(() => {
     if (!target && (ra_deg === null || dec_deg === null)) return;
@@ -198,6 +213,7 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
           blinkA={view.a}
           blinkB={view.b}
           onSettle={onSettle}
+          overlays={overlays}
         />
       ) : (
         <LoadView state={state} onRetry={() => setAttempt((n) => n + 1)} />
