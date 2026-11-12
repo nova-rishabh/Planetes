@@ -220,3 +220,21 @@ h3 { font-size: 0.875rem; margin: 1rem 0 0.5rem; color: var(--ink-muted); text-t
 .val-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-pill); }
 .val-row[data-state="fail"] .val-badge { color: var(--accent-text); border-color: var(--accent-text); }
 .val-result { margin: 0.5rem 0 0; }
+
+/* Planet X reality check */
+.px { display: grid; gap: 1rem; margin-bottom: 2rem; }
+.px-inputs { display: grid; gap: 0.75rem; }
+.px-field input[type="range"] { width: 100%; accent-color: var(--ui); }
+.px-verdict { margin-top: 0; }
+.px-dl { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1rem; font-size: 0.875rem; }
+.px-dl dt { color: var(--ink-muted); }
+.px-dl dd { margin: 0; }
+.px-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; margin: 1rem 0; }
+.px-table th, .px-table td { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px solid var(--border); }
+.px-table th { color: var(--ink-muted); font-weight: 500; }
+.px-table tr[data-above="true"] td { color: var(--accent-text); }
+.px-chart { width: 100%; height: auto; display: block; }
+.px-line { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.px-depth { stroke: var(--accent-fill); stroke-dasharray: 4 3; }
+.px-dot { fill: var(--accent-fill); }
+.px-label { font-size: 10px; fill: var(--ink-muted); font-family: var(--font-mono), ui-monospace, monospace; }
