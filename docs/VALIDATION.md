@@ -9,8 +9,8 @@ Tests are defined in docs/04-Science-Validation.md §7. Fill a row only with rea
 | V3 | WISE 0855 detection & motion | not run yet | | Finding (Nov 12): a Gaia DR3 star (G 16.3) sits 5–9″ from WISE 0855 during the SPHEREx year, inside our 3-pixel measuring circle. Before the blend check, its light gave a false 1 mJy “spectrum”. Now all 256 points are rejected (blend, too faint or flagged), so the spectrum says “not measured” rather than showing the neighbour's light. Motion still to test |
 | V4 | Our photometry vs IRSA tool | not run as defined yet | | Interim cross-check (Nov 12): isolated 2MASS stars in Barnard cutouts, our flux / 2MASS = 0.96 and 0.99 (J 11.74). The IRSA-tool comparison on 3 unsaturated stars is still to do |
 | V5 | Brown-dwarf typing | ε Indi B typed T3 (unresolved T1+T6 pair); distance 2.55–3.69 pc vs 3.64 pc from Gaia parallax | ✅ PASS | Rishabh, Nov 12: 304 of 445 real SPHEREx points (QR2+QR3, D1–D6), `typing.spectrum_opinion`, SpeX standards + Dupuy & Liu 2012; baked in `web/public/data/targets/epsindib/spectrum.json` |
-| V6 | Known asteroids | cut | — | D3.4 known asteroids cut on Nov 12 (docs/DECISIONS.md) |
+| V6 | Known asteroids | not passed yet (1 of 10 needed) | | Interim (Nov 13): JPL SBIdent from SPHEREx's own position (`known.py`, PR #26 area). One ecliptic field, 40 real D1–D3 frames: 73 Klytia (V 14.1) found 0.02–0.07 px from the prediction in 3 frames at S/N > 200. Ten-field run in progress; numbers in `docs/evidence/v6_known_asteroids.csv` |
 | V7 | Thermometer | not run yet | | D4.2 back in scope (Nov 12, DECISIONS). `thermal.py` built and model-tested (geometry, recovery of a model distance); V7 needs real D3/D6 pairs of ≥ 20 known asteroids from D3.4 |
 | V8 | Variables | not run yet | | |
 | V9 | False-alarm control | not run yet | | |
-| V10 | Reproducibility | not run yet | | |
+| V10 | Reproducibility | not run yet | | Attempted Nov 13 from a clean clone with an empty cache: IRSA TAP returned 503 (archive outage). Note: IRSA no longer lists QR2 (DR1 replaced it), so a re-bake can't be byte-identical; the test is now whether the type and distance hold on DR1 data |

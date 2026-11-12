@@ -72,3 +72,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-12 | 04 §6, DECISIONS | Planet X brightness formula corrected; cuts reversed (all wow items back); new /planet-x page |
 | 2026-11-12 | VALIDATION, REFERENCES, AI_USAGE | V7 back to “not run yet”; thermometer sources and Amish's draft credited |
 | 2026-11-12 | REMAINING_WORK (new) | Everything left before submission, priorities, owners, hours, Fri Nov 13 checkpoints |
+| 2026-11-13 | STATUS, VALIDATION | Status to Nov 13 01:30 (open PRs #20–#25, D3.3 pending push); V6 interim, V10 attempt (IRSA 503) |
