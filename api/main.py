@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import math
 import os
 import re
 from collections.abc import AsyncIterator
@@ -26,9 +27,13 @@ from planetes.contracts import (
     JobCreated,
     Opinions,
     OpinionsRequest,
+    Overlays,
+    Resolved,
     SpectrumRequest,
     TimelapseRequest,
 )
+from planetes.overlays import build_overlays, query_allwise_sources, query_gaia_sources
+from planetes.resolve import resolve_response
 from planetes.spectrum import build_spectrum
 
 from .irsa_status import CachedProbe
@@ -191,6 +196,61 @@ async def start_spectrum(body: SpectrumRequest, request: Request) -> JobCreated 
 @router.post("/opinions", response_model=Opinions, response_model_by_alias=True)
 async def opinions(body: OpinionsRequest) -> Opinions:
     return await run_in_threadpool(opinions_for, body)
+
+
+@router.get("/resolve", response_model=Resolved)
+async def get_resolve(q: str) -> Resolved | JSONResponse:
+    try:
+        return await run_in_threadpool(resolve_response, q)
+    except LookupError as exc:
+        return error_response(404, "NOT_FOUND", str(exc))
+    except ValueError as exc:
+        return error_response(400, "BAD_INPUT", str(exc))
+    except Exception as exc:
+        log.exception("Resolver error", exc_info=exc)
+        return error_response(500, "INTERNAL", f"Resolver error: {exc}")
+
+
+@router.get("/overlays", response_model=Overlays)
+async def get_overlays(
+    ra: float,
+    dec: float,
+    fov_deg: float = 0.1,
+    mjd: str | None = None,
+    catalogs: str = "gaia,allwise",
+) -> Overlays | JSONResponse:
+    if not (0.0 <= ra < 360.0):
+        return error_response(400, "BAD_INPUT", "ra must be in [0, 360) degrees")
+    if not (-90.0 <= dec <= 90.0):
+        return error_response(400, "BAD_INPUT", "dec must be in [-90, 90] degrees")
+    if fov_deg <= 0 or fov_deg > 0.5:
+        return error_response(400, "BAD_INPUT", "fov_deg must be in (0, 0.5] degrees")
+
+    mjds: list[float] = []
+    if mjd:
+        for part in mjd.split(","):
+            part = part.strip()
+            if part:
+                try:
+                    mjds.append(float(part))
+                except ValueError:
+                    return error_response(400, "BAD_INPUT", f"Invalid MJD value: {part}")
+
+    cat_list = [c.strip().lower() for c in catalogs.split(",") if c.strip()]
+    radius_deg = fov_deg / math.sqrt(2)
+
+    gaia_records = []
+    wise_records = []
+
+    try:
+        if "gaia" in cat_list:
+            gaia_records = await run_in_threadpool(query_gaia_sources, ra, dec, radius_deg)
+        if "allwise" in cat_list:
+            wise_records = await run_in_threadpool(query_allwise_sources, ra, dec, radius_deg)
+        return await run_in_threadpool(build_overlays, gaia_records, wise_records, mjds)
+    except Exception as exc:
+        log.exception("Overlay query error", exc_info=exc)
+        return error_response(500, "IRSA_ERROR", f"Catalog query failed: {exc}")
 
 
 @router.get("/jobs/{job_id}", response_model=Job)
