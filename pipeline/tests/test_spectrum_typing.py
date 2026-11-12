@@ -90,3 +90,16 @@ def test_absolute_magnitude_relation_range() -> None:
     assert absolute_j_mag(spt_number("M0")) is None  # outside Dupuy & Liu 2012 (M6-T9)
     mj_t1, mj_t8 = absolute_j_mag(spt_number("T1")), absolute_j_mag(spt_number("T8"))
     assert mj_t1 is not None and mj_t8 is not None and 13 < mj_t1 < mj_t8 < 18
+
+
+def test_blend_reason_skips_the_target_and_flags_a_close_neighbour() -> None:
+    from planetes.spectrum import BLEND_RADIUS_ARCSEC, blend_reason
+
+    ra, dec = 133.7604, -7.2422
+    arcsec = 1 / 3600
+    itself = ("1", ra + 1.0 * arcsec, dec, 15.0)  # 1" away: the target's own Gaia entry
+    close = ("2", ra, dec + 8.8 * arcsec, 16.3)  # the real G 16.3 star next to WISE 0855
+    far = ("3", ra, dec + (BLEND_RADIUS_ARCSEC + 5) * arcsec, 12.0)
+    assert blend_reason(ra, dec, [itself, far]) is None
+    reason = blend_reason(ra, dec, [itself, close, far])
+    assert reason is not None and "G 16.3" in reason and "9\u2033" in reason
