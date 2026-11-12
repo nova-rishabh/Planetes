@@ -29,10 +29,12 @@ from planetes.contracts import (
     OpinionsRequest,
     Overlays,
     Resolved,
+    SpectrumRequest,
     TimelapseRequest,
 )
 from planetes.overlays import build_overlays, query_allwise_sources, query_gaia_sources
 from planetes.resolve import resolve_response
+from planetes.spectrum import build_spectrum
 
 from .irsa_status import CachedProbe
 from .jobs import JobManager, TooManyJobs
@@ -169,6 +171,22 @@ async def start_timelapse(body: TimelapseRequest, request: Request) -> JobCreate
         workers = env_int("IRSA_CONCURRENCY", 8)
         job_id = request.app.state.jobs.submit(
             "timelapse", client_ip(request), lambda ctx: run_timelapse(body, ctx, cache, version, workers)
+        )
+    except TooManyJobs:
+        return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
+    return JobCreated(schema_version="1.0", job_id=job_id)
+
+
+@router.post("/spectrum", response_model=JobCreated)
+async def start_spectrum(body: SpectrumRequest, request: Request) -> JobCreated | JSONResponse:
+    try:
+        cache = request.app.state.cache
+        version = code_version()
+        workers = env_int("IRSA_CONCURRENCY", 8)
+        job_id = request.app.state.jobs.submit(
+            "spectrum",
+            client_ip(request),
+            lambda ctx: build_spectrum(body, version, cache, workers, ctx.progress),
         )
     except TooManyJobs:
         return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")

@@ -47,3 +47,9 @@ See docs/04-Science-Validation.md, Sources section.
 
 ## Science papers
 See docs/04-Science-Validation.md, Sources section.
+### Added in D2.4 (interim) / D4.1 / D4.3 (photometry, spectrum, typer)
+- photutils (Astropy affiliated, BSD-3): https://photutils.readthedocs.io/ — circular aperture and annulus photometry.
+- SpeX Prism Library spectral standards M0–T9 (Burgasser 2014, ASInC 11, 7; IRTF SpeX), files and standards list from SPLAT: https://github.com/aburgasser/splat (MIT) — templates in `pipeline/src/planetes/data/spex_standards.csv`.
+- Dupuy & Liu 2012, ApJS 201, 19 — absolute 2MASS J vs spectral type polynomial (M6–T9), coefficients as tabulated in SPLAT `initialize.py`.
+- Cohen, Wheaton & Megeath 2003, AJ 126, 1090 — 2MASS zero points (J 1594 Jy) used for the apparent J magnitude and the 2MASS cross-check.
+- 2MASS Point Source Catalog via IRSA TAP (`fp_psc`) — flux-scale cross-check of our photometry.
