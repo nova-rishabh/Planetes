@@ -25,6 +25,15 @@ BATCH = 8
 MAX_GRID_PX = 300
 
 
+_RELEASE_RANK = {"DR1": 0, "QR3": 1, "QR2": 2}
+
+
+def _release_of(members: list[str]) -> str:
+    """Release recorded on a derived frame: the newest release among its member exposures (DR1 > QR3 > QR2)."""
+    rels = {access.extract_release(m) for m in members}
+    return min(rels, key=lambda r: _RELEASE_RANK.get(r, 9)) if rels else "DR1"
+
+
 def _derived_frame_id(tag: str) -> str:
     """Deterministic f_<12-hex> id matching FRAME_ID_RE in api/main.py."""
     digest = hashlib.sha256(tag.encode("utf-8")).hexdigest()[:12]
@@ -194,7 +203,7 @@ def run_timelapse(
                     kind="stack",
                     obs_id=f"stack_e{ep_idx}_d{det_num}",
                     members=members,
-                    release=req.release,
+                    release=_release_of(members),
                     epoch_index=ep_idx,
                     mjd=mjd_mid,
                     utc=frames.mjd_to_utc(mjd_mid),
@@ -245,7 +254,7 @@ def run_timelapse(
                     kind="difference",
                     obs_id=f"diff_d{det_num}",
                     members=members,
-                    release=req.release,
+                    release=_release_of(members),
                     epoch_index=diff_coadd.epoch_index or 0,
                     mjd=mjd_mid,
                     utc=frames.mjd_to_utc(mjd_mid),
@@ -288,7 +297,7 @@ def run_timelapse(
                     kind="sum",
                     obs_id=f"sum_d{det_num}",
                     members=members,
-                    release=req.release,
+                    release=_release_of(members),
                     epoch_index=0,
                     mjd=mjd_mid,
                     utc=frames.mjd_to_utc(mjd_mid),
@@ -318,6 +327,7 @@ def run_timelapse(
         rgb = stack.colour_composite(det_coadds)
         mjd_mid = float(np.median([p.frame.mjd for p in prepared]))
         fid = _derived_frame_id(f"color:{req.release}:{center}:{all_members}")
+        members = all_members
         cache.put(f"frames/{fid}.webp", stack.colour_to_webp(rgb), "image/webp")
         cache.put(f"frames/{fid}_flags.png", blank_flags, "image/png")
         t_pos = target_positions(req, [mjd_mid])[0]
@@ -329,7 +339,7 @@ def run_timelapse(
                 kind="color",
                 obs_id="color_rgb",
                 members=all_members,
-                release=req.release,
+                release=_release_of(members),
                 epoch_index=0,
                 mjd=mjd_mid,
                 utc=frames.mjd_to_utc(mjd_mid),
