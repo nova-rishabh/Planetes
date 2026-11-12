@@ -53,3 +53,6 @@ See docs/04-Science-Validation.md, Sources section.
 - Dupuy & Liu 2012, ApJS 201, 19 — absolute 2MASS J vs spectral type polynomial (M6–T9), coefficients as tabulated in SPLAT `initialize.py`.
 - Cohen, Wheaton & Megeath 2003, AJ 126, 1090 — 2MASS zero points (J 1594 Jy) used for the apparent J magnitude and the 2MASS cross-check.
 - 2MASS Point Source Catalog via IRSA TAP (`fp_psc`) — flux-scale cross-check of our photometry.
+- Harris 1998, Icarus 131, 291 — NEATM asteroid thermal model (integrated numerically in thermal.py; sbpy 0.6.0's NEATM has no flux method).
+- Bowell et al. 1989, Asteroids II — H-G phase law and phase integral q = 0.290 + 0.684 G.
+- Kopp & Lean 2011, GRL 38, L01706 — solar constant 1361 W/m².
