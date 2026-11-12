@@ -28,20 +28,38 @@ from planetes.known import known_in_frame
 
 warnings.simplefilter("ignore", FITSFixedWarning)
 
-RA, DEC = (float(sys.argv[1]), float(sys.argv[2])) if len(sys.argv) > 2 else (30.0, 12.2)  # on the ecliptic
-SIZE_DEG = 0.3
-N_FRAMES = 40
+
+def _ecliptic_dec(ra_deg: float) -> float:
+    """Declination of the ecliptic at this RA (obliquity 23.44 deg)."""
+    return math.degrees(math.atan(math.sin(math.radians(ra_deg)) * math.tan(math.radians(23.44))))
+
+
+# Ten fields spread along the ecliptic (or one field given on the command line).
+FIELDS = (
+    [(float(sys.argv[1]), float(sys.argv[2]))]
+    if len(sys.argv) > 2
+    else [(ra, round(_ecliptic_dec(ra), 3)) for ra in range(15, 360, 36)]
+)
+SIZE_DEG = 0.4
+N_FRAMES = 25  # per field
 VMAX = 17.5
 BOX = 3  # half-size of the centroid box (7x7)
 OUT = Path(__file__).resolve().parents[2] / "docs" / "evidence" / "v6_known_asteroids.csv"
 
 
 def main() -> None:
-    frames = find_frames(RA, DEC, size_deg=SIZE_DEG)
+    rows = []
+    for ra, dec in FIELDS:
+        rows += field_rows(ra, dec)
+    report(rows)
+
+
+def field_rows(ra: float, dec: float) -> list[dict]:
+    frames = find_frames(ra, dec, size_deg=SIZE_DEG)
     frames = frames[frames["detector"].isin([1, 2, 3])].sort_values("mjd")
     step = max(1, len(frames) // N_FRAMES)
     frames = frames.iloc[::step].head(N_FRAMES)
-    print(f"{len(frames)} frames (D1-D3) around RA {RA}, Dec {DEC}")
+    print(f"{len(frames)} frames (D1-D3) around RA {ra}, Dec {dec}", flush=True)
     blobs = fetch_cutouts(frames, max_concurrent=8)
     rows = []
     for _, fr in frames.iterrows():
@@ -93,6 +111,10 @@ def main() -> None:
                             matched=bool(off <= 1.0 and snr >= 5.0),
                         )
                 rows.append(row)
+    return rows
+
+
+def report(rows: list[dict]) -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]) if rows else ["obs_id"])
