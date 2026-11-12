@@ -151,3 +151,19 @@
   .lp-title, .lp-lede, .lp-go, .lp-hero-plate { animation: none; }
   .lp-frame { transition: none; }
 }
+
+/* Guided tour (viewer) */
+.view-heading-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
+.view-heading-row .view-heading { margin: 0; }
+.tour-focus { outline: 2px solid var(--accent-fill); outline-offset: 6px; border-radius: var(--radius-panel); transition: outline-color 200ms ease-out; }
+.tour-card {
+  position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 20;
+  width: min(32rem, calc(100vw - 2rem)); padding: 1rem 1.25rem; box-shadow: 0 6px 24px color-mix(in srgb, var(--ink) 18%, transparent);
+  animation: lp-rise 220ms ease-out both;
+}
+.tour-card:focus { outline: none; }
+.tour-title { font-family: var(--font-heading), sans-serif; font-weight: 600; font-size: 1.125rem; margin: 0 0 0.375rem; }
+.tour-text { margin: 0 0 0.75rem; line-height: 1.5; }
+.tour-nav { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.tour-count { margin-left: auto; color: var(--ink-muted); font-size: 0.75rem; }
+@media (prefers-reduced-motion: reduce) { .tour-card { animation: none; } }
