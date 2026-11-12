@@ -72,7 +72,7 @@ The object stays within 1 px across epochs, but its flux in the same detector at
 
 ## 6. Planet X Reality Check (physics for the calculator)
 
-- **Reflected light (scaled from Neptune):** V ≈ 7.8 + 5 log10\[(R/R\_Nep)² × (A/A\_Nep) × (r / 29 AU)⁴\], with A\_Nep = 0.41 (Fortney et al. 2016). Published estimates put Planet Nine around V ≈ 21–25.
+- **Reflected light (scaled from Neptune):** V ≈ 7.8 − 5 log10(R/R\_Nep) − 2.5 log10(A/A\_Nep) + 5 log10(r·Δ / 29² AU²), with A\_Nep = 0.41 (Fortney et al. 2016). Twice as far is 16× fainter (+3.0 mag). (Corrected Nov 12: the earlier form put r⁴ inside 5 log10, which doubled the distance effect.) Published estimates put Planet Nine around V ≈ 21–25.
 - **Internal heat:** some models predict extra glow near 3–5 µm, but the range is huge and uncertain. Show it as a range, clearly labelled “model-dependent.”
 - **Compare** with SPHEREx single-visit depth (\~AB 18.5–19 at short wavelengths), and with deeper stacks (improves roughly with √(number of visits)).
 - **Motion between 6-month epochs:** reflex parallax ≈ 2 × 206265 / r\[AU\] arcsec. At 500 AU that's \~825″ (\~14′), so a distant planet would **jump out of a small field** between epochs. The calculator explains why searches need large fields.
