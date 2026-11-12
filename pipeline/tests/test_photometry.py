@@ -9,7 +9,7 @@ import pytest
 from astropy.io import fits
 from astropy.wcs import WCS
 
-from planetes import photometry
+from planetes import psf_photometry as photometry
 
 FIXTURE_FITS = Path(__file__).parent / "data" / "barnard_d3_qr2_2025W33_2C_0321_1.fits"
 

@@ -100,4 +100,3 @@ def test_api_routes_registered() -> None:
         "/api/frames/{frame_id}/flags.png",
     }
     assert expected.issubset(paths)
-    

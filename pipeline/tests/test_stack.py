@@ -14,7 +14,9 @@ from planetes import frames, stack
 FIXTURE_FITS = Path(__file__).parent / "data" / "barnard_d3_qr2_2025W33_2C_0321_1.fits"
 
 
-def _make_coadd(val: float, var: float, shape: tuple[int, int] = (16, 16), det: int = 1, mjd: float = 61000.0) -> stack.CoaddResult:
+def _make_coadd(
+    val: float, var: float, shape: tuple[int, int] = (16, 16), det: int = 1, mjd: float = 61000.0
+) -> stack.CoaddResult:
     return stack.CoaddResult(
         image=np.full(shape, val, dtype=np.float64),
         variance=np.full(shape, var, dtype=np.float64),
@@ -39,7 +41,9 @@ def test_inverse_variance_stack_weights_and_masks() -> None:
     good_b = np.ones((8, 8), dtype=bool)
     good_b[0, 0] = False  # masked cosmic ray on frame B
 
-    coadd = stack.inverse_variance_stack([img_a, img_b], [var_a, var_b], [good_a, good_b], detector=3, mjds=[61000.0, 61005.0])
+    coadd = stack.inverse_variance_stack(
+        [img_a, img_b], [var_a, var_b], [good_a, good_b], detector=3, mjds=[61000.0, 61005.0]
+    )
 
     # Unmasked pixel: (1*10 + 4*20) / (1 + 4) = 90 / 5 = 18.0; var = 1 / 5 = 0.20
     assert np.isclose(coadd.image[4, 4], 18.0)

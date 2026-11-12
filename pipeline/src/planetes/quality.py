@@ -10,18 +10,12 @@ Generates structured JSON diagnostics and human-readable Markdown quality report
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-_SRC_DIR = str(Path(__file__).resolve().parents[1])
-if _SRC_DIR not in sys.path:
-    sys.path.insert(0, _SRC_DIR)
-
 import json
 from collections import Counter
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
-from typing import Sequence
+from pathlib import Path
 
 import numpy as np
 
@@ -73,6 +67,12 @@ class StackQualityMetrics:
     warnings: list[str] = field(default_factory=list)
 
 
+def _pair_label(pair_id: str) -> str:
+    """'2025W33_2C_0321_1/D36' -> 'D3&D6'; labels already like 'D3&D6' pass through."""
+    tail = pair_id.rsplit("/D", 1)[-1] if "/D" in pair_id else ""
+    return f"D{tail[0]}&D{tail[1]}" if len(tail) == 2 and tail.isdigit() else pair_id
+
+
 def evaluate_spectrum_quality(result: SpectrumResult) -> SpectrumQualityMetrics:
     """Compute scientific quality metrics and diagnostic warnings for a SpectrumResult."""
     pts = result.points
@@ -86,7 +86,8 @@ def evaluate_spectrum_quality(result: SpectrumResult) -> SpectrumQualityMetrics:
 
     covered = sorted({int(p.detector) for p in used_pts})
     missing = [d for d in ALL_DETECTORS if d not in covered]
-    pairs = sorted({p.pair_id for p in used_pts if p.pair_id is not None})
+    # pair_id is '<exposure>/D36' (spectrum.pair_id); report the detector pair as 'D3&D6'
+    pairs = sorted({_pair_label(p.pair_id) for p in used_pts if p.pair_id})
 
     psf_count = sum(1 for p in used_pts if p.method == "psf")
     ap_count = sum(1 for p in used_pts if p.method == "aperture")
@@ -179,7 +180,7 @@ def evaluate_stack_quality(
         stack_warnings.append(f"Only {valid_frac * 100:.1f}% of grid pixels have valid coverage.")
     if emp_reduction is not None and coadd.n_frames > 1 and emp_reduction < 0.7 * coadd.n_frames:
         stack_warnings.append(
-            f"Empirical variance reduction ({emp_reduction}x) is below ideal ({coadd.n_frames}x) due to masked pixels or unequal exposure weights."
+            f"Empirical variance reduction ({emp_reduction}x) is below ideal ({coadd.n_frames}x) due to masked pixels or unequal exposure weights."  # noqa: E501
         )
 
     return StackQualityMetrics(
@@ -229,8 +230,8 @@ def render_quality_markdown(
         "",
         "| Metric | Value |",
         "|---|---|",
-        f"| Total / Used Points | {spec_metrics.n_points_used} / {spec_metrics.n_points_total} ({spec_metrics.acceptance_rate * 100:.1f}%) |",
-        f"| Detectors Covered | {spec_metrics.detectors_covered} (Missing: {spec_metrics.missing_detectors or 'None'}) |",
+        f"| Total / Used Points | {spec_metrics.n_points_used} / {spec_metrics.n_points_total} ({spec_metrics.acceptance_rate * 100:.1f}%) |",  # noqa: E501
+        f"| Detectors Covered | {spec_metrics.detectors_covered} (Missing: {spec_metrics.missing_detectors or 'None'}) |",  # noqa: E501
         f"| Simultaneous Pairs | {', '.join(spec_metrics.pairs_covered) or 'None'} |",
         f"| Wavelength Range | {spec_metrics.min_wavelength_um} – {spec_metrics.max_wavelength_um} µm |",
         f"| Forced ePSF Fits | {spec_metrics.psf_fit_count} ({spec_metrics.psf_fit_fraction * 100:.1f}%) |",
@@ -301,9 +302,11 @@ def save_quality_report(
 
 
 if __name__ == "__main__":
-    from planetes import frames, photometry, stack
     from astropy.io import fits
     from astropy.wcs import WCS
+
+    from planetes import frames, stack
+    from planetes import psf_photometry as photometry
 
     root = Path(__file__).resolve().parents[3]
     fits_files = sorted((root / ".planetes-cache").rglob("*.fits"))
@@ -331,4 +334,3 @@ if __name__ == "__main__":
 
         md = render_quality_markdown(spec_q, [stack_q])
         print(md)
-        

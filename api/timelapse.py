@@ -221,7 +221,7 @@ def run_timelapse(
             if len(items) < 2:
                 continue
             ep_a_idx, coadd_a, mem_a = items[0]
-            for ep_b_idx, coadd_b, mem_b in items[1:]:
+            for _ep_b_idx, coadd_b, mem_b in items[1:]:
                 diff_coadd = stack.difference_coadds(coadd_a, coadd_b)
                 diffs.append((det_num, diff_coadd, mem_a + mem_b))
 
@@ -355,4 +355,3 @@ def run_timelapse(
         flag_legend=legend,
         provenance=Provenance(tap_query=None, generated_utc=datetime.now(UTC), code_version=code_version),
     )
-

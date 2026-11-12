@@ -10,17 +10,11 @@ Implements:
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-_SRC_DIR = str(Path(__file__).resolve().parents[1])
-if _SRC_DIR not in sys.path:
-    sys.path.insert(0, _SRC_DIR)
-
 import io
 import warnings
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence
+from pathlib import Path
 
 import numpy as np
 from astropy import log as astropy_log
@@ -80,13 +74,7 @@ def prepare_reprojected_variance(
     sat_raw = frames.classify_flags(flags, bits).saturated.astype(np.float64)
     masks.saturated |= frames.reproject_to_grid(sat_raw, input_wcs, ref_wcs, grid_shape) > 0
 
-    good = (
-        (~masks.outside)
-        & (~masks.bad)
-        & np.isfinite(reproj_img)
-        & np.isfinite(reproj_var)
-        & (reproj_var > 0.0)
-    )
+    good = (~masks.outside) & (~masks.bad) & np.isfinite(reproj_img) & np.isfinite(reproj_var) & (reproj_var > 0.0)
     return reproj_img, reproj_var, good
 
 
@@ -267,11 +255,7 @@ if __name__ == "__main__":
 
         for f in fits_files[:6]:
             with fits.open(f) as hdul:
-                det = int(
-                    hdul["IMAGE"].header.get("DETECTOR")
-                    or hdul["PRIMARY"].header.get("DETECTOR")
-                    or 3
-                )
+                det = int(hdul["IMAGE"].header.get("DETECTOR") or hdul["PRIMARY"].header.get("DETECTOR") or 3)
             img, var, good = prepare_reprojected_variance(f.read_bytes(), ref_wcs, grid_shape=(32, 32))
             coadd = inverse_variance_stack([img], [var], [good], detector=det)
             by_det[det] = sum_coadds([by_det[det], coadd]) if det in by_det else coadd
