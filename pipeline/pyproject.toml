@@ -44,3 +44,6 @@ pythonpath = [".."]
 markers = [
   "network: test makes real requests to external services (IRSA, CDS, ...)",
 ]
+
+[tool.setuptools.package-data]
+planetes = ["data/*.csv"]

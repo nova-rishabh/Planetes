@@ -1,6 +1,7 @@
 """Bake benchmark targets into web/public/data (docs/03 §6) with the same pipeline as the live API.
 
-    python -m api.bake barnard [rdra ...]     (from the repo root; needs network to IRSA and SIMBAD)
+    python -m api.bake barnard [rdra ...]            (time-lapse; from the repo root; needs IRSA and SIMBAD)
+    python -m api.bake --spectrum epsindib [...]     (spectrum.json: forced photometry on every exposure)
 
 Writes, per target: target.json (Resolved), timelapse_exposures.json (TimelapseResult) and frames/*.webp|png.
 Frame URLs are relative (./frames/...), so the web app loads baked and live results the same way.
@@ -13,8 +14,9 @@ import sys
 from pathlib import Path
 
 from planetes.cache import Cache
-from planetes.contracts import ProperMotion, TimelapseRequest
+from planetes.contracts import ProperMotion, SpectrumRequest, TimelapseRequest
 from planetes.resolve import BENCHMARK_QUERIES, resolve
+from planetes.spectrum import build_spectrum
 
 from .main import code_version
 from .timelapse import run_timelapse
@@ -75,7 +77,30 @@ def bake(target_id: str) -> Path:
     return out
 
 
+def bake_spectrum(target_id: str) -> Path:
+    """spectrum.json for a baked target, from its resolved position and proper motion (target.json)."""
+    out = DATA / target_id
+    t = json.loads((out / "target.json").read_text(encoding="utf-8"))
+    pm = None
+    if t.get("pm_ra_masyr") is not None and t.get("pm_dec_masyr") is not None and t.get("ref_epoch_jyear"):
+        pm = ProperMotion(
+            pm_ra_masyr=t["pm_ra_masyr"], pm_dec_masyr=t["pm_dec_masyr"], ref_epoch_jyear=t["ref_epoch_jyear"]
+        )
+    result = build_spectrum(
+        SpectrumRequest(ra=t["ra"], dec=t["dec"], pm=pm),
+        code_version(),
+        Cache(CUTOUT_CACHE),
+        progress=lambda done, total, stage: print(
+            f"  {stage} {done}/{total if total is not None else '?'}", flush=True
+        ),
+    )
+    (out / "spectrum.json").write_text(result.model_dump_json(by_alias=True), encoding="utf-8")
+    return out / "spectrum.json"
+
+
 if __name__ == "__main__":
-    for tid in sys.argv[1:] or ["barnard"]:
-        print(f"Baking {tid}…", flush=True)
-        print("  wrote", bake(tid))
+    args = sys.argv[1:]
+    spectrum = "--spectrum" in args
+    for tid in [a for a in args if not a.startswith("--")] or ["barnard"]:
+        print(f"Baking {'spectrum of ' if spectrum else ''}{tid}…", flush=True)
+        print("  wrote", bake_spectrum(tid) if spectrum else bake(tid))

@@ -64,3 +64,5 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-11 | STATUS | After the 10 pm call: who is on what for G2, Role 4 change, About page live |
 | 2026-11-11 | README, SUBMISSION (new) | README: live links, what works today, Windows activate fix, team list; new submission draft for the Space Apps form |
 | 2026-11-11 | STATUS | /api/opinions built, submission draft, Shivaansh has GitHub access |
+| 2026-11-12 | DECISIONS | Cuts (D4.2, D3.4; D4.5/D1.6 Sat only); D4.1/D4.3 + interim photometry taken by Rishabh |
+| 2026-11-12 | REFERENCES, AI_USAGE | Sources for photometry, spectrum and typer (photutils, SpeX standards via SPLAT, Dupuy & Liu 2012, Cohen 2003, 2MASS) |
