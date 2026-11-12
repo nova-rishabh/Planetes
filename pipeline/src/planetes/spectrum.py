@@ -176,3 +176,56 @@ if __name__ == "__main__":
             f"Flux: {pt.flux_ujy} +/- {pt.flux_err_ujy} uJy | SNR: {pt.snr} | "
             f"Method: {pt.method} | Used: {pt.used}"
         )
+# --- Compatibility helpers imported by test_spectrum_typing.py ---
+from collections import Counter as _Counter
+from planetes.frames import INFORMATIONAL_FLAGS as _INFO_FLAGS
+
+_MIN_SNR = 3.0
+_PAIRS = {1: "14", 4: "14", 2: "25", 5: "25", 3: "36", 6: "36"}
+
+REASONS = {
+    "outside": "Not covered by this exposure.",
+    "saturated": "Too bright here: SPHEREx's pixels are saturated, so this point is not used.",
+    "bad_pixels": "Could not be measured: some pixels on the source have no valid value.",
+    "no_sky": "Could not be measured: no clean sky around the source to subtract.",
+    "faint": "Too faint in this exposure (signal-to-noise below 3).",
+}
+
+
+def pair_id(obs_id: str, detector: int) -> str | None:
+    """Exposure id + detector pair, e.g. '2025W33_2C_0321_1/D36'."""
+    if "?" not in obs_id or "/D" not in obs_id:
+        return None
+    exposure = obs_id.split("?", 1)[1].rsplit("/D", 1)[0]
+    return f"{exposure}/D{_PAIRS[detector]}"
+
+
+def reject_reason(m: photometry.PointFlux) -> str | None:
+    """Why a point is not used, in plain words; None when it is used."""
+    if m.problem == "outside":
+        return REASONS["outside"]
+    if m.saturated:
+        return REASONS["saturated"]
+    bad = [n for n in m.flag_names if n not in _INFO_FLAGS]
+    if bad:
+        return "SPHEREx flagged pixels on the source (" + ", ".join(bad) + "), so this point is not used."
+    if m.problem in ("bad_pixels", "no_sky"):
+        return REASONS[m.problem]
+    if m.flux_ujy is None or m.snr is None or m.snr < _MIN_SNR:
+        return REASONS["faint"]
+    return None
+
+
+def summarise(points: list[SpectrumPoint]) -> SpectrumSummary:
+    used = [p for p in points if p.used]
+    return SpectrumSummary(
+        n_points=len(points),
+        n_used=len(used),
+        n_rejected=len(points) - len(used),
+        bands_covered=[Detector(d) for d in sorted({p.detector for p in used})],
+    )
+
+
+def release_of(points: list[SpectrumPoint]) -> str:
+    counts = _Counter("QR3" if "spherex_qr3" in p.obs_id else "QR2" for p in points if p.used)
+    return counts.most_common(1)[0][0] if counts else "QR3"

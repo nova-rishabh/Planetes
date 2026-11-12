@@ -575,3 +575,46 @@ if __name__ == "__main__":
                 f"D{pt.detector} | {wave_str} | "
                 f"Flux: {pt.flux_ujy} uJy | SNR: {pt.snr} | Method: {pt.method} | Used: {pt.used} ({pt.reject_reason})"
             )
+# --- Compatibility helpers imported by test_spectrum_typing.py ---
+from dataclasses import dataclass, field as _dc_field
+
+
+@dataclass
+class PointFlux:
+    """One forced-photometry measurement compatibility dataclass."""
+
+    flux_ujy: float | None
+    flux_err_ujy: float | None
+    flags: int
+    flag_names: list[str] = _dc_field(default_factory=list)
+    saturated: bool = False
+    wavelength_um: float | None = None
+    bandwidth_um: float | None = None
+    aperture_correction: float | None = None
+    problem: str | None = None
+
+    @property
+    def snr(self) -> float | None:
+        if self.flux_ujy is None or not self.flux_err_ujy:
+            return None
+        return self.flux_ujy / self.flux_err_ujy
+
+
+def pixel_solid_angle_sr(wcs: WCS, x: float, y: float) -> float:
+    """Solid angle of one pixel at (x, y), from the local WCS Jacobian."""
+    cx = wcs.pixel_to_world(x + 0.5, y)
+    cx0 = wcs.pixel_to_world(x - 0.5, y)
+    cy = wcs.pixel_to_world(x, y + 0.5)
+    cy0 = wcs.pixel_to_world(x, y - 0.5)
+    ax = np.array([v.to_value(u.rad) for v in cx0.spherical_offsets_to(cx)])
+    ay = np.array([v.to_value(u.rad) for v in cy0.spherical_offsets_to(cy)])
+    return float(abs(ax[0] * ay[1] - ax[1] * ay[0]))
+
+
+def _enclosed_fraction(psf: np.ndarray, oversample: int, radius_px: float) -> float:
+    n = psf.shape[0]
+    yy, xx = np.indices(psf.shape)
+    centre = (n - 1) / 2.0
+    inside = (xx - centre) ** 2 + (yy - centre) ** 2 <= (radius_px * oversample) ** 2
+    total = float(psf.sum())
+    return float(psf[inside].sum() / total) if total > 0 else float("nan")
