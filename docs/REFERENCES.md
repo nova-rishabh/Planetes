@@ -55,3 +55,6 @@ See docs/04-Science-Validation.md, Sources section.
 - 2MASS Point Source Catalog via IRSA TAP (`fp_psc`) — flux-scale cross-check of our photometry.
 - Fortney et al. 2016, ApJL 824, L25 — Neptune geometric albedo 0.41 used to scale the Planet X calculator (docs/04 §6).
 - IAU 2015 Resolution B3 — nominal solar radius and effective temperature (Sun as a 5772 K blackbody in planet_x).
+- Harris 1998, Icarus 131, 291 — NEATM asteroid thermal model (integrated numerically in thermal.py; sbpy 0.6.0's NEATM has no flux method).
+- Bowell et al. 1989, Asteroids II — H-G phase law and phase integral q = 0.290 + 0.684 G.
+- Kopp & Lean 2011, GRL 38, L01706 — solar constant 1361 W/m².

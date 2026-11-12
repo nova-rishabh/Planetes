@@ -10,7 +10,7 @@ Tests are defined in docs/04-Science-Validation.md §7. Fill a row only with rea
 | V4 | Our photometry vs IRSA tool | not run as defined yet | | Interim cross-check (Nov 12): isolated 2MASS stars in Barnard cutouts, our flux / 2MASS = 0.96 and 0.99 (J 11.74). The IRSA-tool comparison on 3 unsaturated stars is still to do |
 | V5 | Brown-dwarf typing | ε Indi B typed T3 (unresolved T1+T6 pair); distance 2.55–3.69 pc vs 3.64 pc from Gaia parallax | ✅ PASS | Rishabh, Nov 12: 304 of 445 real SPHEREx points (QR2+QR3, D1–D6), `typing.spectrum_opinion`, SpeX standards + Dupuy & Liu 2012; baked in `web/public/data/targets/epsindib/spectrum.json` |
 | V6 | Known asteroids | cut | — | D3.4 known asteroids cut on Nov 12 (docs/DECISIONS.md) |
-| V7 | Thermometer | cut | — | D4.2 thermometer cut on Nov 12 (docs/DECISIONS.md) |
+| V7 | Thermometer | not run yet | | D4.2 back in scope (Nov 12, DECISIONS). `thermal.py` built and model-tested (geometry, recovery of a model distance); V7 needs real D3/D6 pairs of ≥ 20 known asteroids from D3.4 |
 | V8 | Variables | not run yet | | |
 | V9 | False-alarm control | not run yet | | |
 | V10 | Reproducibility | not run yet | | |
