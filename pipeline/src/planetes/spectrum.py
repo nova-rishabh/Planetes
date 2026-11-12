@@ -4,6 +4,9 @@ For a position: every SPHEREx exposure that covers it (QR2 + QR3), forced photom
 position on that exposure's date, then plain-language rejection rules and simultaneous-pair ids
 (D1&D4, D2&D5, D3&D6 see the same sky at the same moment). Output: the SpectrumResult contract.
 Rejected points are kept with their reason so the chart can show them greyed out.
+A point is also rejected when another Gaia star sits inside the measuring circle (blend check): the 3-pixel
+aperture is ~19 arcsec wide in radius, so a faint target next to a brighter star would otherwise report that
+star's light.
 """
 
 from __future__ import annotations
@@ -28,11 +31,16 @@ from .contracts import (
     SpectrumTarget,
 )
 from .frames import INFORMATIONAL_FLAGS
-from .photometry import PointFlux, measure
+from .overlays import propagate_position, query_gaia_sources
+from .photometry import APERTURE_PX, PointFlux, measure
 
 MIN_SNR = 3.0
 MISSION_MID_MJD = 61041.0  # 2026-01-01, middle of the SPHEREx data so far
 CUTOUT_DEG = 0.05  # ~29 SPHEREx pixels: room for the aperture, the sky annulus and the motion
+SPHEREX_PIXEL_ARCSEC = 6.15  # from a real cutout WCS (6.15-6.16"); only sizes the blend check
+BLEND_RADIUS_ARCSEC = (APERTURE_PX + 0.5) * SPHEREX_PIXEL_ARCSEC  # aperture plus half a pixel
+SELF_MATCH_ARCSEC = 3.0  # a Gaia star this close to the predicted position is the target itself (or its pair)
+BLEND_GAIA_G_MAX = 18.0  # fainter neighbours are below SPHEREx's single-exposure noise
 PAIRS = {1: "14", 4: "14", 2: "25", 5: "25", 3: "36", 6: "36"}
 
 REASONS = {
@@ -68,6 +76,35 @@ def reject_reason(m: PointFlux) -> str | None:
     return None
 
 
+Neighbour = tuple[str, float, float, float | None]  # Gaia source_id, RA, Dec at mission mid, G mag
+
+
+def blend_reason(ra_deg: float, dec_deg: float, neighbours: list[Neighbour]) -> str | None:
+    """Plain-language reason when another catalogued star is inside the measuring circle, else None."""
+    here = SkyCoord(ra_deg * u.deg, dec_deg * u.deg)
+    for _sid, nra, ndec, mag in neighbours:
+        sep = float(here.separation(SkyCoord(nra * u.deg, ndec * u.deg)).arcsec)
+        if SELF_MATCH_ARCSEC < sep <= BLEND_RADIUS_ARCSEC:
+            g = f"G {mag:.1f} " if mag is not None else ""
+            return (
+                f"Another star ({g}Gaia DR3) is {sep:.0f}″ away, inside the measuring circle, "
+                "so this point is not used."
+            )
+    return None
+
+
+def neighbours_near(ra_deg: float, dec_deg: float, search_arcsec: float = 90.0) -> list[Neighbour]:
+    """Gaia DR3 stars (G <= BLEND_GAIA_G_MAX) around the target, moved to mission mid."""
+    rows = query_gaia_sources(ra_deg, dec_deg, search_arcsec / 3600.0, mag_limit=BLEND_GAIA_G_MAX)
+    out: list[Neighbour] = []
+    for r in rows:
+        nra, ndec = propagate_position(
+            r["ra"], r["dec"], r["pm_ra_masyr"], r["pm_dec_masyr"], None, r["ref_epoch"], MISSION_MID_MJD
+        )
+        out.append((r["id"], nra, ndec, r["mag"]))
+    return out
+
+
 def positions_at(req: SpectrumRequest, mjds: list[float]) -> list[tuple[float, float]]:
     """The object at each exposure date: moved for proper motion when given (pm_ra is μα·cos δ, Gaia's convention)."""
     if req.pm is None:
@@ -83,7 +120,12 @@ def positions_at(req: SpectrumRequest, mjds: list[float]) -> list[tuple[float, f
     return [(float(r), float(d)) for r, d in zip(moved.ra.deg, moved.dec.deg, strict=True)]
 
 
-def build_points(frames: pd.DataFrame, cutouts: dict[str, bytes], req: SpectrumRequest) -> list[SpectrumPoint]:
+def build_points(
+    frames: pd.DataFrame,
+    cutouts: dict[str, bytes],
+    req: SpectrumRequest,
+    neighbours: list[Neighbour] | None = None,
+) -> list[SpectrumPoint]:
     rows = frames.sort_values("mjd").to_dict("records")
     where = positions_at(req, [float(r["mjd"]) for r in rows])
     points: list[SpectrumPoint] = []
@@ -93,6 +135,8 @@ def build_points(frames: pd.DataFrame, cutouts: dict[str, bytes], req: SpectrumR
             continue
         m = measure(data, ra, dec)
         reason = reject_reason(m)
+        if reason is None and neighbours:
+            reason = blend_reason(ra, dec, neighbours)
         det = int(row["detector"])
         obs_id = str(row["obs_id"])
         points.append(
@@ -151,7 +195,8 @@ def build_spectrum(
     cutouts = fetch_cutouts(frames, max_concurrent=workers, cache=cache) if len(frames) else {}
     if progress:
         progress(len(cutouts), len(frames), "measuring")
-    points = build_points(frames, cutouts, req)
+    neighbours = neighbours_near(centre_ra % 360.0, centre_dec)
+    points = build_points(frames, cutouts, req, neighbours)
     return SpectrumResult(
         schema_version="1.0",
         target=SpectrumTarget(ra=req.ra, dec=req.dec, pm=req.pm),
