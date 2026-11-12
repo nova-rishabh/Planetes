@@ -229,3 +229,42 @@ def summarise(points: list[SpectrumPoint]) -> SpectrumSummary:
 def release_of(points: list[SpectrumPoint]) -> str:
     counts = _Counter("QR3" if "spherex_qr3" in p.obs_id else "QR2" for p in points if p.used)
     return counts.most_common(1)[0][0] if counts else "QR3"
+
+# --- Neighbor star blend check (V3 / PR #14 compatibility) ---
+import astropy.units as _u
+from astropy.coordinates import SkyCoord as _SkyCoord
+from planetes.overlays import propagate_position as _overlay_propagate, query_gaia_sources as _query_gaia
+
+SPHEREX_PIXEL_ARCSEC = 6.15
+BLEND_RADIUS_ARCSEC = (3.0 + 0.5) * SPHEREX_PIXEL_ARCSEC
+SELF_MATCH_ARCSEC = 3.0
+BLEND_GAIA_G_MAX = 18.0
+_BLEND_MID_MJD = 61041.0
+
+Neighbour = tuple[str, float, float, float | None]
+
+
+def blend_reason(ra_deg: float, dec_deg: float, neighbours: list[Neighbour]) -> str | None:
+    """Plain-language reason when another catalogued star is inside the measuring circle, else None."""
+    here = _SkyCoord(ra_deg * _u.deg, dec_deg * _u.deg)
+    for _sid, nra, ndec, mag in neighbours:
+        sep = float(here.separation(_SkyCoord(nra * _u.deg, ndec * _u.deg)).arcsec)
+        if SELF_MATCH_ARCSEC < sep <= BLEND_RADIUS_ARCSEC:
+            g = f"G {mag:.1f} " if mag is not None else ""
+            return (
+                f"Another star ({g}Gaia DR3) is {sep:.0f}″ away, inside the measuring circle, "
+                "so this point is not used."
+            )
+    return None
+
+
+def neighbours_near(ra_deg: float, dec_deg: float, search_arcsec: float = 90.0) -> list[Neighbour]:
+    """Gaia DR3 stars (G <= BLEND_GAIA_G_MAX) around the target, moved to mission mid."""
+    rows = _query_gaia(ra_deg, dec_deg, search_arcsec / 3600.0, mag_limit=BLEND_GAIA_G_MAX)
+    out: list[Neighbour] = []
+    for r in rows:
+        nra, ndec = _overlay_propagate(
+            r["ra"], r["dec"], r["pm_ra_masyr"], r["pm_dec_masyr"], None, r["ref_epoch"], _BLEND_MID_MJD
+        )
+        out.append((r["id"], nra, ndec, r["mag"]))
+    return out
