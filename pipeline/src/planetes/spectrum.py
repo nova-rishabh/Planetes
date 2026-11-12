@@ -19,7 +19,7 @@ import pandas as pd
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
 
-from .access import fetch_cutouts, find_frames
+from .access import extract_release, fetch_cutouts, find_frames
 from .cache import Cache
 from .contracts import (
     Detector,
@@ -174,7 +174,7 @@ def summarise(points: list[SpectrumPoint]) -> SpectrumSummary:
 
 def release_of(points: list[SpectrumPoint]) -> str:
     """Contract keeps one release: the one most used points came from (each point's obs_id names its own)."""
-    counts = Counter("QR3" if "spherex_qr3" in p.obs_id else "QR2" for p in points if p.used)
+    counts = Counter(extract_release(p.obs_id) for p in points if p.used)
     return counts.most_common(1)[0][0] if counts else "QR3"
 
 

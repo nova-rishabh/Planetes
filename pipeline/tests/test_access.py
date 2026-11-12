@@ -14,6 +14,8 @@ def test_contract_offline():
     assert extract_detector("SPHEREx-D6") == 6
     assert extract_release("/ibe/data/spherex/qr3/level2/file.fits") == "QR3"
     assert extract_release("/ibe/data/spherex/qr2/level2/file.fits") == "QR2"
+    assert extract_release("ibe/data/spherex/dr1/level2/2026W11_1A/l2b-v27-2026-232/1/x.fits") == "DR1"
+    assert extract_release("ivo://irsa.ipac/spherex_dr1_deep?2026W19_2A_0001_1/D1") == "DR1"
 
 
 @pytest.mark.network
