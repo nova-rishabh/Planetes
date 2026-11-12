@@ -18,10 +18,11 @@ from fastapi.responses import JSONResponse, Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from planetes import cache as cache_mod
-from planetes.contracts import Error, ErrorBody, Health, Job, JobCreated, TimelapseRequest
+from planetes.contracts import Error, ErrorBody, Health, Job, JobCreated, Opinions, OpinionsRequest, TimelapseRequest
 
 from .irsa_status import CachedProbe
 from .jobs import JobManager, TooManyJobs
+from .opinions import opinions_for
 from .timelapse import run_timelapse
 
 log = logging.getLogger("planetes.api")
@@ -158,6 +159,11 @@ async def start_timelapse(body: TimelapseRequest, request: Request) -> JobCreate
     except TooManyJobs:
         return error_response(429, "TOO_LARGE", "Too many jobs running for you at once", "Wait for one to finish.")
     return JobCreated(schema_version="1.0", job_id=job_id)
+
+
+@router.post("/opinions", response_model=Opinions, response_model_by_alias=True)
+async def opinions(body: OpinionsRequest) -> Opinions:
+    return await run_in_threadpool(opinions_for, body)
 
 
 @router.get("/jobs/{job_id}", response_model=Job)
