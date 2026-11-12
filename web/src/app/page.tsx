@@ -20,6 +20,9 @@ export default function Home() {
           <Link href="/validation" className="btn">
             Validation
           </Link>
+          <Link href="/planet-x" className="btn">
+            Planet X check
+          </Link>
           <ApiStatusBadge />
         </div>
       </header>

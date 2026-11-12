@@ -69,3 +69,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-12 | REFERENCES, AI_USAGE | Sources for photometry, spectrum and typer (photutils, SpeX standards via SPLAT, Dupuy & Liu 2012, Cohen 2003, 2MASS) |
 | 2026-11-12 | VALIDATION | V4 interim, V5 pass, V6/V7 cut; shown on the new /validation page |
 | 2026-11-12 | VALIDATION | V3 note: WISE 0855 blended with a G 16.3 star; blend check added, spectra re-baked |
+| 2026-11-12 | 04 §6, DECISIONS | Planet X brightness formula corrected; cuts reversed (all wow items back); new /planet-x page |

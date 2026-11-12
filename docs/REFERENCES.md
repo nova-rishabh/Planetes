@@ -53,3 +53,5 @@ See docs/04-Science-Validation.md, Sources section.
 - Dupuy & Liu 2012, ApJS 201, 19 — absolute 2MASS J vs spectral type polynomial (M6–T9), coefficients as tabulated in SPLAT `initialize.py`.
 - Cohen, Wheaton & Megeath 2003, AJ 126, 1090 — 2MASS zero points (J 1594 Jy) used for the apparent J magnitude and the 2MASS cross-check.
 - 2MASS Point Source Catalog via IRSA TAP (`fp_psc`) — flux-scale cross-check of our photometry.
+- Fortney et al. 2016, ApJL 824, L25 — Neptune geometric albedo 0.41 used to scale the Planet X calculator (docs/04 §6).
+- IAU 2015 Resolution B3 — nominal solar radius and effective temperature (Sun as a 5772 K blackbody in planet_x).
