@@ -1,5 +1,8 @@
 import type { Grid, Overlays } from "@/types/contracts";
 
+/** Faintest stars drawn: fainter ones are below what single SPHEREx exposures show and only clutter the frame. */
+export const MAG_LIMIT: Record<string, number> = { "Gaia DR3": 16, AllWISE: 13 };
+
 export type Marker = { catalog: string; id: string; x: number; y: number; mag: number | null };
 
 const D2R = Math.PI / 180;
@@ -39,7 +42,9 @@ export function markersFor(overlays: Overlays, grid: Grid, mjd: number): Marker[
   const [w, h] = grid.naxis;
   const out: Marker[] = [];
   for (const cat of overlays.catalogs) {
+    const limit = MAG_LIMIT[cat.name] ?? Infinity;
     for (const src of cat.sources) {
+      if (src.mag !== null && src.mag > limit) continue;
       const [ra = src.ra, dec = src.dec] = positionNear(src.at_mjd, mjd) ?? [];
       const xy = skyToGrid(ra, dec, grid);
       if (!xy) continue;

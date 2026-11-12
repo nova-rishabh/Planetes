@@ -31,6 +31,9 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+/** Canvas pixels per SPHEREx grid pixel, so markers can be thinner than one 6-arcsec pixel. */
+const UPSCALE = 8;
+
 function cssVar(el: Element, name: string): string {
   return getComputedStyle(el).getPropertyValue(name).trim();
 }
@@ -89,6 +92,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx || !frame) return;
+    ctx.setTransform(UPSCALE, 0, 0, UPSCALE, 0, 0);
     ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = cssVar(canvas, "--plate");
     ctx.fillRect(0, 0, w, h);
@@ -96,8 +100,8 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     if (entry?.image) ctx.drawImage(entry.image, 0, 0, w, h);
     if (s.showFlags && entry?.flags) ctx.drawImage(entry.flags, 0, 0, w, h);
     if (showStars && overlays && typeof frame.mjd === "number") {
-      const r = Math.max(2, w / 45);
-      ctx.lineWidth = Math.max(1, w / 300);
+      const r = 1.6;
+      ctx.lineWidth = 1.5 / UPSCALE;
       for (const m of markersFor(overlays, result.grid, frame.mjd)) {
         const x = m.x + 0.5;
         const y = h - (m.y + 0.5);
@@ -115,7 +119,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
       const gap = Math.max(3, w / 40);
       const len = Math.max(4, w / 25);
       ctx.strokeStyle = cssVar(canvas, "--accent-fill");
-      ctx.lineWidth = Math.max(1, w / 240);
+      ctx.lineWidth = 2 / UPSCALE;
       ctx.beginPath();
       ctx.moveTo(x - gap - len, y);
       ctx.lineTo(x - gap, y);
@@ -164,7 +168,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
   return (
     <section className="player" onKeyDown={onKey} tabIndex={0} aria-label="Time-lapse player">
       <figure className="plate player-figure">
-        <canvas ref={canvasRef} width={w} height={h} className="player-canvas" role="img" aria-label={`Frame ${s.index + 1} of ${frames.length}: ${frameLabel(frame)}`} />
+        <canvas ref={canvasRef} width={w * UPSCALE} height={h * UPSCALE} className="player-canvas" role="img" aria-label={`Frame ${s.index + 1} of ${frames.length}: ${frameLabel(frame)}`} />
         <figcaption className="caption">
           Fig. 1 · {frameLabel(frame)}
           {frame.utc ? ` · ${frame.utc.replace("T", " ").replace(/:\d\d(\.\d+)?Z$/, " UTC")}` : ""}
