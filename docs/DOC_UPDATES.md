@@ -64,3 +64,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-11 | STATUS | After the 10 pm call: who is on what for G2, Role 4 change, About page live |
 | 2026-11-11 | README, SUBMISSION (new) | README: live links, what works today, Windows activate fix, team list; new submission draft for the Space Apps form |
 | 2026-11-11 | STATUS | /api/opinions built, submission draft, Shivaansh has GitHub access |
+| 2026-11-12 | VALIDATION, STATUS, REFERENCES, AI_USAGE | D3.2 done; D3.3 fitter in, V1 pass with the Gaia epoch, V2 still to run; Shivaansh's references and AI-use row |
