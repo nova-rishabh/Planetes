@@ -24,11 +24,14 @@ Updated Nov 11, 2026 (after the 10 pm call) · Owner: Rishabh · Update this whe
 | D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. All 5 benchmarks baked Nov 11 (`api/bake.py`), live Nov 12. Re-bake from GitHub Actions ("Bake benchmarks", docs/RUNBOOK.md) |
 | D1.4/D1.5 spectrum chart + Two Opinions panel | Rishabh | **Built** Nov 9 against the contract; show "no baked … yet" until `spectrum.json` / `opinions.json` exist |
 | D2.4 photometry → D2.3 stacks | Tirth | **In progress** Nov 11 (D2.4 first). Due for G2 Thu 12, 22:00 |
-| D3.2 overlays → D3.3 motion fit | Shivaansh | **In progress** Nov 11 (zips) |
+| D3.2 overlays | Shivaansh | **Done** Nov 12: Gaia DR3 + AllWISE markers within 1 px on 4 real Barnard frames; `/api/overlays`, `/api/resolve` |
+| D3.3 motion fit | Shivaansh | **Fitter built** Nov 12 (`motion.py`); V1 passes with the Gaia epoch. Next: sub-pixel SPHEREx positions so V2 (ε Indi B) can run |
 | D4.1 spectrum layer → D4.3 typer → D4.2 thermometer | New Role 4 lead (replaced Shimaya, who left Nov 11) | **Starting** Nov 11; also fact-checks `/about` |
-| About page `/about` | Rishabh | **Live** Nov 11; needs Role 4 fact-check |
+| About page `/about` | Rishabh | **Live** Nov 11; needs a science fact-check |
+| `POST /api/opinions` | Rishabh | **Built** Nov 11: contract-valid; "can't tell" with reasons until D3.3 and D4.1/D4.3 plug into `api/opinions.py` (`measure_motion`, `measure_spectrum`) |
+| README + submission draft | Rishabh | **Drafted** Nov 11 (`docs/SUBMISSION.md`); finalise at freeze against the official guide |
 | All other D-codes (docs/06) | — | Not started |
-| Validation V1–V10 | — | Not run (docs/VALIDATION.md) |
+| Validation V1–V10 | — | V1 pass (with Gaia epoch), V5 pass (ε Indi B T3, 2.5–3.7 pc, in PR #11); others not run (docs/VALIDATION.md) |
 
 ## Open items (PM_PLAYBOOK §7; tick when done)
 
@@ -41,7 +44,7 @@ Updated Nov 11, 2026 (after the 10 pm call) · Owner: Rishabh · Update this whe
 - [x] Google Cloud Storage cache: project `planetes-514208`, key in Render (Nov 9)
 - [x] Camber dropped (Nov 9): bakes run in GitHub Actions, validation on laptops
 - [x] GitHub: `main` protected (PR + green CI; admin bypass), Nov 9
-- [x] GitHub collaborators: dropped Nov 11 (no usernames shared). Teammates send PRs from their forks (Rishabh approves CI) or zips
+- [x] GitHub access: Shivaansh added Nov 11 (branch + PR into `main`). Others send PRs from their forks (Rishabh approves CI) or zips
 - [ ] Science [VERIFY] (Role 4 lead, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
 - [ ] Nov 13: read the Resources tab and Submission/Judging guides; update docs/01 and docs/08
 
@@ -49,7 +52,7 @@ Updated Nov 11, 2026 (after the 10 pm call) · Owner: Rishabh · Update this whe
 
 G2 Thu Nov 12, 22:00: stacks + difference (D2.3), overlays (D3.2), first spectrum (D2.4 + D4.1). G3 Fri Nov 13, 23:00: Two Opinions for the 5 benchmarks (needs D3.3 + D4.3) + Validation page; read the official Resources/Submission/Judging guides. Freeze Sat 14, 18:00. Submit Sun 15, 18:00.
 
-Rishabh/agent: `/api/opinions` + `opinions.json` (empty with a reason until real opinions exist), bake stacks when D2.3 lands, review teammates' work, README + submission draft (doc 08).
+Rishabh/agent: bake `opinions.json` once real opinions exist, bake stacks when D2.3 lands, review teammates' work, README + submission draft (doc 08).
 
 ## Open [VERIFY] items
 

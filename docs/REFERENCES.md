@@ -36,3 +36,20 @@ See docs/04-Science-Validation.md, Sources section.
 - ESA Gaia Archive, Gaia DR3: https://gea.esac.esa.int/archive/ — astrometric positions, proper motions, parallaxes and reference epochs.
 - Astropy `SkyCoord.apply_space_motion`: https://docs.astropy.org/en/stable/coordinates/apply_space_motion.html — epoch propagation.
 - Astroquery SIMBAD and Gaia modules: https://astroquery.readthedocs.io/en/latest/ — Python access to the catalog services.
+
+### Added in D3.2 (overlays) and D3.3 (motion fit)
+- IRSA TAP table `gaia_dr3_source`: Gaia DR3 astrometric catalog queried by cone search around each target for overlay markers; epoch-propagated to each frame's MJD using `SkyCoord.apply_space_motion`.
+- IRSA TAP table `allwise_p3as_psd`: AllWISE Point Source Database queried by cone search around each target for near-infrared overlay markers.
+- SPHEREx pixel scale ≈ 6.2 arcsec/px (all 4 tested frames): used as the accuracy threshold for overlay alignment.
+- Astropy WCS `all_world2pix`: https://docs.astropy.org/en/stable/wcs/ — RA/Dec → pixel projection using the IMAGE-extension WCS (SIP distortions). D6 mirror handled automatically via the CD matrix; never flipped by hand.
+- Astropy `solar_system_ephemeris` (built-in DE430 ephemeris): used by `trial_circular_orbit_rate` for approximate angular-rate range to distance conversion.
+- Barnard's Star Gaia DR3 source ID 4472832130942575872: ra = 269.44850, dec = 4.73942, epoch = 2016.0, pmra = −801.551 mas/yr, pmdec = 10 362.394 mas/yr, parallax = 546.976 mas (from IRSA TAP `gaia_dr3_source`; corroborated by `web/public/data/targets/barnard/target.json`).
+
+## Science papers
+See docs/04-Science-Validation.md, Sources section.
+### Added in D2.4 (interim) / D4.1 / D4.3 (photometry, spectrum, typer)
+- photutils (Astropy affiliated, BSD-3): https://photutils.readthedocs.io/ — circular aperture and annulus photometry.
+- SpeX Prism Library spectral standards M0–T9 (Burgasser 2014, ASInC 11, 7; IRTF SpeX), files and standards list from SPLAT: https://github.com/aburgasser/splat (MIT) — templates in `pipeline/src/planetes/data/spex_standards.csv`.
+- Dupuy & Liu 2012, ApJS 201, 19 — absolute 2MASS J vs spectral type polynomial (M6–T9), coefficients as tabulated in SPLAT `initialize.py`.
+- Cohen, Wheaton & Megeath 2003, AJ 126, 1090 — 2MASS zero points (J 1594 Jy) used for the apparent J magnitude and the 2MASS cross-check.
+- 2MASS Point Source Catalog via IRSA TAP (`fp_psc`) — flux-scale cross-check of our photometry.

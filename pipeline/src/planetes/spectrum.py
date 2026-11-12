@@ -14,8 +14,8 @@ _SRC_DIR = str(Path(__file__).resolve().parents[1])
 if _SRC_DIR not in sys.path:
     sys.path.insert(0, _SRC_DIR)
 
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable
 
 import numpy as np
 import pandas as pd
@@ -53,15 +53,15 @@ def _select_frames_per_detector(df: pd.DataFrame, max_per_detector: int = 18) ->
 
 def build_spectrum(
     req: SpectrumRequest,
-    cache: Cache | None = None,
     code_version: str = "d2.4-1.0",
-    concurrency: int = 8,
+    cache: Cache | None = None,
+    workers: int = 8,
+    progress: Callable[[int, int | None, str], None] | None = None,
     max_per_detector: int = 18,
-    progress_cb: Callable[[int, int | None, str], None] | None = None,
 ) -> SpectrumResult:
     """Run full spectrum extraction from a SpectrumRequest."""
-    if progress_cb:
-        progress_cb(0, None, "searching SPHEREx archive for target coverage")
+    if progress:
+        progress(0, None, "searching SPHEREx archive for target coverage")
 
     found = access.find_frames(req.ra, req.dec, size_deg=CUTOUT_SIZE_DEG, release=req.release)
     if req.pm is not None and not found.empty:
@@ -85,10 +85,10 @@ def build_spectrum(
 
     for start in range(0, total, BATCH_SIZE):
         batch = chosen.iloc[start : start + BATCH_SIZE]
-        if progress_cb:
-            progress_cb(start, total, f"measuring photometry ({start}/{total} frames)")
+        if progress:
+            progress(start, total, f"measuring photometry ({start}/{total} frames)")
 
-        blobs = access.fetch_cutouts(batch, max_concurrent=concurrency, cache=cache)
+        blobs = access.fetch_cutouts(batch, max_concurrent=workers, cache=cache)
         ordered_blobs = [blobs.get(f"cutouts/{row['frame_id']}.fits") for _, row in batch.iterrows()]
         valid_blobs = [b for b in ordered_blobs if b is not None]
 
@@ -107,7 +107,7 @@ def build_spectrum(
             except Exception:
                 return None
 
-        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
             batch_pts = list(pool.map(_measure_one, valid_blobs))
 
         for pt in batch_pts:
@@ -118,8 +118,8 @@ def build_spectrum(
 
         del blobs
 
-    if progress_cb:
-        progress_cb(total, total, "finalizing spectrum")
+    if progress:
+        progress(total, total, "finalizing spectrum")
 
     points.sort(key=lambda pt: (pt.wavelength_um or 0.0, pt.mjd))
     n_points = len(points)
@@ -141,13 +141,14 @@ def build_spectrum(
             code_version=code_version,
         ),
     )
+
+
 if __name__ == "__main__":
     import time
 
     root = Path(__file__).resolve().parents[3]
     cache = Cache(root / ".planetes-cache")
 
-    # Test with an unsaturated reference star (from IRSA validation target)
     req = SpectrumRequest(
         ra=115.8000,
         dec=-21.6785,
@@ -160,7 +161,7 @@ if __name__ == "__main__":
         req,
         cache=cache,
         max_per_detector=3,
-        progress_cb=lambda done, total, msg: print(f"[{done}/{total or '?'}] {msg}"),
+        progress=lambda done, total, msg: print(f"[{done}/{total or '?'}] {msg}"),
     )
     elapsed = time.perf_counter() - t0
 
