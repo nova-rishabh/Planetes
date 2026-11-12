@@ -2,6 +2,7 @@
 
     python -m api.bake barnard [rdra ...]            (time-lapse; from the repo root; needs IRSA and SIMBAD)
     python -m api.bake --spectrum epsindib [...]     (spectrum.json: forced photometry on every exposure)
+    python -m api.bake --overlays barnard [...]      (overlays.json: Gaia DR3 + AllWISE moved to each epoch)
 
 Writes, per target: target.json (Resolved), timelapse_exposures.json (TimelapseResult) and frames/*.webp|png.
 Frame URLs are relative (./frames/...), so the web app loads baked and live results the same way.
@@ -15,6 +16,7 @@ from pathlib import Path
 
 from planetes.cache import Cache
 from planetes.contracts import ProperMotion, SpectrumRequest, TimelapseRequest
+from planetes.overlays import build_overlays, query_allwise_sources, query_gaia_sources
 from planetes.resolve import BENCHMARK_QUERIES, resolve
 from planetes.spectrum import build_spectrum
 
@@ -98,9 +100,29 @@ def bake_spectrum(target_id: str) -> Path:
     return out / "spectrum.json"
 
 
+OVERLAY_MAX_SOURCES = 300
+
+
+def bake_overlays(target_id: str) -> Path:
+    """overlays.json for a baked time-lapse: catalogue stars covering its grid, at each observing epoch."""
+    out = DATA / target_id
+    tl = json.loads((out / "timelapse_exposures.json").read_text(encoding="utf-8"))
+    grid = tl["grid"]
+    ra, dec = grid["crval_deg"]
+    radius_deg = grid["cdelt_deg"] * max(grid["naxis"]) / 2 * 1.42  # covers the corners
+    # One position per day of observation is enough: nothing in these fields moves a pixel within a day.
+    mjds = sorted({round(float(f["mjd"]), 1) for f in tl["frames"]})
+    gaia = query_gaia_sources(ra, dec, radius_deg, max_sources=OVERLAY_MAX_SOURCES)
+    wise = query_allwise_sources(ra, dec, radius_deg, max_sources=OVERLAY_MAX_SOURCES)
+    result = build_overlays(gaia, wise, mjds)
+    (out / "overlays.json").write_text(result.model_dump_json(), encoding="utf-8")
+    return out / "overlays.json"
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-    spectrum = "--spectrum" in args
+    step = {"--spectrum": bake_spectrum, "--overlays": bake_overlays}
+    fn = next((step[a] for a in args if a in step), bake)
     for tid in [a for a in args if not a.startswith("--")] or ["barnard"]:
-        print(f"Baking {'spectrum of ' if spectrum else ''}{tid}…", flush=True)
-        print("  wrote", bake_spectrum(tid) if spectrum else bake(tid))
+        print(f"Baking {fn.__name__} for {tid}…", flush=True)
+        print("  wrote", fn(tid))
