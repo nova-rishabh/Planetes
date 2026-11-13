@@ -1,4 +1,4 @@
-"""Time-lapse job: POST /api/timelapse -> planetes.access (find + download) -> planetes.frames (align) ->
+﻿"""Time-lapse job: POST /api/timelapse -> planetes.access (find + download) -> planetes.frames (align) ->
 planetes.stack (coadd / difference / sum / color) -> planetes.render (shared stretch, WebP, flag overlay) ->
 files in the cache and a TimelapseResult.
 """
@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import hashlib
 import math
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
+from typing import Any
 
 import astropy.units as u
 import numpy as np
@@ -103,22 +105,32 @@ def run_timelapse(
     var_maps: list[np.ndarray] = []
     good_masks: list[np.ndarray] = []
 
+    def _align_item(
+        item: tuple[bytes, dict[str, Any], tuple[float, float]],
+    ) -> tuple[frames.PreparedFrame, np.ndarray | None, np.ndarray | None]:
+        blob, row_dict, t_coord = item
+        if req.mode != "exposures":
+            return stack.prepare_frame_and_variance(blob, row_dict, ref_wcs, (size_px, size_px), target_coord=t_coord)
+        pf = frames.prepare_frame(blob, row_dict, ref_wcs, (size_px, size_px), target_coord=t_coord)
+        return pf, None, None
+
     total = len(chosen)
-    for start in range(0, total, BATCH):
-        batch = chosen.iloc[start : start + BATCH]
-        ctx.progress(start, total, "downloading and aligning images")
-        data = access.fetch_cutouts(batch, max_concurrent=concurrency, cache=cache)
-        for i, (_, row) in enumerate(batch.iterrows()):
-            blob = data.get(f"cutouts/{row['frame_id']}.fits")
-            if blob is None:
-                continue
-            pf = frames.prepare_frame(blob, row.to_dict(), ref_wcs, (size_px, size_px), target_coord=targets[start + i])
-            prepared.append(pf)
-            if req.mode != "exposures":
-                _, r_var, r_good = stack.prepare_reprojected_variance(blob, ref_wcs, (size_px, size_px))
-                var_maps.append(r_var)
-                good_masks.append(r_good)
-        del data
+    with ThreadPoolExecutor(max_workers=min(concurrency, BATCH)) as pool:
+        for start in range(0, total, BATCH):
+            batch = chosen.iloc[start : start + BATCH]
+            ctx.progress(start, total, "downloading and aligning images")
+            data = access.fetch_cutouts(batch, max_concurrent=concurrency, cache=cache)
+            work: list[tuple[bytes, dict[str, Any], tuple[float, float]]] = []
+            for i, (_, row) in enumerate(batch.iterrows()):
+                blob = data.get(f"cutouts/{row['frame_id']}.fits")
+                if blob is not None:
+                    work.append((blob, row.to_dict(), targets[start + i]))
+            for pf, r_var, r_good in pool.map(_align_item, work):
+                prepared.append(pf)
+                if r_var is not None and r_good is not None:
+                    var_maps.append(r_var)
+                    good_masks.append(r_good)
+            del data
 
     if not prepared:
         raise JobError("IRSA_ERROR", "None of the images could be downloaded", "Try again in a few minutes.")
@@ -164,7 +176,6 @@ def run_timelapse(
         )
     )
 
-    # Group by (epoch_index, detector) -> per-epoch per-detector inverse-variance stacks
     grouped: dict[tuple[int, int], list[int]] = {}
     for idx, p in enumerate(prepared):
         grouped.setdefault((p.frame.epoch_index, int(p.frame.detector.root)), []).append(idx)
