@@ -219,9 +219,9 @@ class SpectrumProvenance(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    release: Literal["QR2", "QR3"]
+    release: Literal["QR2", "QR3", "DR1"]
     """
-    SPHEREx Quick Release a measurement came from.
+    SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (at IRSA from Nov 2026; QR2 is no longer listed there).
     """
     code_version: str = Field(..., min_length=1)
 
@@ -246,9 +246,9 @@ class SpectrumRequest(BaseModel):
     """
     Declination, ICRS, degrees.
     """
-    release: Literal["auto", "QR3", "QR2"] = "auto"
+    release: Literal["auto", "DR1", "QR3", "QR2"] = "auto"
     """
-    Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
+    Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.
     """
     method: Literal["auto", "psf", "aperture"] = "auto"
     """
@@ -320,9 +320,9 @@ class TimelapseRequest(BaseModel):
     detectors: list[Detector] = Field(
         [1, 2, 3, 4, 5, 6], max_length=6, min_length=1, validate_default=True
     )
-    release: Literal["auto", "QR3", "QR2"] = "auto"
+    release: Literal["auto", "DR1", "QR3", "QR2"] = "auto"
     """
-    Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
+    Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.
     """
     mjd_start: float | None = None
     mjd_end: float | None = None
@@ -374,9 +374,9 @@ class Frame(BaseModel):
     """
     obs_ids combined into this frame.
     """
-    release: Literal["QR2", "QR3"]
+    release: Literal["QR2", "QR3", "DR1"]
     """
-    SPHEREx Quick Release a measurement came from.
+    SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (at IRSA from Nov 2026; QR2 is no longer listed there).
     """
     epoch_index: int | None = Field(..., ge=0)
     mjd: float | None
@@ -419,9 +419,9 @@ class Health(BaseModel):
     """
     Result of a live request to the IRSA TAP service.
     """
-    default_release: Literal["QR2", "QR3"]
+    default_release: Literal["QR2", "QR3", "DR1"]
     """
-    SPHEREx Quick Release a measurement came from.
+    SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (at IRSA from Nov 2026; QR2 is no longer listed there).
     """
     cache_entries: int = Field(..., ge=0)
 

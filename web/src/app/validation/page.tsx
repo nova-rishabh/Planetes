@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteNav } from "@/components/SiteNav";
 import { parseValidation, plain, stateOf, type ValidationState } from "@/lib/validation";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function Validation() {
   );
   return (
     <main className="app about">
+      <SiteNav current="/validation" />
       <header className="masthead">
         <div>
           <h1>Validation</h1>
@@ -34,7 +36,7 @@ export default function Validation() {
             page.
           </p>
         </div>
-        <Link href="/" className="btn">
+        <Link href="/viewer" className="btn">
           Back to the viewer
         </Link>
       </header>

@@ -11,6 +11,7 @@ import { FOV_MAX_DEG, FOV_MIN_DEG, MODES, parseView, serializeView, type Mode, t
 import { ObjectPanels } from "./ObjectPanels";
 import { Player } from "./Player";
 import { SkyContext } from "./SkyContext";
+import { Tour } from "./Tour";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const FOV_CHOICES = [0.03, 0.05, 0.1, 0.2, 0.3, 0.5].filter((f) => f >= FOV_MIN_DEG && f <= FOV_MAX_DEG);
@@ -203,7 +204,12 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
         </section>
       )}
 
-      {heading ? <h2 className="view-heading">{heading}</h2> : null}
+      {heading ? (
+        <div className="view-heading-row">
+          <h2 className="view-heading">{heading}</h2>
+          {!embed ? <Tour /> : null}
+        </div>
+      ) : null}
       {state.kind === "ready" ? (
         <Player
           key={`${target ?? `${ra_deg},${dec_deg}`}-${mode}-${fov_deg}-${detKey}`}
@@ -218,7 +224,11 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
       ) : (
         <LoadView state={state} onRetry={() => setAttempt((n) => n + 1)} />
       )}
-      {!embed && heading ? <ObjectPanels key={target ?? "position"} target={target} /> : null}
+      {!embed && heading ? (
+        <div data-tour="panels">
+          <ObjectPanels key={target ?? "position"} target={target} />
+        </div>
+      ) : null}
       {!embed && skyPos ? <SkyContext ra_deg={skyPos.ra_deg} dec_deg={skyPos.dec_deg} fov_deg={fov_deg} /> : null}
     </div>
   );
