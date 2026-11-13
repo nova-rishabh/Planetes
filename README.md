@@ -7,11 +7,12 @@ A public web tool: type sky coordinates and watch real NASA SPHEREx infrared ima
 **Try it:** https://planetes.divergit.com · API health: https://planetes-api.onrender.com/api/health
 
 ## What works today
-- Any RA/Dec → every SPHEREx exposure of that spot (QR2 + QR3, from IRSA) as a time-lapse: play, step, scrub, blink two frames, quality flags, per-frame date/detector/wavelength.
-- The five challenge targets (Barnard's Star, ε Indi B, WISE 0855, RW Aur, R Dra) baked from real data, so they load instantly.
-- Shareable URLs and an `/embed` page; sky-context map (Aladin Lite); [About](https://planetes.divergit.com/about) page.
-- `POST /api/opinions` (Two Opinions contract); it answers "can't tell" with reasons until the motion fit and spectrum typer are in.
-- In progress: detector stacks and differences, Gaia/AllWISE overlays, spectra on the fly, Two Opinions results, Validation page.
+- **Homepage** that opens on a real SPHEREx time-lapse and walks through blink, colour, Two Opinions and Planet X with real frames and numbers.
+- **Viewer** (`/viewer`): any RA/Dec → every SPHEREx exposure of that spot (IRSA: DR1 + QR3; QR2 for older bakes) as a time-lapse: play, step, scrub, blink two frames, quality flags, Gaia DR3 + AllWISE stars moved to each date, per-frame date/detector/wavelength, a sound mode and a guided tour.
+- The five challenge targets (Barnard's Star, ε Indi B, WISE 0855, RW Aur, R Dra) baked from real data: time-lapse, catalogue stars, spectrum, Two Opinions.
+- **Spectrum** from 0.75 to 5 µm with every rejected point explained; brown-dwarf/star **typer** (ε Indi B → T3, 2.5–3.7 pc vs 3.64 pc known) and an asteroid **thermometer** (NEATM).
+- **Planet X check** (`/planet-x`), **Validation** (`/validation`), **About** (`/about`); shareable URLs and `/embed`.
+- In review / landing next: detector stacks + difference images, measured motion (Two Opinions verdicts), known asteroids from JPL (V6).
 
 ## Docs (read in this order)
 | # | Doc | What it covers |
