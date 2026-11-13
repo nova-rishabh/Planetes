@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
 import { BlinkPlate } from "@/components/landing/BlinkPlate";
 import { LegacyLinkRedirect } from "@/components/landing/LegacyLinkRedirect";
+import { Colour3D } from "@/components/landing/Colour3D";
 import { Hero3D } from "@/components/landing/Hero3D";
 import { PlateLoop } from "@/components/landing/PlateLoop";
 import { Reveal } from "@/components/landing/Reveal";
@@ -138,46 +139,55 @@ export default function Home() {
 
       {/* 3 · 102 colours */}
       {eps && epsColours.length > 0 && (
-        <section className="lp-scene app">
-          <Reveal className="lp-scene-text lp-narrow">
-            <p className="lp-step mono">02 · Colour</p>
-            <h2>One patch of sky, 102 colours of infrared.</h2>
-            <p>
-              SPHEREx has six detectors, each seeing a slice of infrared from 0.75 to 5 µm. Here is ε Indi B, a pair of
-              brown dwarfs, in each of them. Put every visit together and you get its spectrum, measured, not looked up.
-            </p>
-          </Reveal>
-          <Reveal>
-            <ol className="lp-colours">
-              {epsColours.map((f, k) => (
-                <li key={f.src} style={{ transitionDelay: `${k * 90}ms` }}>
-                  <div className="plate lp-mini">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- real baked WebP */}
-                    <img
-                      src={f.src}
-                      alt={`ε Indi B on detector D${f.detector}`}
-                      width={eps.naxis[0]}
-                      height={eps.naxis[1]}
-                    />
-                  </div>
-                  <span className="mono">
-                    D{f.detector} · {f.wavelength_um?.toFixed(2)} µm
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-          {epsSpectrum && epsSpectrum.points.length > 0 && (
-            <Reveal className="lp-spec-wrap">
-              <SpectrumSketch spectrum={epsSpectrum} label="ε Indi B" />
-              <p className="lp-figcap">
-                <span className="mono">Fig. 2</span> {epsSpectrum.nUsed} of {epsSpectrum.nTotal} real SPHEREx points for
-                ε Indi B. The rest were rejected for a stated reason (flags, saturation, a neighbour star), and the
-                viewer shows each one.
-              </p>
-            </Reveal>
-          )}
-        </section>
+        <Colour3D
+          tiles={epsColours.map((f) => ({ src: f.src, detector: f.detector, wavelength_um: f.wavelength_um }))}
+          points={epsSpectrum?.points.map((p) => ({ um: p.um, ujy: p.ujy, det: p.det })) ?? []}
+          nUsed={epsSpectrum?.nUsed ?? 0}
+          nTotal={epsSpectrum?.nTotal ?? 0}
+          spectrumLine={epsOpinions?.spectrum ?? null}
+          flat={
+            <section className="lp-scene app">
+              <Reveal className="lp-scene-text lp-narrow">
+                <p className="lp-step mono">02 · Colour</p>
+                <h2>One patch of sky, 102 colours of infrared.</h2>
+                <p>
+                  SPHEREx has six detectors, each seeing a slice of infrared from 0.75 to 5 µm. Here is ε Indi B, a pair of
+                  brown dwarfs, in each of them. Put every visit together and you get its spectrum, measured, not looked up.
+                </p>
+              </Reveal>
+              <Reveal>
+                <ol className="lp-colours">
+                  {epsColours.map((f, k) => (
+                    <li key={f.src} style={{ transitionDelay: `${k * 90}ms` }}>
+                      <div className="plate lp-mini">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- real baked WebP */}
+                        <img
+                          src={f.src}
+                          alt={`ε Indi B on detector D${f.detector}`}
+                          width={eps.naxis[0]}
+                          height={eps.naxis[1]}
+                        />
+                      </div>
+                      <span className="mono">
+                        D{f.detector} · {f.wavelength_um?.toFixed(2)} µm
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </Reveal>
+              {epsSpectrum && epsSpectrum.points.length > 0 && (
+                <Reveal className="lp-spec-wrap">
+                  <SpectrumSketch spectrum={epsSpectrum} label="ε Indi B" />
+                  <p className="lp-figcap">
+                    <span className="mono">Fig. 2</span> {epsSpectrum.nUsed} of {epsSpectrum.nTotal} real SPHEREx points for
+                    ε Indi B. The rest were rejected for a stated reason (flags, saturation, a neighbour star), and the
+                    viewer shows each one.
+                  </p>
+                </Reveal>
+              )}
+            </section>
+          }
+        />
       )}
 
       {/* 4 · Two Opinions */}
