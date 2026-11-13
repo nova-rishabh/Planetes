@@ -205,3 +205,22 @@
   .h3d-ticker { top: auto; bottom: 1rem; right: 1rem; }
   .h3d-label { display: none; }
 }
+
+/* Colour scene (Colour3D): detectors → spectrum. Reuses the Hero3D sticky/canvas rules. */
+.s3d { position: relative; height: 460vh; }
+.s3d-note-a { opacity: clamp(0, min(calc((var(--p) - 0.03) * 12), calc((0.33 - var(--p)) * 12)), 1); top: 6rem; bottom: auto; }
+.s3d-note-b { opacity: clamp(0, min(calc((var(--p) - 0.37) * 12), calc((0.56 - var(--p)) * 12)), 1); top: 6rem; bottom: auto; }
+.s3d-note-c { opacity: clamp(0, calc((var(--p) - 0.72) * 10), 1); top: 6rem; bottom: auto; }
+.s3d-tile-label {
+  font-size: 0.6875rem; color: var(--ink-muted); white-space: nowrap; pointer-events: none;
+  opacity: clamp(0, min(calc((var(--p) - 0.14) * 10), calc((0.5 - var(--p)) * 10)), 1);
+}
+.s3d-axis {
+  font-size: 0.6875rem; color: var(--ink-muted); white-space: nowrap; pointer-events: none;
+  opacity: clamp(0, calc((var(--p) - 0.62) * 10), 1);
+}
+.s3d-axis-y { transform: translateX(-60%); }
+@media (max-width: 768px) {
+  .s3d-note-a, .s3d-note-b, .s3d-note-c { top: 4.5rem; }
+  .s3d-tile-label { display: none; }
+}

@@ -88,20 +88,31 @@ export function acrossDetectors(t: LandingTarget): LandingFrame[] {
 }
 
 export type LandingSpectrum = {
-  points: { um: number; ujy: number; err: number }[];
+  points: { um: number; ujy: number; err: number; det: number }[];
   nUsed: number;
   nTotal: number;
 };
 
 export function loadSpectrum(id: string): LandingSpectrum | null {
   const d = readJson<{
-    points: { used: boolean; wavelength_um: number | null; flux_ujy: number | null; flux_err_ujy: number | null }[];
+    points: {
+      used: boolean;
+      detector: number;
+      wavelength_um: number | null;
+      flux_ujy: number | null;
+      flux_err_ujy: number | null;
+    }[];
     summary: { n_used: number; n_points: number };
   }>(id, "spectrum.json");
   if (!d) return null;
   const points = d.points
     .filter((p) => p.used && p.wavelength_um !== null && p.flux_ujy !== null)
-    .map((p) => ({ um: p.wavelength_um as number, ujy: p.flux_ujy as number, err: p.flux_err_ujy ?? 0 }))
+    .map((p) => ({
+      um: p.wavelength_um as number,
+      ujy: p.flux_ujy as number,
+      err: p.flux_err_ujy ?? 0,
+      det: p.detector,
+    }))
     .sort((a, b) => a.um - b.um);
   return { points, nUsed: d.summary.n_used, nTotal: d.summary.n_points };
 }

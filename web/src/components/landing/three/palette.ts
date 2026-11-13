@@ -27,3 +27,8 @@ export function readPalette(): Palette {
     border: token("--border"),
   };
 }
+
+/** One colour per detector D1..D6, from the colour-blind-safe series tokens (--epoch-1..6). */
+export function readDetectorColours(): Color[] {
+  return [1, 2, 3, 4, 5, 6].map((k) => token(`--epoch-${k}`));
+}

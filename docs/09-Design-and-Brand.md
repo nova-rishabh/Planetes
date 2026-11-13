@@ -91,3 +91,4 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 - Colours in 3D are read from the tokens at runtime (`three/palette.ts`); no hex in the scene.
 - Fallbacks: reduced motion or no WebGL2 → the flat hero with the 2D time-lapse. Phones: lower pixel ratio, simpler glass, wider lens.
 - Libraries load after first paint (`next/dynamic`, `ssr: false`).
+- Colour scene (Phase 2): ε Indi B's six real detector frames fly in, then every used spectrum point flies from its detector to its place on the spectrum, and the frames collapse into wavelength bands under the axis. Point colours are the `--epoch-1..6` tokens (one per detector). Detector wavelength ranges come from the measured points, not hard-coded.

@@ -1,9 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useRef, type ReactNode } from "react";
 import type { StackFrame } from "./three/Scene";
-import { useReducedMotion } from "./useInView";
+import { use3DMode, useScrollProgress } from "./three/scroll";
 
 const Scene = dynamic(() => import("./three/Scene"), { ssr: false });
 
@@ -20,14 +20,6 @@ const fmt = (utc: string) =>
     year: "numeric",
     timeZone: "UTC",
   });
-
-function hasWebGL2(): boolean {
-  try {
-    return !!document.createElement("canvas").getContext("webgl2");
-  } catch {
-    return false;
-  }
-}
 
 /**
  * Scroll-driven 3D opening: the SPHEREx observatory (modelled in code), then the camera dives through the
@@ -49,98 +41,28 @@ export function Hero3D({
   movedArcsec: number | null;
   days: number | null;
 }) {
-  const reduced = useReducedMotion();
-  // The 3D layout is the first render (no layout jump); it switches to flat only if 3D can't run.
-  const [mode, setMode] = useState<"flat" | "3d">(frames.length > 1 ? "3d" : "flat");
-  const [ready, setReady] = useState(false);
-  const [narrow, setNarrow] = useState(false);
+  const { mode, narrow, ready } = use3DMode(frames.length > 1);
   const section = useRef<HTMLElement>(null);
   const sticky = useRef<HTMLDivElement>(null);
   const tickDate = useRef<HTMLSpanElement>(null);
   const tickIdx = useRef<HTMLSpanElement>(null);
   const progress = useRef(0);
 
-  useEffect(() => {
-    // Decided after mount: the server render is always the flat hero.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time capability check
-    setMode(!reduced && frames.length > 1 && hasWebGL2() ? "3d" : "flat");
-    setNarrow(window.matchMedia("(max-width: 768px)").matches);
-  }, [reduced, frames.length]);
-
-  useEffect(() => {
-    if (mode !== "3d") return;
-    // Start the WebGL scene once the page is idle, so it doesn't hold up the first paint and input.
-    // Phones wait for the first touch or scroll (or a few seconds), since parsing three.js is slow on them.
-    let done = false;
-    const start = () => {
-      if (done) return;
-      done = true;
-      setReady(true);
-    };
-    const phone = window.matchMedia("(max-width: 768px)").matches;
-    const events = ["pointerdown", "touchstart", "wheel", "scroll", "keydown"] as const;
-    for (const e of events) window.addEventListener(e, start, { once: true, passive: true });
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
-    let idle = 0;
-    const timer = window.setTimeout(
-      () => {
-        if (w.requestIdleCallback) idle = w.requestIdleCallback(start, { timeout: 2000 });
-        else start();
-      },
-      phone ? 3500 : 0,
-    );
-    return () => {
-      window.clearTimeout(timer);
-      if (idle) window.cancelIdleCallback?.(idle);
-      for (const e of events) window.removeEventListener(e, start);
-    };
-  }, [mode]);
-
-  useEffect(() => {
-    if (mode !== "3d" || !section.current) return;
-    let alive = true;
-    let cleanup = () => {};
-    (async () => {
-      const [{ gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-        import("lenis"),
-      ]);
-      if (!alive || !section.current) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const lenis = new Lenis({ lerp: 0.09 });
-      lenis.on("scroll", ScrollTrigger.update);
-      const raf = (t: number) => lenis.raf(t * 1000);
-      gsap.ticker.add(raf);
-      gsap.ticker.lagSmoothing(0);
-      const st = ScrollTrigger.create({
-        trigger: section.current,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          const p = self.progress;
-          progress.current = p;
-          sticky.current?.style.setProperty("--p", p.toFixed(4));
-          // Which plate the camera is passing (the stack runs from p = 0.4 to 1).
-          const k = Math.min(frames.length - 1, Math.max(0, Math.round(((p - 0.4) / 0.6) * (frames.length - 1))));
-          const f = frames[k];
-          if (f && tickDate.current && tickIdx.current) {
-            tickDate.current.textContent = fmt(f.utc);
-            tickIdx.current.textContent = `${k + 1}/${frames.length}`;
-          }
-        },
-      });
-      cleanup = () => {
-        st.kill();
-        gsap.ticker.remove(raf);
-        lenis.destroy();
-      };
-    })();
-    return () => {
-      alive = false;
-      cleanup();
-    };
-  }, [mode, frames]);
+  const onProgress = useCallback(
+    (p: number) => {
+      progress.current = p;
+      sticky.current?.style.setProperty("--p", p.toFixed(4));
+      // Which plate the camera is passing (the stack runs from p = 0.4 to 1).
+      const k = Math.min(frames.length - 1, Math.max(0, Math.round(((p - 0.4) / 0.6) * (frames.length - 1))));
+      const f = frames[k];
+      if (f && tickDate.current && tickIdx.current) {
+        tickDate.current.textContent = fmt(f.utc);
+        tickIdx.current.textContent = `${k + 1}/${frames.length}`;
+      }
+    },
+    [frames],
+  );
+  useScrollProgress(mode === "3d", section, onProgress);
 
   if (mode === "flat") return <>{flat}</>;
 
