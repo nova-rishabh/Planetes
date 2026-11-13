@@ -35,6 +35,26 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 
 **Spectrum chart, one colour per epoch:** Okabe–Ito colour-blind-safe set: `#0072B2`, `#E69F00`, `#009E73`, `#CC79A7`, `#D55E00`, `#56B4E9`. Rejected points are hollow `ink-muted` circles with a tooltip giving the reason.
 
+## 3d. "Bold editorial" (chosen by Rishabh, Nov 13)
+
+The light theme stays, but louder, to give the site character. Chosen from three style frames (dark infrared, bold editorial, observatory instrument).
+
+| Token | Value | Use |
+|---|---|---|
+| `--bg` | `#efebe3` | Paper |
+| `--surface` | `#f8f6f0` | Cards |
+| `--ink` / `--rule` | `#0f1012` | Text, 2 px section rules, card outlines and offset shadows |
+| `--ink-muted` | `#4f4c46` | Secondary text |
+| `--accent-fill` / `--accent-text` | `#e4501b` / `#b13a0d` | Things that moved; big accent words |
+| `--plate` | `#0b0c0e` | Behind sky frames |
+| `--epoch-1..6` | Okabe–Ito (unchanged) | Detector colours and the gradient strip |
+
+- Square corners (`--radius-panel`, `--radius-control` = 0).
+- Headlines: IBM Plex Sans Condensed 700, uppercase, very large, tight leading. Labels: IBM Plex Mono, small, letter-spaced. Body: IBM Plex Sans.
+- Every section opens with a 2 px rule, a mono section number (`02 — COLOUR`) and a giant title.
+- Real frames are shown as printed plates (border in paper colour, hard outline, offset shadow), stacked in CSS 3D.
+- Faint 12-column rules in the background; content max 1600 px with fluid gutters.
+
 ## 3b. It must not look AI-generated
 
 - No dark-mode-by-default, no purple-to-blue gradients, no glowing blobs, no glassmorphism, no emoji in the UI, no stock space photos or starfield backgrounds.
