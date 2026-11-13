@@ -149,3 +149,37 @@ export function loadOpinions(id: string): LandingOpinions {
 
 export const fmtDate = (utc: string): string =>
   new Date(utc).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
+export type StarField = {
+  /** Gaia DR3 stars around the target: offsets east/north of the target in arcmin, and G magnitude. */
+  stars: { x: number; y: number; mag: number }[];
+  /** The target's own Gaia positions at each SPHEREx visit (arcmin offsets), oldest first. */
+  path: [number, number][];
+  radiusArcmin: number;
+};
+
+/** Gaia stars from a target's baked overlays.json, as a flat sky chart centred on the target (real positions). */
+export function loadStarField(id: string): StarField | null {
+  const d = readJson<{
+    catalogs: {
+      name: string;
+      sources: { id: string; ra: number; dec: number; mag: number | null; at_mjd?: Record<string, [number, number]> }[];
+    }[];
+  }>(id, "overlays.json");
+  const gaia = d?.catalogs.find((c) => c.name.startsWith("Gaia"));
+  const target = gaia?.sources.find((s) => s.at_mjd && Object.keys(s.at_mjd).length > 1);
+  if (!gaia || !target) return null;
+  const cosd = Math.cos((target.dec * Math.PI) / 180);
+  const off = (ra: number, dec: number): [number, number] => [(ra - target.ra) * cosd * 60, (dec - target.dec) * 60];
+  const stars = gaia.sources
+    .filter((s) => s.mag !== null && s.id !== target.id)
+    .map((s) => {
+      const [x, y] = off(s.ra, s.dec);
+      return { x, y, mag: s.mag as number };
+    });
+  const path = Object.entries(target.at_mjd ?? {})
+    .sort((a, b) => Number(a[0]) - Number(b[0]))
+    .map(([, p]) => off(p[0], p[1]));
+  const radiusArcmin = Math.max(...stars.map((s) => Math.hypot(s.x, s.y)));
+  return { stars, path, radiusArcmin };
+}

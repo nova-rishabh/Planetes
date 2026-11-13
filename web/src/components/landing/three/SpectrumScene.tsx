@@ -182,11 +182,7 @@ function Points({
       // Short wavelengths leave first, so the spectrum draws from left to right.
       const a = 0.34 + ((pt.um - UM_MIN) / (UM_MAX - UM_MIN)) * 0.14;
       const t = win(p, a, a + 0.14);
-      dummy.position.set(
-        MathUtils.lerp(sx, tx, t),
-        MathUtils.lerp(sy, ty, t),
-        Math.sin(Math.PI * t) * 1.2 + 0.02,
-      );
+      dummy.position.set(MathUtils.lerp(sx, tx, t), MathUtils.lerp(sy, ty, t), Math.sin(Math.PI * t) * 1.2 + 0.02);
       const s = t <= 0 ? 0 : 1;
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
@@ -220,7 +216,13 @@ function Axes({ fmax }: { fmax: number }) {
         lineWidth={1}
       />
       {ticks.map((um) => (
-        <Html key={um} position={[chartX(um), CHART_Y0 - 0.42, 0]} center className="s3d-axis mono" zIndexRange={[5, 0]}>
+        <Html
+          key={um}
+          position={[chartX(um), CHART_Y0 - 0.42, 0]}
+          center
+          className="s3d-axis mono"
+          zIndexRange={[5, 0]}
+        >
           {um} µm
         </Html>
       ))}

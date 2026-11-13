@@ -27,10 +27,20 @@ export function SpectrumSketch({ spectrum, label }: { spectrum: LandingSpectrum;
 
   return (
     <div ref={ref} className="lp-spec" data-in={inView}>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${label}: ${spectrum.nUsed} measured SPHEREx points from 0.75 to 5 µm`}>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label={`${label}: ${spectrum.nUsed} measured SPHEREx points from 0.75 to 5 µm`}
+      >
         {BANDS.map(([name, lo, hiUm], k) => (
           <g key={name}>
-            <rect x={x(lo)} y={pad.t} width={x(hiUm) - x(lo)} height={H - pad.t - pad.b} className={k % 2 ? "lp-band-alt" : "lp-band"} />
+            <rect
+              x={x(lo)}
+              y={pad.t}
+              width={x(hiUm) - x(lo)}
+              height={H - pad.t - pad.b}
+              className={k % 2 ? "lp-band-alt" : "lp-band"}
+            />
             <text x={(x(lo) + x(hiUm)) / 2} y={H - pad.b + 14} textAnchor="middle" className="lp-axis">
               {name}
             </text>
@@ -41,7 +51,9 @@ export function SpectrumSketch({ spectrum, label }: { spectrum: LandingSpectrum;
             {um} µm
           </text>
         ))}
-        <text x={8} y={pad.t + 8} className="lp-axis">µJy</text>
+        <text x={8} y={pad.t + 8} className="lp-axis">
+          µJy
+        </text>
         {spectrum.points.map((p, k) => (
           <circle
             key={k}

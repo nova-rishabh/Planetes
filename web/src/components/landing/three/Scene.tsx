@@ -3,7 +3,17 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, Line, useTexture } from "@react-three/drei";
 import { useMemo, useRef, type RefObject } from "react";
-import { BackSide, DoubleSide, MathUtils, NearestFilter, SRGBColorSpace, Vector3, type Group, type MeshBasicMaterial, type Texture } from "three";
+import {
+  BackSide,
+  DoubleSide,
+  MathUtils,
+  NearestFilter,
+  SRGBColorSpace,
+  Vector3,
+  type Group,
+  type MeshBasicMaterial,
+  type Texture,
+} from "three";
 import { SpherexModel } from "./SpherexModel";
 import { readPalette, type Palette } from "./palette";
 
