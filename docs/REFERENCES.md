@@ -28,6 +28,13 @@ Add every dataset, library, repo, image and paper you use, in the same PR that u
 - google-cloud-storage (Apache-2.0): persistent cache in the `planetes-cache` bucket (`planetes/cache.py`).
 - GNU Make (GPL-3, build tool only, not shipped).
 
+### Added for the 3D homepage (Nov 13)
+- three.js r187 (MIT): 3D scene. @react-three/fiber 9 (MIT) and @react-three/drei 10 (MIT, `Environment`, `Lightformer`, `Line`, `useTexture`): three.js in React.
+- GSAP 3 with ScrollTrigger (GreenSock standard no-charge licence): scroll progress. Lenis (MIT): smooth scrolling.
+- Igloo Inc (igloo.inc, abeto × Bureaux; Awwwards Site of the Year 2024) and its Awwwards case study: idea of a scroll-driven camera through objects in glass/ice (no code or assets used).
+- 100,000 Stars (Google Chrome Experiments) and Space Time (space.pointdynamics.com): ideas only (3D built on real catalogue data).
+- SPHEREx spacecraft shape (three nested conical photon shields, telescope, hexagonal bus, fixed solar array): NASA/JPL mission descriptions and artist's concepts; our model is an approximate illustration made in code, no insignia.
+
 ## Science papers
 See docs/04-Science-Validation.md, Sources section.
 

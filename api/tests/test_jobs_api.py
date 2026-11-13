@@ -34,14 +34,29 @@ def _wait(c: TestClient, job_id: str) -> dict:
     raise AssertionError("job did not finish")
 
 
-def test_views_not_built_yet_say_so(client: TestClient) -> None:
-    resp = client.post("/api/timelapse", json={**VALID, "mode": "stacks"})
-    assert resp.status_code == 200
-    _validator("job_created.schema.json").validate(resp.json())
-    job = _wait(client, resp.json()["job_id"])
-    _validator("job.schema.json").validate(job)
-    assert job["status"] == "error" and job["result"] is None
-    assert job["error"]["code"] == "BAD_INPUT"
+@pytest.mark.network
+@pytest.mark.parametrize("mode", ["stacks", "difference"])
+def test_real_barnard_derived_views(client: TestClient, mode: str) -> None:
+    """Live IRSA: D2.3 stacks / difference of Barnard's Star D3 exposures validate against the contract."""
+    body = {
+        "ra": 269.44850252543836,
+        "dec": 4.739420051112412,
+        "fov_deg": 0.05,
+        "mode": mode,
+        "detectors": [3],
+        "max_frames": 12,
+        "pm": {"pm_ra_masyr": -801.5509783684709, "pm_dec_masyr": 10362.394206546573, "ref_epoch_jyear": 2016.0},
+    }
+    job_id = client.post("/api/timelapse", json=body).json()["job_id"]
+    for _ in range(1800):
+        job = client.get(f"/api/jobs/{job_id}").json()
+        if job["status"] in ("done", "error"):
+            break
+        time.sleep(0.5)
+    assert job["status"] == "done", job.get("error")
+    _validator("timelapse_result.schema.json").validate(job["result"])
+    kinds = {f["kind"] for f in job["result"]["frames"]}
+    assert kinds == {"stack" if mode == "stacks" else "difference"}
 
 
 @pytest.mark.network
