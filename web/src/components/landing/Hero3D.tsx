@@ -50,7 +50,9 @@ export function Hero3D({
   days: number | null;
 }) {
   const reduced = useReducedMotion();
-  const [mode, setMode] = useState<"flat" | "3d">("flat");
+  // The 3D layout is the first render (no layout jump); it switches to flat only if 3D can't run.
+  const [mode, setMode] = useState<"flat" | "3d">(frames.length > 1 ? "3d" : "flat");
+  const [ready, setReady] = useState(false);
   const [narrow, setNarrow] = useState(false);
   const section = useRef<HTMLElement>(null);
   const sticky = useRef<HTMLDivElement>(null);
@@ -64,6 +66,35 @@ export function Hero3D({
     setMode(!reduced && frames.length > 1 && hasWebGL2() ? "3d" : "flat");
     setNarrow(window.matchMedia("(max-width: 768px)").matches);
   }, [reduced, frames.length]);
+
+  useEffect(() => {
+    if (mode !== "3d") return;
+    // Start the WebGL scene once the page is idle, so it doesn't hold up the first paint and input.
+    // Phones wait for the first touch or scroll (or a few seconds), since parsing three.js is slow on them.
+    let done = false;
+    const start = () => {
+      if (done) return;
+      done = true;
+      setReady(true);
+    };
+    const phone = window.matchMedia("(max-width: 768px)").matches;
+    const events = ["pointerdown", "touchstart", "wheel", "scroll", "keydown"] as const;
+    for (const e of events) window.addEventListener(e, start, { once: true, passive: true });
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    let idle = 0;
+    const timer = window.setTimeout(
+      () => {
+        if (w.requestIdleCallback) idle = w.requestIdleCallback(start, { timeout: 2000 });
+        else start();
+      },
+      phone ? 3500 : 0,
+    );
+    return () => {
+      window.clearTimeout(timer);
+      if (idle) window.cancelIdleCallback?.(idle);
+      for (const e of events) window.removeEventListener(e, start);
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (mode !== "3d" || !section.current) return;
@@ -119,7 +150,7 @@ export function Hero3D({
     <section ref={section} className="h3d" aria-label="SPHEREx and a year of Barnard's Star">
       <div ref={sticky} className="h3d-sticky">
         <div className="h3d-canvas">
-          <Scene frames={frames} naxis={naxis} progress={progress} narrow={narrow} />
+          {ready && <Scene frames={frames} naxis={naxis} progress={progress} narrow={narrow} />}
         </div>
         <div className="h3d-hero app">{heroText}</div>
         <p className="h3d-label mono">SPHEREx · illustration, modelled from NASA/JPL&apos;s description</p>
