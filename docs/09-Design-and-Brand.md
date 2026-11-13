@@ -74,6 +74,8 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 | [Our World in Data](https://ourworldindata.org) | Light, honest data UI: clear charts, sources under every figure |
 | [Vercel dashboard](https://vercel.com) | Status badges, empty/loading/error states |
 | [Observable Plot gallery](https://observablehq.com/@observablehq/plot-gallery) | Clean scientific charts for the spectrum |
+| [Igloo Inc](https://www.igloo.inc) | Homepage base: scroll moves a camera through objects in glass/ice; pale, cool palette fits ours |
+| [100,000 Stars](https://stars.chromeexperiments.com) | 3D built on real catalogue data, zooming between scales |
 | [Figma colour combinations](https://www.figma.com/resource-library/color-combinations/) | Alternatives if we tweak: "Blue eclipse", "Under the moonlight", "Ocean tide" |
 
 ## 7. Implementation
@@ -81,3 +83,11 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 - Tokens live as CSS variables in `web/src/styles/tokens.css` (and the Tailwind theme if Tailwind is used). Components never use raw hex.
 - One light theme only for the hackathon. No dark mode.
 - Check every new screen with Lighthouse accessibility ≥ 90.
+
+## 8. 3D homepage (Nov 13)
+
+- Opening: SPHEREx modelled in code (an illustration, labelled so), then the camera dives through the telescope into a stack of real SPHEREx exposures, one glass plate per visit.
+- Every image on a plate is a real baked frame; the ring and line come from the baked target positions. No invented imagery.
+- Colours in 3D are read from the tokens at runtime (`three/palette.ts`); no hex in the scene.
+- Fallbacks: reduced motion or no WebGL2 → the flat hero with the 2D time-lapse. Phones: lower pixel ratio, simpler glass, wider lens.
+- Libraries load after first paint (`next/dynamic`, `ssr: false`).
