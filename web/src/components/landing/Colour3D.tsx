@@ -49,15 +49,13 @@ export function Colour3D({
           <p className="lp-step mono">02 · Colour</p>
           <h2>One patch of sky, six slices of infrared.</h2>
           <p>
-            SPHEREx splits the light onto six detectors, from 0.75 to 5 µm. These are ε Indi B, a pair of brown
-            dwarfs, on each of them.
+            SPHEREx splits the light onto six detectors, from 0.75 to 5 µm. These are ε Indi B, a pair of brown dwarfs,
+            on each of them.
           </p>
         </div>
         <div className="h3d-note s3d-note-b app">
           <h2>Every visit is one measurement.</h2>
-          <p>
-            Each dot is the brightness of ε Indi B in one real exposure, at the exact wavelength that pixel saw.
-          </p>
+          <p>Each dot is the brightness of ε Indi B in one real exposure, at the exact wavelength that pixel saw.</p>
         </div>
         <div className="h3d-note s3d-note-c app">
           <h2>Put them together: a spectrum, measured.</h2>

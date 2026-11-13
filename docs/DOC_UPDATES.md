@@ -83,3 +83,4 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-13 | (data) | Stacks, difference and colour time-lapses baked for the 5 benchmarks (bake --modes) |
 | 2026-11-13 | 09, REFERENCES, AI_USAGE | 3D homepage: new §8 (3D rules), Igloo Inc + 100,000 Stars as references; three.js, r3f, drei, GSAP, Lenis credited |
 | 2026-11-13 | 09, AI_USAGE | 3D homepage Phase 2: colour scene rules added to §8 |
+| 2026-11-13 | 09, AI_USAGE | 3D homepage Phase 3 rules added to §8 |

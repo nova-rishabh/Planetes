@@ -40,7 +40,12 @@ export function PlateLoop({
   const f = frames[i];
   if (!f) return null;
   const toSvg = (xy: [number, number]) => [xy[0] + 0.5, h - (xy[1] + 0.5)] as const;
-  const trail = showTrail ? frames.slice(0, i + 1).filter((x) => x.xy).map((x) => toSvg(x.xy!)) : [];
+  const trail = showTrail
+    ? frames
+        .slice(0, i + 1)
+        .filter((x) => x.xy)
+        .map((x) => toSvg(x.xy!))
+    : [];
 
   return (
     <figure className="lp-plate-fig" ref={ref}>
@@ -60,9 +65,7 @@ export function PlateLoop({
           />
         ))}
         <svg className="lp-overlay" viewBox={`0 0 ${w} ${h}`} aria-hidden="true">
-          {trail.length > 1 && (
-            <polyline points={trail.map(([x, y]) => `${x},${y}`).join(" ")} className="lp-trail" />
-          )}
+          {trail.length > 1 && <polyline points={trail.map(([x, y]) => `${x},${y}`).join(" ")} className="lp-trail" />}
           {f.xy && <circle cx={toSvg(f.xy)[0]} cy={toSvg(f.xy)[1]} r={3.2} className="lp-ring" />}
         </svg>
         <button

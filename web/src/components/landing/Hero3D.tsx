@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { pitchHz, tone } from "@/lib/sound";
 import type { StackFrame } from "./three/Scene";
 import { use3DMode, useScrollProgress } from "./three/scroll";
 
@@ -47,6 +48,12 @@ export function Hero3D({
   const tickDate = useRef<HTMLSpanElement>(null);
   const tickIdx = useRef<HTMLSpanElement>(null);
   const progress = useRef(0);
+  const [soundOn, setSoundOn] = useState(false);
+  const sound = useRef(false);
+  const lastPlate = useRef(-1);
+  useEffect(() => {
+    sound.current = soundOn;
+  }, [soundOn]);
 
   const onProgress = useCallback(
     (p: number) => {
@@ -58,6 +65,11 @@ export function Hero3D({
       if (f && tickDate.current && tickIdx.current) {
         tickDate.current.textContent = fmt(f.utc);
         tickIdx.current.textContent = `${k + 1}/${frames.length}`;
+      }
+      // Optional sound: a soft tone each time the camera reaches a new plate (pitch from wavelength).
+      if (p > 0.4 && k !== lastPlate.current) {
+        if (sound.current && f) tone(pitchHz(f.wavelength_um), 0.06, 0.18);
+        lastPlate.current = k;
       }
     },
     [frames],
@@ -98,6 +110,17 @@ export function Hero3D({
             )}
           </p>
         </div>
+        <button
+          type="button"
+          className="h3d-sound mono"
+          aria-pressed={soundOn}
+          onClick={() => {
+            if (!soundOn) tone(pitchHz(first.wavelength_um), 0.05, 0.12);
+            setSoundOn((v) => !v);
+          }}
+        >
+          Sound {soundOn ? "on" : "off"}
+        </button>
         <p className="h3d-ticker mono" aria-live="off">
           <span ref={tickDate}>{fmt(first.utc)}</span>
           <span>

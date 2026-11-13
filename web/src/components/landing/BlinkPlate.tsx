@@ -8,7 +8,17 @@ const fmt = (utc: string) =>
   new Date(utc).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 
 /** The blink comparator: two real frames of the same patch, flipped back and forth; rings mark both positions. */
-export function BlinkPlate({ a, b, naxis, label }: { a: LandingFrame; b: LandingFrame; naxis: [number, number]; label: string }) {
+export function BlinkPlate({
+  a,
+  b,
+  naxis,
+  label,
+}: {
+  a: LandingFrame;
+  b: LandingFrame;
+  naxis: [number, number];
+  label: string;
+}) {
   const [ref, inView] = useInView<HTMLDivElement>(true, 0.4);
   const reduced = useReducedMotion();
   const [showB, setShowB] = useState(false);

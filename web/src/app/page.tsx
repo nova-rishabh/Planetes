@@ -3,6 +3,10 @@ import { SiteNav } from "@/components/SiteNav";
 import { BlinkPlate } from "@/components/landing/BlinkPlate";
 import { LegacyLinkRedirect } from "@/components/landing/LegacyLinkRedirect";
 import { Colour3D } from "@/components/landing/Colour3D";
+import { OpinionsFigure, StarFieldFigure } from "@/components/landing/Figures3D";
+import { PlanetX3D } from "@/components/landing/PlanetX3D";
+import { ScrambleText } from "@/components/landing/ScrambleText";
+import { TiltCard } from "@/components/landing/TiltCard";
 import { Hero3D } from "@/components/landing/Hero3D";
 import { PlateLoop } from "@/components/landing/PlateLoop";
 import { Reveal } from "@/components/landing/Reveal";
@@ -13,6 +17,7 @@ import {
   blinkPair,
   fmtDate,
   loadOpinions,
+  loadStarField,
   loadSpectrum,
   loadTarget,
   oneDetectorRun,
@@ -43,6 +48,7 @@ const eps = loadTarget("epsindib");
 const epsColours = eps ? acrossDetectors(eps) : [];
 const epsSpectrum = loadSpectrum("epsindib");
 const epsOpinions = loadOpinions("epsindib");
+const barnardField = loadStarField("barnard");
 const thumbs = BENCHMARKS.map((b) => ({ ...b, t: loadTarget(b.id) }));
 const p9 = evaluate(2.6 * EARTH_RADIUS_KM, 0.5, 700, 40, 1);
 const p9Best = p9.bands.reduce((a, b) => (b.ab < a.ab ? b : a));
@@ -50,7 +56,9 @@ const p9Best = p9.bands.reduce((a, b) => (b.ab < a.ab ? b : a));
 export default function Home() {
   const heroText = (
     <>
-      <p className="lp-kicker mono">NASA SPHEREx · 0.75–5 µm · every visit since Aug 2025</p>
+      <p className="lp-kicker mono">
+        <ScrambleText text="NASA SPHEREx · 0.75–5 µm · every visit since Aug 2025" />
+      </p>
       <h1 className="lp-title">Watch the infrared sky move.</h1>
       <p className="lp-lede">
         Planetes pulls every SPHEREx image of one patch of sky and plays them as a time-lapse. Things that move jump
@@ -151,8 +159,9 @@ export default function Home() {
                 <p className="lp-step mono">02 · Colour</p>
                 <h2>One patch of sky, 102 colours of infrared.</h2>
                 <p>
-                  SPHEREx has six detectors, each seeing a slice of infrared from 0.75 to 5 µm. Here is ε Indi B, a pair of
-                  brown dwarfs, in each of them. Put every visit together and you get its spectrum, measured, not looked up.
+                  SPHEREx has six detectors, each seeing a slice of infrared from 0.75 to 5 µm. Here is ε Indi B, a pair
+                  of brown dwarfs, in each of them. Put every visit together and you get its spectrum, measured, not
+                  looked up.
                 </p>
               </Reveal>
               <Reveal>
@@ -179,9 +188,9 @@ export default function Home() {
                 <Reveal className="lp-spec-wrap">
                   <SpectrumSketch spectrum={epsSpectrum} label="ε Indi B" />
                   <p className="lp-figcap">
-                    <span className="mono">Fig. 2</span> {epsSpectrum.nUsed} of {epsSpectrum.nTotal} real SPHEREx points for
-                    ε Indi B. The rest were rejected for a stated reason (flags, saturation, a neighbour star), and the
-                    viewer shows each one.
+                    <span className="mono">Fig. 2</span> {epsSpectrum.nUsed} of {epsSpectrum.nTotal} real SPHEREx points
+                    for ε Indi B. The rest were rejected for a stated reason (flags, saturation, a neighbour star), and
+                    the viewer shows each one.
                   </p>
                 </Reveal>
               )}
@@ -201,6 +210,7 @@ export default function Home() {
             and Planetes says so.
           </p>
         </Reveal>
+        <OpinionsFigure />
         <div className="lp-opinions">
           <Reveal className="lp-op panel">
             <p className="lp-op-k mono">Opinion 1 · motion</p>
@@ -231,25 +241,8 @@ export default function Home() {
       </section>
 
       {/* 5 · Planet X */}
-      <section className="lp-scene lp-scene-split app">
-        <Reveal className="lp-scene-text">
-          <p className="lp-step mono">04 · Planet X</p>
-          <h2>Could SPHEREx see a hidden planet?</h2>
-          <p>
-            A Planet-Nine-like world, 2.6 times Earth&apos;s size at 700 AU, would shine at about{" "}
-            <strong className="mono">AB {p9Best.ab.toFixed(1)}</strong> at its brightest SPHEREx band. One SPHEREx visit
-            reaches about <strong className="mono">AB {SPHEREX_SINGLE_VISIT_AB}</strong>. Lower is brighter, so this one
-            stays hidden. A bigger or closer planet would not.
-          </p>
-          <p>
-            Between two visits six months apart it would also jump {(p9.shiftArcsec / 60).toFixed(0)}′ across the sky,
-            far outside one time-lapse. Try your own planet.
-          </p>
-          <Link href="/planet-x" className="btn">
-            Open the Planet X check
-          </Link>
-        </Reveal>
-        <Reveal className="lp-px-figure">
+      <PlanetX3D
+        flatFigure={
           <svg viewBox="0 0 320 200" role="img" aria-label="Brightness of a hypothetical planet against SPHEREx depth">
             <line x1="20" y1="60" x2="300" y2="60" className="lp-depth" />
             <text x="300" y="52" textAnchor="end" className="lp-axis">
@@ -269,8 +262,8 @@ export default function Home() {
               700 AU · AB {p9Best.ab.toFixed(1)}
             </text>
           </svg>
-        </Reveal>
-      </section>
+        }
+      />
 
       {/* 6 · Benchmarks */}
       <section className="lp-scene app">
@@ -284,16 +277,18 @@ export default function Home() {
         <ul className="lp-bench">
           {thumbs.map(({ id, name, t }, k) => (
             <Reveal as="li" key={id} className="lp-bench-card">
-              <Link href={`/viewer?target=${id}`} style={{ transitionDelay: `${k * 60}ms` }}>
-                <div className="plate lp-mini">
-                  {t?.frames[0] && (
-                    // eslint-disable-next-line @next/next/no-img-element -- real baked WebP
-                    <img src={t.frames[0].src} alt="" width={t.naxis[0]} height={t.naxis[1]} />
-                  )}
-                </div>
-                <strong>{name}</strong>
-                <span>{WHY[id]}</span>
-              </Link>
+              <TiltCard>
+                <Link href={`/viewer?target=${id}`} style={{ transitionDelay: `${k * 60}ms` }}>
+                  <div className="plate lp-mini">
+                    {t?.frames[0] && (
+                      // eslint-disable-next-line @next/next/no-img-element -- real baked WebP
+                      <img src={t.frames[0].src} alt="" width={t.naxis[0]} height={t.naxis[1]} />
+                    )}
+                  </div>
+                  <strong>{name}</strong>
+                  <span>{WHY[id]}</span>
+                </Link>
+              </TiltCard>
             </Reveal>
           ))}
         </ul>
@@ -313,6 +308,17 @@ export default function Home() {
           </Link>
         </Reveal>
       </section>
+
+      {barnardField && (
+        <section className="lp-scene app sf3d">
+          <StarFieldFigure field={barnardField} />
+          <p className="lp-figcap">
+            <span className="mono">Fig. 3</span> The {barnardField.stars.length} Gaia DR3 stars within{" "}
+            {barnardField.radiusArcmin.toFixed(0)}′ of Barnard&apos;s Star, printed on a plate. The orange mark is
+            Barnard&apos;s Star itself, walking its measured path across a year of SPHEREx visits.
+          </p>
+        </section>
+      )}
 
       <footer className="lp-foot app">
         <p>
