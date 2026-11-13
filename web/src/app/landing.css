@@ -224,3 +224,39 @@
   .s3d-note-a, .s3d-note-b, .s3d-note-c { top: 4.5rem; }
   .s3d-tile-label { display: none; }
 }
+
+/* Phase 3 figures */
+.op3d-figure { height: clamp(220px, 32vw, 340px); margin: 0 0 1.5rem; }
+.px3d-figure { aspect-ratio: 4 / 3; min-height: 280px; }
+.px3d-controls { display: grid; gap: 0.75rem; margin: 1rem 0; max-width: 26rem; }
+.px3d-controls .field span { display: flex; justify-content: space-between; gap: 1rem; }
+.px3d-controls input[type="range"] { width: 100%; accent-color: var(--accent-fill); min-height: 44px; }
+.px3d-readout { margin: 0 0 1.25rem; line-height: 1.55; max-width: 34rem; }
+.o3d-label { font-size: 0.6875rem; color: var(--ink-muted); white-space: nowrap; pointer-events: none; }
+.o3d-scale { opacity: 0.75; transform: translateX(1.2rem); }
+.sf3d { padding-bottom: 0; }
+.sf3d-figure { height: clamp(260px, 42vw, 460px); }
+
+/* Benchmark cards tilt towards the pointer (TiltCard sets --rx/--ry and the sheen centre --gx/--gy). */
+.tilt {
+  --rx: 0deg; --ry: 0deg; --gx: 50%; --gy: 50%;
+  transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 180ms ease-out; transform-style: preserve-3d; position: relative; height: 100%;
+}
+.tilt .lp-mini { position: relative; overflow: hidden; }
+.tilt .lp-mini::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 180ms ease-out;
+  background: radial-gradient(circle at var(--gx) var(--gy), color-mix(in srgb, var(--on-ink) 28%, transparent), transparent 55%);
+}
+.tilt:hover .lp-mini::after { opacity: 1; }
+.h3d-sound {
+  position: absolute; left: 1.25rem; bottom: 1.25rem; min-height: 44px; padding: 0 0.9rem; font-size: 0.75rem;
+  border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink);
+  cursor: pointer;
+}
+.h3d-sound[aria-pressed="true"] { border-color: var(--accent-fill); color: var(--accent-text); }
+@media (prefers-reduced-motion: reduce) { .tilt { transform: none; transition: none; } }
+@media (max-width: 768px) {
+  .h3d-sound { left: 1rem; bottom: 1rem; }
+  .op3d-figure { height: 220px; }
+}
