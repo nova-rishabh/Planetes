@@ -18,9 +18,9 @@ function Glass({ palette, glass }: { palette: Palette; glass: boolean }) {
         <meshPhysicalMaterial
           color={palette.surface}
           transmission={1}
-          thickness={1.2}
-          roughness={0.12}
-          ior={1.31}
+          thickness={0.45}
+          roughness={0.04}
+          ior={1.25}
           clearcoat={1}
           transparent
         />
@@ -91,12 +91,12 @@ function Blocks({ progress, narrow }: { progress: RefObject<number>; narrow: boo
       b.current.rotation.set(0.25 + state.pointer.y * 0.15, -0.5 + turn + state.pointer.x * 0.2, 0);
       b.current.position.y = Math.sin(t * 0.8 + 1.4) * 0.06;
     }
-    const spread = MathUtils.lerp(2.6, 1.15, MathUtils.smoothstep(p, 0.1, 0.5));
+    const spread = MathUtils.lerp(narrow ? 1.4 : 2.3, narrow ? 1.0 : 1.2, MathUtils.smoothstep(p, 0.1, 0.5));
     if (a.current) a.current.position.x = -spread;
     if (b.current) b.current.position.x = spread;
   });
   return (
-    <group scale={narrow ? 0.7 : 1}>
+    <group scale={narrow ? 1.15 : 1.25}>
       <group ref={a}>
         <MotionInside palette={palette} />
         <Glass palette={palette} glass={!narrow} />
@@ -112,7 +112,7 @@ function Blocks({ progress, narrow }: { progress: RefObject<number>; narrow: boo
 export default function OpinionsScene({ progress, narrow }: { progress: RefObject<number>; narrow: boolean }) {
   const palette = useMemo(() => readPalette(), []);
   return (
-    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: 32, position: [0, 0.4, 7.5] }} aria-hidden="true">
+    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: 30, position: [0, 0.4, 7.2] }} aria-hidden="true">
       <Studio palette={palette} />
       <Blocks progress={progress} narrow={narrow} />
     </Canvas>

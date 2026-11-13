@@ -26,7 +26,7 @@ function Plate({ field, progress }: { field: StarField; progress: RefObject<numb
     field.stars.forEach((s, i) => {
       // East is left on a sky chart.
       o.position.set(-s.x * k, s.y * k, 0.002);
-      o.scale.setScalar(MathUtils.clamp(0.034 - (s.mag - 9) * 0.0028, 0.006, 0.04));
+      o.scale.setScalar(MathUtils.clamp(0.055 - (s.mag - 9) * 0.0045, 0.012, 0.06));
       o.updateMatrix();
       m.setMatrixAt(i, o.matrix);
     });
@@ -36,7 +36,7 @@ function Plate({ field, progress }: { field: StarField; progress: RefObject<numb
   useFrame((state) => {
     const p = progress.current ?? 0;
     if (root.current) {
-      root.current.rotation.x = -0.95 + state.pointer.y * 0.06;
+      root.current.rotation.x = -0.72 + state.pointer.y * 0.06;
       root.current.rotation.z = 0.2 + p * 0.5 + state.pointer.x * 0.08;
     }
     // Loop along the measured path every 6 s.
@@ -48,10 +48,14 @@ function Plate({ field, progress }: { field: StarField; progress: RefObject<numb
   });
 
   return (
-    <group ref={root}>
+    <group ref={root} scale={0.8}>
       <mesh>
         <circleGeometry args={[2.85, 96]} />
-        <meshStandardMaterial color={palette.surface} roughness={0.9} />
+        <meshBasicMaterial color={palette.surface} />
+      </mesh>
+      <mesh position={[0, 0, 0.001]}>
+        <ringGeometry args={[2.84, 2.87, 128]} />
+        <meshBasicMaterial color={palette.border} />
       </mesh>
       <instancedMesh ref={mesh} args={[undefined, undefined, field.stars.length]}>
         <circleGeometry args={[1, 16]} />
@@ -59,7 +63,7 @@ function Plate({ field, progress }: { field: StarField; progress: RefObject<numb
       </instancedMesh>
       {path.length > 1 && <Line points={path} color={palette.accent} lineWidth={2} />}
       <mesh ref={dot}>
-        <circleGeometry args={[0.05, 24]} />
+        <circleGeometry args={[0.07, 24]} />
         <meshBasicMaterial color={palette.accent} toneMapped={false} />
       </mesh>
     </group>
@@ -77,7 +81,7 @@ export default function StarFieldScene({
 }) {
   const palette = useMemo(() => readPalette(), []);
   return (
-    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: narrow ? 50 : 30, position: [0, 0, 8] }} aria-hidden="true">
+    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: narrow ? 44 : 30, position: [0, -0.45, 8.2] }} aria-hidden="true">
       <color attach="background" args={[palette.bg]} />
       <hemisphereLight args={[palette.surface, palette.border, 1.2]} />
       <directionalLight position={[2, 4, 5]} intensity={0.8} />

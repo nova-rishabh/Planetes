@@ -119,7 +119,7 @@ export default function OrbitScene({
 }) {
   const palette = useMemo(() => readPalette(), []);
   return (
-    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: 34, position: [0, 4.2, 6.4] }} aria-hidden="true">
+    <Canvas dpr={narrow ? [1, 1.5] : [1, 2]} camera={{ fov: 34, position: [0, 3.4, 5.2] }} aria-hidden="true">
       <color attach="background" args={[palette.bg]} />
       <System au={au} seen={seen} progress={progress} />
     </Canvas>
