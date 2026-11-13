@@ -30,6 +30,7 @@ from planetes.contracts import (
     Overlays,
     Resolved,
     SpectrumRequest,
+    SpectrumResult,
     TimelapseRequest,
 )
 from planetes.overlays import build_overlays, query_allwise_sources, query_gaia_sources
@@ -194,8 +195,13 @@ async def start_spectrum(body: SpectrumRequest, request: Request) -> JobCreated 
 
 
 @router.post("/opinions", response_model=Opinions, response_model_by_alias=True)
-async def opinions(body: OpinionsRequest) -> Opinions:
-    return await run_in_threadpool(opinions_for, body)
+async def opinions(body: OpinionsRequest, request: Request) -> Opinions:
+    points = None
+    if body.spectrum_job_id is not None:  # use the points of a finished spectrum job (docs/03 §4)
+        job = request.app.state.jobs.get(body.spectrum_job_id.root)
+        if job is not None and job.status == "done" and isinstance(job.result, SpectrumResult):
+            points = list(job.result.points)
+    return await run_in_threadpool(opinions_for, body, points)
 
 
 @router.get("/resolve", response_model=Resolved)

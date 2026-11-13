@@ -1,0 +1,11 @@
+obs_id,mjd,detector,name,v_mag,pred_x,pred_y,cen_x,cen_y,offset_px,peak_snr,matched
+ivo://irsa.ipac/spherex_dr1?2025W29_2A_0744_1/D3,60876.48147,3,1938 Lausanna (1974 HC),17.0,182.3,143.11,182.22,142.95,0.178,28.9,True
+ivo://irsa.ipac/spherex_dr1?2025W43_1A_0538_1/D2,60970.42243,2,4710 Wade (1989 AX2),17.5,131.12,225.58,131.13,225.61,0.031,18.4,True
+ivo://irsa.ipac/spherex_dr1?2025W48_1A_0556_3/D2,61005.60165,2,1562 Gondolatsch (1943 EE),16.5,85.1,180.89,85.09,180.88,0.012,53.1,True
+ivo://irsa.ipac/spherex_dr1?2025W48_1A_0585_3/D1,61005.73359,1,1562 Gondolatsch (1943 EE),16.5,60.06,181.99,60.0,181.92,0.088,55.7,True
+ivo://irsa.ipac/spherex_qr3?2026W24_1A_0325_1/D2,61200.41239,2,3519 Ambiorix (1984 DO),16.6,52.32,57.63,52.33,57.65,0.027,40.2,True
+ivo://irsa.ipac/spherex_dr1?2026W07_2A_0478_4/D2,61086.06074,2,1291 Phryne (1933 RA),16.1,137.03,80.27,137.71,79.86,0.793,37.5,True
+ivo://irsa.ipac/spherex_dr1?2026W08_1A_0085_3/D2,61087.4164,2,1291 Phryne (1933 RA),16.1,4.91,105.56,4.92,105.56,0.005,46.3,True
+ivo://irsa.ipac/spherex_qr3?2026W34_1A_0298_4/D3,61270.53752,3,15621 Erikhovland (2000 HO20),16.7,206.64,133.58,206.43,135.84,2.273,1075.2,False
+ivo://irsa.ipac/spherex_dr1?2025W21_2C_0487_2/D2,60820.43584,2,1455 Mitchella (1937 LF),17.2,167.31,16.97,167.22,16.9,0.117,20.2,True
+ivo://irsa.ipac/spherex_qr3?2026W21_2A_0275_2/D1,61183.20399,1,2144 Marietta (1975 BC1),16.9,149.91,163.96,149.95,164.02,0.07,28.6,True

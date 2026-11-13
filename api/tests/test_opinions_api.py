@@ -61,6 +61,21 @@ def test_measured_opinions_go_through_the_verdict_engine(monkeypatch) -> None:
         kind="template", **{"class": "T1"}, temperature_k=None, distance=pc, quality="good", method="test"
     )
     monkeypatch.setattr(opinions, "measure_motion", lambda req: motion)
-    monkeypatch.setattr(opinions, "measure_spectrum", lambda req: (spectrum, False))
+    monkeypatch.setattr(opinions, "measure_spectrum", lambda req, points=None, moving_sso=False: (spectrum, False))
     out = opinions.opinions_for(OpinionsRequest(ra=330.0, dec=-56.8))
     assert out.verdict.label == "agree"
+
+
+def test_baked_spectrum_feeds_the_typer() -> None:
+    """Real baked ε Indi B spectrum -> template opinion with a pc distance (motion still unmeasured -> can't tell)."""
+    import json
+    from pathlib import Path
+
+    from planetes.contracts import SpectrumResult
+
+    path = Path(__file__).resolve().parents[2] / "web" / "public" / "data" / "targets" / "epsindib" / "spectrum.json"
+    result = SpectrumResult.model_validate(json.loads(path.read_text(encoding="utf-8")))
+    out = opinions.opinions_for(OpinionsRequest(ra=result.target.ra, dec=result.target.dec), points=result.points)
+    assert out.spectrum.kind == "template" and out.spectrum.distance.unit == "pc"
+    assert out.verdict.label == "cant_tell"
+    assert any("Motion" in r for r in out.verdict.reasons)
