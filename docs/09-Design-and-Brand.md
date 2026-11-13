@@ -92,3 +92,5 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 - Fallbacks: reduced motion or no WebGL2 → the flat hero with the 2D time-lapse. Phones: lower pixel ratio, simpler glass, wider lens.
 - Libraries load after first paint (`next/dynamic`, `ssr: false`).
 - Colour scene (Phase 2): ε Indi B's six real detector frames fly in, then every used spectrum point flies from its detector to its place on the spectrum, and the frames collapse into wavelength bands under the axis. Point colours are the `--epoch-1..6` tokens (one per detector). Detector wavelength ranges come from the measured points, not hard-coded.
+- Phase 3: Two Opinions as two glass blocks (arrow = motion, prism = spectrum; symbols only, numbers stay in the cards). Planet X with distance/size sliders on our brightness model and a log-scaled solar system; the planet turns orange only when one SPHEREx visit could see it. Benchmark cards tilt in perspective (CSS). Footer plate of the real Gaia DR3 stars around Barnard's Star with its measured path. Scrambled kicker on load; optional sound (off by default).
+- Scenes below the fold mount only when near the screen (`LazyScene`).
