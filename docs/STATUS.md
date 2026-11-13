@@ -1,6 +1,6 @@
 # Status
 
-Updated Nov 11, 2026 (after the 10 pm call) · Owner: Rishabh · Update this whenever a deliverable lands or a [VERIFY] closes. Rishabh's account setup checklist: docs/RISHABH_GUIDE.md.
+Updated Nov 13, 2026, 01:30 IST · Owner: Rishabh · Update this whenever a deliverable lands or a [VERIFY] closes. Rishabh's account setup checklist: docs/RISHABH_GUIDE.md.
 
 ## Live URLs
 
@@ -13,25 +13,28 @@ Updated Nov 11, 2026 (after the 10 pm call) · Owner: Rishabh · Update this whe
 
 ## Deliverables
 
+Full list with owners and hours: docs/REMAINING_WORK.md. Step plan: docs/IMPLEMENTATION_PLAN.md.
+
 | Code | Owner | State |
 |---|---|---|
-| D1.1 scaffold (repo, contracts, CI, `/api/health`, status badge) | Rishabh | **Done** Nov 8; both services deploy from `main` |
-| Light theme (docs/09 palette C tokens) | Rishabh | **Done** Nov 8; palette C locked by team vote Nov 9 |
-| D2.1 access + D2.2 frames/render | Tirth (fixes: Rishabh) | **Done** Nov 9: Tirth's PRs #2/#3 plus review fixes (flags, saturation, shared stretch, QR3 flag keys), merged via `rishabh/d2.2-review-fixes`. Live time-lapse works end to end (59 real D3 frames of Barnard in ~2.5 min) |
-| D3.1 resolve | Shivaansh (fixes: Rishabh) | **Done** Nov 11: 5 benchmarks resolve (Gaia DR3 via IRSA for Barnard, ε Indi B, R Dra; SIMBAD for WISE 0855, RW Aur). Barnard 1.86" from its core in a real 2026 frame |
-| D4.4 verdict engine | Rishabh (took over from Role 4) | **Built** Nov 11 (`verdict.py`, rules + tests). Needs real motion (D3.3) and spectrum (D4.1/D4.3/D4.2) opinions as input |
-| D1.2 API (part 1) | Rishabh | **Live time-lapse wired** Nov 9: cache (local + GCS), job queue, `POST /timelapse` runs access → frames → render, `/jobs/{id}`, `/frames`. Single exposures only until D2.3 |
-| D1.3 player (part 1) | Rishabh | **In progress** Nov 9: coordinate input, 5 benchmark buttons, canvas player (play/step/scrub/speed/loop, A/B blink, flags, target marker, metadata), URL state, `/embed`. All 5 benchmarks baked Nov 11 (`api/bake.py`), live Nov 12. Re-bake from GitHub Actions ("Bake benchmarks", docs/RUNBOOK.md) |
-| D1.4/D1.5 spectrum chart + Two Opinions panel | Rishabh | **Built** Nov 9 against the contract; show "no baked … yet" until `spectrum.json` / `opinions.json` exist |
-| D2.4 photometry → D2.3 stacks | Tirth | **In progress** Nov 11 (D2.4 first). Due for G2 Thu 12, 22:00 |
-| D3.2 overlays | Shivaansh | **Done** Nov 12: Gaia DR3 + AllWISE markers within 1 px on 4 real Barnard frames; `/api/overlays`, `/api/resolve` |
-| D3.3 motion fit | Shivaansh | **Fitter built** Nov 12 (`motion.py`); V1 passes with the Gaia epoch. Next: sub-pixel SPHEREx positions so V2 (ε Indi B) can run |
-| D4.1 spectrum layer → D4.3 typer → D4.2 thermometer | New Role 4 lead (replaced Shimaya, who left Nov 11) | **Starting** Nov 11; also fact-checks `/about` |
-| About page `/about` | Rishabh | **Live** Nov 11; needs a science fact-check |
-| `POST /api/opinions` | Rishabh | **Built** Nov 11: contract-valid; "can't tell" with reasons until D3.3 and D4.1/D4.3 plug into `api/opinions.py` (`measure_motion`, `measure_spectrum`) |
-| README + submission draft | Rishabh | **Drafted** Nov 11 (`docs/SUBMISSION.md`); finalise at freeze against the official guide |
-| All other D-codes (docs/06) | — | Not started |
-| Validation V1–V10 | — | V1 pass (with Gaia epoch), V5 pass (ε Indi B T3, 2.5–3.7 pc, in PR #11); others not run (docs/VALIDATION.md) |
+| D1.1 scaffold, D1.2 API, D1.3 player | Rishabh | **Done** (live) |
+| D1.4 modes + D2.3 stacks/difference/colour | Tirth (code), Rishabh (integration, bake) | **In PR #20 + #25**: baked for all 5 benchmarks from real DR1/QR3 frames |
+| D1.5 Two Opinions panel, Validation, About | Rishabh | Done; verdicts baked in **PR #23** (spectrum opinion; motion pending D3.3) |
+| D1.6 guided tour + Planet X UI | Rishabh | Planet X **live** (#15); tour in **PR #22** |
+| D1.7 sonified blink + a11y | Rishabh | Sound mode in **PR #22**; a11y pass to do |
+| D1.8 submission package | Rishabh | Draft updated (**PR #24**); final pass after the official guides (not out at 01:30 Nov 13) |
+| Homepage redesign | Rishabh | **PR #21**: real-frame scroll story; viewer at /viewer |
+| SPHEREx DR1 | Rishabh | **PR #25**: IRSA now lists DR1 + QR3, QR2 gone; main crashes on DR1 files until merged |
+| D2.4 photometry, D2.5 quality | Tirth / Rishabh | Aperture photometry live; Tirth's PSF photometry kept as `psf_photometry.py`; quality report in #20 |
+| D3.1 resolve, D3.2 overlays | Shivaansh | **Done** |
+| D3.3 motion | Shivaansh | Fitter done; measured positions **reported done (ε Indi B 4.71″/yr vs 4.68), not pushed yet** |
+| D3.4 known asteroids | Rishabh (code), Shivaansh (review, V6) | `known.py` on branch `rishabh/known-asteroids`; V6 running |
+| D3.5 mover search | Shivaansh | Not started (lowest priority) |
+| D4.1 spectrum, D4.3 typer | Rishabh | **Done**; typer now needs two of D1–D3 (RW Aur fix, #23) |
+| D4.2 thermometer | Rishabh (from Amish's draft) | **Done** (#17); V7 needs real asteroid pairs |
+| D4.4 verdict | Rishabh | Done; wired to the spectrum (#23) |
+| D4.5 Planet X physics | Rishabh (from Amish's draft) | **Done** (#15), formula corrected |
+| Validation | — | V1, V5 pass; V3 note (WISE 0855 blended); V4 interim; V6 interim (1 asteroid, 0.07 px); V7, V8, V9, V10 to run |
 
 ## Open items (PM_PLAYBOOK §7; tick when done)
 
