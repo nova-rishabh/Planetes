@@ -167,3 +167,41 @@
 .tour-nav { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 .tour-count { margin-left: auto; color: var(--ink-muted); font-size: 0.75rem; }
 @media (prefers-reduced-motion: reduce) { .tour-card { animation: none; } }
+
+/* 3D opening (Hero3D): a tall section with a sticky full-screen canvas; --p (0..1) is scroll progress. */
+.h3d { position: relative; height: 520vh; }
+.h3d-sticky { --p: 0; position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.h3d-canvas { position: absolute; inset: 0; animation: h3d-in 900ms 120ms ease-out both; }
+.h3d-hero {
+  position: absolute; inset: 0 auto 0 0; display: flex; flex-direction: column; justify-content: center;
+  max-width: 40rem; pointer-events: none;
+  opacity: clamp(0, calc((0.17 - var(--p)) * 9), 1);
+  transform: translateY(calc(var(--p) * -30vh));
+}
+.h3d-hero > * { pointer-events: auto; }
+.h3d-label {
+  position: absolute; right: 1.25rem; bottom: 1.25rem; margin: 0; font-size: 0.6875rem; color: var(--ink-muted);
+  opacity: clamp(0, calc((0.22 - var(--p)) * 8), 1);
+}
+.h3d-note {
+  position: absolute; left: 0; bottom: 12vh; max-width: 30rem; pointer-events: none;
+  background: color-mix(in srgb, var(--bg) 86%, transparent); border-radius: var(--radius-panel);
+  padding-top: 1.25rem; padding-bottom: 1.25rem;
+}
+.h3d-note h2 { margin: 0 0 0.5rem; }
+.h3d-note p { margin: 0 0 0.5rem; line-height: 1.5; }
+.h3d-note-a { opacity: clamp(0, min(calc((var(--p) - 0.33) * 14), calc((0.6 - var(--p)) * 14)), 1); }
+.h3d-note-b { opacity: clamp(0, calc((var(--p) - 0.72) * 10), 1); }
+.h3d-ticker {
+  position: absolute; right: 1.25rem; top: 5rem; margin: 0; display: flex; gap: 1rem; font-size: 0.75rem;
+  color: var(--ink); background: color-mix(in srgb, var(--bg) 86%, transparent);
+  padding: 0.5rem 0.75rem; border-radius: var(--radius-control);
+  opacity: clamp(0, calc((var(--p) - 0.4) * 12), 1);
+}
+@keyframes h3d-in { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 768px) {
+  .h3d-hero { justify-content: flex-start; padding-top: 4.5rem; }
+  .h3d-note { bottom: 6vh; right: 0; }
+  .h3d-ticker { top: auto; bottom: 1rem; right: 1rem; }
+  .h3d-label { display: none; }
+}
