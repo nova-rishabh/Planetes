@@ -3,6 +3,7 @@ import { join } from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { SiteNav } from "@/components/SiteNav";
 
 export const metadata: Metadata = {
   title: "About · Planetes",
@@ -58,6 +59,7 @@ export default function About() {
   const pair = barnardPair();
   return (
     <main className="app about">
+      <SiteNav current="/about" />
       <header className="masthead">
         <div>
           <h1>About Planetes</h1>
@@ -65,7 +67,7 @@ export default function About() {
             What you are looking at, where it comes from, and what Planetes will and will not claim.
           </p>
         </div>
-        <Link href="/" className="btn">
+        <Link href="/viewer" className="btn">
           Back to the viewer
         </Link>
       </header>

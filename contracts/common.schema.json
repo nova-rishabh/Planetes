@@ -10,14 +10,14 @@
       "const": "1.0"
     },
     "Release": {
-      "description": "SPHEREx Quick Release a measurement came from.",
+      "description": "SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (at IRSA from Nov 2026; QR2 is no longer listed there).",
       "type": "string",
-      "enum": ["QR2", "QR3"]
+      "enum": ["QR2", "QR3", "DR1"]
     },
     "RequestedRelease": {
-      "description": "Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.",
+      "description": "Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.",
       "type": "string",
-      "enum": ["auto", "QR3", "QR2"]
+      "enum": ["auto", "DR1", "QR3", "QR2"]
     },
     "RaDeg": {
       "description": "Right ascension, ICRS, degrees.",

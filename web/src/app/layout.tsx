@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
 import "./globals.css";
+import "./landing.css";
 
 const heading = IBM_Plex_Sans_Condensed({
   subsets: ["latin"],
