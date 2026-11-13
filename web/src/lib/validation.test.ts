@@ -16,7 +16,7 @@ describe("validation table (docs/VALIDATION.md)", () => {
     expect(state("V6")).toBe("pending");
     expect(state("V10")).toBe("pass");
     // No test is cut at the moment; check the parser on a copy of a row marked cut.
-    expect(stateOf({ ...rows[0]!, result: "cut" })).toBe("cut");
+    expect(stateOf({ ...rows[0]!, pass: "", result: "cut" })).toBe("cut");
   });
 
   it("strips markdown for display", () => {
