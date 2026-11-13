@@ -33,10 +33,10 @@ export function PlanetX3D({ flatFigure }: { flatFigure: ReactNode }) {
   const idS = useId();
 
   return (
-    <section className="lp-scene lp-scene-split app">
+    <section className="ed-sec ed-wrap ed-split">
       <div className="lp-scene-text">
-        <p className="lp-step mono">04 · Planet X</p>
-        <h2>Could SPHEREx see a hidden planet?</h2>
+        <p className="ed-num mono">04 — Planet X</p>
+        <h2 className="ed-h2">Could SPHEREx see a hidden planet?</h2>
         <p>
           Move a planet out past Neptune and make it bigger or smaller. Our model gives its brightness in each SPHEREx
           band; one visit reaches about <strong className="mono">AB {SPHEREX_SINGLE_VISIT_AB}</strong> (lower is
@@ -81,8 +81,8 @@ export function PlanetX3D({ flatFigure }: { flatFigure: ReactNode }) {
           )}{" "}
           Between visits six months apart it jumps {(r.shiftArcsec / 60).toFixed(0)}′.
         </p>
-        <Link href="/planet-x" className="btn">
-          Open the full Planet X check
+        <Link href="/planet-x" className="ed-btn mono">
+          Open the full Planet X check →
         </Link>
       </div>
       <LazyScene

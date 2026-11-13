@@ -46,8 +46,8 @@ export function Colour3D({
           {ready && <SpectrumScene tiles={tiles} points={points} progress={progress} narrow={narrow} />}
         </div>
         <div className="h3d-note s3d-note-a app">
-          <p className="lp-step mono">02 · Colour</p>
-          <h2>One patch of sky, six slices of infrared.</h2>
+          <p className="ed-num mono">02 — Colour</p>
+          <h2 className="ed-h2">Six detectors. One spectrum.</h2>
           <p>
             SPHEREx splits the light onto six detectors, from 0.75 to 5 µm. These are ε Indi B, a pair of brown dwarfs,
             on each of them.
