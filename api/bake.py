@@ -4,6 +4,7 @@
     python -m api.bake --modes barnard [...]        (timelapse_{stacks,difference,color}.json, D2.3)
     python -m api.bake --spectrum epsindib [...]     (spectrum.json: forced photometry on every exposure)
     python -m api.bake --overlays barnard [...]      (overlays.json: Gaia DR3 + AllWISE moved to each epoch)
+    python -m api.bake --opinions epsindib [...]     (opinions.json: Two Opinions from the baked spectrum + motion)
 
 Writes, per target: target.json (Resolved), timelapse_exposures.json (TimelapseResult) and frames/*.webp|png.
 Frame URLs are relative (./frames/...), so the web app loads baked and live results the same way.
@@ -16,12 +17,13 @@ import sys
 from pathlib import Path
 
 from planetes.cache import Cache
-from planetes.contracts import ProperMotion, SpectrumRequest, TimelapseRequest
+from planetes.contracts import OpinionsRequest, ProperMotion, SpectrumRequest, SpectrumResult, TimelapseRequest
 from planetes.overlays import build_overlays, query_allwise_sources, query_gaia_sources
 from planetes.resolve import BENCHMARK_QUERIES, resolve
 from planetes.spectrum import build_spectrum
 
 from .main import code_version
+from .opinions import opinions_for
 from .timelapse import run_timelapse
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -126,6 +128,24 @@ def bake_spectrum(target_id: str) -> Path:
     return out / "spectrum.json"
 
 
+def _pm(t: dict) -> ProperMotion | None:
+    if t.get("pm_ra_masyr") is None or t.get("pm_dec_masyr") is None or not t.get("ref_epoch_jyear"):
+        return None
+    return ProperMotion(
+        pm_ra_masyr=t["pm_ra_masyr"], pm_dec_masyr=t["pm_dec_masyr"], ref_epoch_jyear=t["ref_epoch_jyear"]
+    )
+
+
+def bake_opinions(target_id: str) -> Path:
+    """opinions.json from the baked spectrum (and the measured motion once D3.3 provides one)."""
+    out = DATA / target_id
+    t = json.loads((out / "target.json").read_text(encoding="utf-8"))
+    spec = SpectrumResult.model_validate_json((out / "spectrum.json").read_text(encoding="utf-8"))
+    result = opinions_for(OpinionsRequest(ra=t["ra"], dec=t["dec"], pm=_pm(t)), points=list(spec.points))
+    (out / "opinions.json").write_text(result.model_dump_json(by_alias=True), encoding="utf-8")
+    return out / "opinions.json"
+
+
 OVERLAY_MAX_SOURCES = 300
 
 
@@ -147,7 +167,12 @@ def bake_overlays(target_id: str) -> Path:
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    step = {"--modes": bake_modes, "--spectrum": bake_spectrum, "--overlays": bake_overlays}
+    step = {
+        "--modes": bake_modes,
+        "--spectrum": bake_spectrum,
+        "--overlays": bake_overlays,
+        "--opinions": bake_opinions,
+    }
     fn = next((step[a] for a in args if a in step), bake)
     for tid in [a for a in args if not a.startswith("--")] or ["barnard"]:
         print(f"Baking {fn.__name__} for {tid}…", flush=True)

@@ -29,6 +29,7 @@ J_ZERO_POINT_JY = 1594.0  # 2MASS J, Cohen et al. 2003
 J_BAND_UM = (1.11, 1.39)
 MIN_POINTS = 8
 # Calibration/aperture systematics added in quadrature to the pixel noise (2MASS cross-check agreed within ~4%).
+MIN_DETECTORS = 2  # used points must span at least two of D1-D3 to be typed
 SYSTEMATIC_FRAC = 0.05
 
 
@@ -141,6 +142,12 @@ def spectrum_opinion(points: list[SpectrumPoint]) -> tuple[SpectrumOpinion, Type
     )
     if fit is None:
         return none, None
+    # One detector covers too little of the spectrum to tell types apart (and K or earlier stars have no template).
+    dets = {p.detector for p in points if p.used and p.detector in (1, 2, 3)}
+    if len(dets) < MIN_DETECTORS:
+        return none.model_copy(
+            update={"method": f"{method}: used points on {len(dets)} of D1-D3, need {MIN_DETECTORS}"}
+        ), None
     d = distance_range_pc(fit)
     label = fit.spt if len(fit.acceptable) == 1 else f"{fit.acceptable[0]}-{fit.acceptable[-1]}"
     quality = "good" if fit.chi2_red < 3 and len(fit.acceptable) <= 3 else "fair" if fit.chi2_red < 10 else "poor"
