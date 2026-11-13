@@ -22,12 +22,12 @@ export type Detector = number;
  */
 export type SchemaVersion = "1.0";
 /**
- * SPHEREx Quick Release a measurement came from.
+ * SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (at IRSA from Nov 2026; QR2 is no longer listed there).
  *
  * This interface was referenced by `PlanetesContracts`'s JSON-Schema
  * via the `definition` "Release".
  */
-export type Release = "QR2" | "QR3";
+export type Release = "QR2" | "QR3" | "DR1";
 /**
  * This interface was referenced by `PlanetesContracts`'s JSON-Schema
  * via the `definition` "JobId".
@@ -46,12 +46,12 @@ export type RaDeg = number;
  */
 export type Quality = "good" | "fair" | "poor";
 /**
- * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
+ * Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.
  *
  * This interface was referenced by `PlanetesContracts`'s JSON-Schema
  * via the `definition` "RequestedRelease".
  */
-export type RequestedRelease = "auto" | "QR3" | "QR2";
+export type RequestedRelease = "auto" | "DR1" | "QR3" | "QR2";
 
 export interface PlanetesContracts {
   [k: string]: unknown;
@@ -269,9 +269,9 @@ export interface TimelapseRequest {
     | [Detector, Detector, Detector, Detector, Detector]
     | [Detector, Detector, Detector, Detector, Detector, Detector];
   /**
-   * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
+   * Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.
    */
-  release?: "auto" | "QR3" | "QR2";
+  release?: "auto" | "DR1" | "QR3" | "QR2";
   mjd_start?: number | null;
   mjd_end?: number | null;
   max_frames?: number;
@@ -563,9 +563,9 @@ export interface SpectrumRequest {
   ra: RaDeg;
   dec: DecDeg;
   /**
-   * Release to query. auto = QR2 and QR3 together (they cover different weeks); QR3 wins for the same exposure.
+   * Release to query. auto = every release IRSA lists (DR1 and QR3 as of Nov 2026); for the same exposure DR1 wins, then QR3, then QR2.
    */
-  release?: "auto" | "QR3" | "QR2";
+  release?: "auto" | "DR1" | "QR3" | "QR2";
   /**
    * auto = PSF fit, fall back to aperture.
    */

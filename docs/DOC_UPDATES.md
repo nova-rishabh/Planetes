@@ -73,3 +73,9 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-12 | VALIDATION, REFERENCES, AI_USAGE | V7 back to “not run yet”; thermometer sources and Amish's draft credited |
 | 2026-11-12 | REMAINING_WORK (new) | Everything left before submission, priorities, owners, hours, Fri Nov 13 checkpoints |
 | 2026-11-12 | (data) | opinions.json baked for all 5 benchmarks: spectrum opinion from measured points; all 'can't tell' until D3.3 motion is wired |
+| 2026-11-12 | (web) | New homepage: scroll story with real frames (blink, colour, Two Opinions, Planet X, benchmarks); viewer moved to /viewer, old links redirect |
+| 2026-11-12 | (web) | Guided tour on the viewer (D1.6) and sonified time-lapse (D1.7: pitch = wavelength, loudness = target brightness, tick on blink) |
+| 2026-11-12 | AGENTS, contracts (common) | SPHEREx DR1 added as a release (IRSA now lists DR1 + QR3, QR2 gone); DR1 > QR3 > QR2 for the same exposure |
+| 2026-11-13 | (data) | Stacks, difference and colour time-lapses baked for the 5 benchmarks (bake --modes) |
+| 2026-11-13 | 09, REFERENCES, AI_USAGE | 3D homepage: new §8 (3D rules), Igloo Inc + 100,000 Stars as references; three.js, r3f, drei, GSAP, Lenis credited |
+| 2026-11-13 | 09, AI_USAGE | 3D homepage Phase 2: colour scene rules added to §8 |

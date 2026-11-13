@@ -1,6 +1,7 @@
 """Bake benchmark targets into web/public/data (docs/03 §6) with the same pipeline as the live API.
 
     python -m api.bake barnard [rdra ...]            (time-lapse; from the repo root; needs IRSA and SIMBAD)
+    python -m api.bake --modes barnard [...]        (timelapse_{stacks,difference,color}.json, D2.3)
     python -m api.bake --spectrum epsindib [...]     (spectrum.json: forced photometry on every exposure)
     python -m api.bake --overlays barnard [...]      (overlays.json: Gaia DR3 + AllWISE moved to each epoch)
     python -m api.bake --opinions epsindib [...]     (opinions.json: Two Opinions from the baked spectrum + motion)
@@ -81,6 +82,31 @@ def bake(target_id: str) -> Path:
     return out
 
 
+DERIVED_MODES = ("stacks", "difference", "color")
+
+
+def bake_modes(target_id: str) -> Path:
+    """timelapse_{stacks,difference,color}.json for a baked target (D2.3), same field and frame cap as the exposures."""
+    out = DATA / target_id
+    t = json.loads((out / "target.json").read_text(encoding="utf-8"))
+    pm = None
+    if t.get("pm_ra_masyr") is not None and t.get("pm_dec_masyr") is not None and t.get("ref_epoch_jyear"):
+        pm = ProperMotion(
+            pm_ra_masyr=t["pm_ra_masyr"], pm_dec_masyr=t["pm_dec_masyr"], ref_epoch_jyear=t["ref_epoch_jyear"]
+        )
+    for mode in DERIVED_MODES:
+        req = TimelapseRequest(ra=t["ra"], dec=t["dec"], fov_deg=FOV_DEG, mode=mode, max_frames=MAX_FRAMES, pm=pm)
+        result = run_timelapse(req, _Progress(), _SplitCache(out), code_version())  # type: ignore[arg-type]
+        for f in result.frames:
+            f.image_url = f"./frames/{f.id}.webp"
+            f.flags_url = f"./frames/{f.id}_flags.png" if f.flags_url else None
+        (out / f"timelapse_{mode}.json").write_text(
+            json.dumps(result.model_dump(mode="json"), separators=(",", ":")), encoding="utf-8"
+        )
+        print(f"  {mode}: {len(result.frames)} frames", flush=True)
+    return out
+
+
 def bake_spectrum(target_id: str) -> Path:
     """spectrum.json for a baked target, from its resolved position and proper motion (target.json)."""
     out = DATA / target_id
@@ -141,7 +167,12 @@ def bake_overlays(target_id: str) -> Path:
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    step = {"--spectrum": bake_spectrum, "--overlays": bake_overlays, "--opinions": bake_opinions}
+    step = {
+        "--modes": bake_modes,
+        "--spectrum": bake_spectrum,
+        "--overlays": bake_overlays,
+        "--opinions": bake_opinions,
+    }
     fn = next((step[a] for a in args if a in step), bake)
     for tid in [a for a in args if not a.startswith("--")] or ["barnard"]:
         print(f"Baking {fn.__name__} for {tid}…", flush=True)

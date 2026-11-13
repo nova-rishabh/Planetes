@@ -156,7 +156,7 @@ async def health(request: Request) -> Health:
         status="ok",
         code_version=code_version(),
         irsa_tap=irsa,
-        default_release="QR3",
+        default_release="DR1",
         cache_entries=request.app.state.cache.local_count(),
     )
 

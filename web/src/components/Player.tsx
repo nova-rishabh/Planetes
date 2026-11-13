@@ -5,6 +5,7 @@ import type { Frame, Overlays, TimelapseResult } from "@/types/contracts";
 import { markersFor } from "@/lib/overlays";
 import { initialPlayer, playerReducer, SPEEDS_FPS } from "@/lib/player";
 import { resolveAsset } from "@/lib/timelapse";
+import { gainFor, pitchHz, tick, tone } from "@/lib/sound";
 import { FrameMeta } from "./FrameMeta";
 
 interface Props {
@@ -48,6 +49,7 @@ function frameLabel(f: Frame): string {
  */
 export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB = null, onSettle, overlays = null }: Props) {
   const [showStars, setShowStars] = useState(true);
+  const [sound, setSound] = useState(false);
   const frames = result.frames;
   const [s, dispatch] = useReducer(playerReducer, undefined, () =>
     playerReducer(initialPlayer(), {
@@ -156,6 +158,31 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     }
   }, []);
 
+  // Sonified time-lapse (D1.7): one note per frame while playing or stepping; a tick on each blink flip.
+  const lastSound = useRef<string | null>(null);
+  useEffect(() => {
+    if (!sound || !frame) return;
+    const key = `${frame.id}:${s.blink.on ? (s.blink.showingB ? "B" : "A") : ""}`;
+    if (lastSound.current === key) return;
+    lastSound.current = key;
+    if (s.blink.on) {
+      tick();
+      return;
+    }
+    let grey: number | null = null;
+    const canvas = canvasRef.current;
+    if (canvas && frame.target_xy) {
+      try {
+        const px = Math.round((frame.target_xy[0] + 0.5) * UPSCALE);
+        const py = Math.round((h - (frame.target_xy[1] + 0.5)) * UPSCALE);
+        grey = canvas.getContext("2d")?.getImageData(px, py, 1, 1).data[0] ?? null;
+      } catch {
+        grey = null; // cross-origin frames can't be read; use the default loudness
+      }
+    }
+    tone(pitchHz(frame.wavelength_um), gainFor(grey));
+  }, [sound, frame, s.blink.on, s.blink.showingB, h]);
+
   const options = useMemo(
     () => frames.map((f, i) => <option key={f.id} value={i}>{`${i + 1} · ${frameLabel(f)}`}</option>),
     [frames],
@@ -167,7 +194,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
 
   return (
     <section className="player" onKeyDown={onKey} tabIndex={0} aria-label="Time-lapse player">
-      <figure className="plate player-figure">
+      <figure className="plate player-figure" data-tour="plate">
         <canvas ref={canvasRef} width={w * UPSCALE} height={h * UPSCALE} className="player-canvas" role="img" aria-label={`Frame ${s.index + 1} of ${frames.length}: ${frameLabel(frame)}`} />
         <figcaption className="caption">
           Fig. 1 · {frameLabel(frame)}
@@ -177,7 +204,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </figcaption>
       </figure>
 
-      <div className="controls" role="group" aria-label="Playback">
+      <div className="controls" role="group" aria-label="Playback" data-tour="playback">
         <button type="button" className="btn" onClick={() => dispatch({ type: "step", by: -1 })} aria-label="Previous frame">◀</button>
         <button type="button" className="btn btn-primary" onClick={() => dispatch({ type: "togglePlay" })} aria-pressed={s.playing}>
           {s.playing ? "Pause" : "Play"}
@@ -198,7 +225,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </span>
       </div>
 
-      <div className="controls" role="group" aria-label="Options">
+      <div className="controls" role="group" aria-label="Options" data-tour="options">
         <label className="field">
           Speed
           <select value={s.speedFps} onChange={(e) => dispatch({ type: "setSpeed", fps: Number(e.target.value) })}>
@@ -209,12 +236,21 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </label>
         <button type="button" className="toggle" aria-pressed={s.loop} onClick={() => dispatch({ type: "toggleLoop" })}>Loop</button>
         <button type="button" className="toggle" aria-pressed={s.showFlags} onClick={() => dispatch({ type: "toggleFlags" })}>Flags</button>
+        <button
+          type="button"
+          className="toggle"
+          aria-pressed={sound}
+          onClick={() => setSound((v) => !v)}
+          title="Hear each frame: pitch follows wavelength, loudness follows the target's brightness"
+        >
+          Sound
+        </button>
         {overlays ? (
           <button type="button" className="toggle" aria-pressed={showStars} onClick={() => setShowStars((v) => !v)}>Catalogue stars</button>
         ) : null}
       </div>
 
-      <div className="controls" role="group" aria-label="Blink two frames">
+      <div className="controls" role="group" aria-label="Blink two frames" data-tour="blink">
         <label className="field">
           A
           <select value={s.blink.a} onChange={(e) => dispatch({ type: "setBlinkFrame", which: "a", index: Number(e.target.value) })}>{options}</select>
@@ -225,7 +261,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
         </label>
         <button type="button" className="toggle" aria-pressed={s.blink.on} onClick={() => dispatch({ type: "toggleBlink" })}>Blink A/B</button>
       </div>
-      <p className="hint">Keys: Space play/pause · ← → step · B blink · F flags · L loop</p>
+      <p className="hint">Keys: Space play/pause · ← → step · B blink · F flags · L loop · Sound: high note = short infrared, low = long; louder = brighter target</p>
 
       <FrameMeta frame={frame} legend={result.flag_legend} showLegend={s.showFlags} />
     </section>

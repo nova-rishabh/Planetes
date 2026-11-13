@@ -95,13 +95,18 @@ def extract_detector(bandpass_name: str) -> int:
 
 
 def extract_release(uri: str) -> str:
-    """Extract data release string (QR2, QR3) from artifact URI."""
+    """Extract data release string (DR1, QR3, QR2) from an artifact URI or obs_publisher_did.
+
+    DR1 appeared at IRSA in Nov 2026 (`ivo://irsa.ipac/spherex_dr1?...`, files under `ibe/data/spherex/dr1/`).
+    """
     uri_str = str(uri).lower()
+    if "spherex/dr1/" in uri_str or "spherex_dr1" in uri_str:
+        return "DR1"
     if "qr3" in uri_str:
         return "QR3"
     elif "qr2" in uri_str:
         return "QR2"
-    raise ValueError(f"Could not determine valid release (QR2/QR3) from URI: '{uri}'")
+    raise ValueError(f"Could not determine valid release (DR1/QR3/QR2) from URI: '{uri}'")
 
 
 def find_frames(
@@ -162,6 +167,16 @@ def find_frames(
     df["frame_id"] = df.apply(lambda r: compute_frame_id(r["obs_id"], ra, dec, size_deg), axis=1)
     df["cutout_url"] = (
         "https://irsa.ipac.caltech.edu/" + df["uri"].astype(str) + f"?center={ra:.6f},{dec:.6f}d&size={size_deg}"
+    )
+
+    # Same exposure + detector listed in more than one release: keep the newest processing (DR1 > QR3 > QR2)
+    rank = {"DR1": 0, "QR3": 1, "QR2": 2}
+    df["_exposure"] = df["obs_id"].str.split("?").str[-1]
+    df = (
+        df.assign(_rank=df["release"].map(rank))
+        .sort_values("_rank")
+        .drop_duplicates("_exposure", keep="first")
+        .drop(columns=["_rank", "_exposure"])
     )
 
     # Filter release if explicitly requested and not 'auto'
