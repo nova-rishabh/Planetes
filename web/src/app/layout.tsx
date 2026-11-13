@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
 import "./globals.css";
 import "./landing.css";
+import "./editorial.css";
 
 const heading = IBM_Plex_Sans_Condensed({
   subsets: ["latin"],
-  weight: ["600"],
+  weight: ["600", "700"],
   variable: "--font-heading",
   display: "swap",
 });
