@@ -72,6 +72,7 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-12 | 04 §6, DECISIONS | Planet X brightness formula corrected; cuts reversed (all wow items back); new /planet-x page |
 | 2026-11-12 | VALIDATION, REFERENCES, AI_USAGE | V7 back to “not run yet”; thermometer sources and Amish's draft credited |
 | 2026-11-12 | REMAINING_WORK (new) | Everything left before submission, priorities, owners, hours, Fri Nov 13 checkpoints |
+| 2026-11-13 | SUBMISSION, README | Feature lists brought up to date (homepage, viewer, typer/thermometer, Planet X, tour/sound, DR1, known asteroids) |
 | 2026-11-12 | (data) | opinions.json baked for all 5 benchmarks: spectrum opinion from measured points; all 'can't tell' until D3.3 motion is wired |
 | 2026-11-12 | (web) | New homepage: scroll story with real frames (blink, colour, Two Opinions, Planet X, benchmarks); viewer moved to /viewer, old links redirect |
 | 2026-11-12 | (web) | Guided tour on the viewer (D1.6) and sonified time-lapse (D1.7: pitch = wavelength, loudness = target brightness, tick on blink) |
