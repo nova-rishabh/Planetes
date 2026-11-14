@@ -85,3 +85,5 @@ Every time a doc changes, add a line here and post in the team group.
 | 2026-11-13 | 09, AI_USAGE | 3D homepage Phase 2: colour scene rules added to §8 |
 | 2026-11-13 | 09, AI_USAGE | 3D homepage Phase 3 rules added to §8 |
 | 2026-11-13 | 09, AI_USAGE | New §3d "Bold editorial": tokens, type, layout rules (replaces the softer Plate Archive look; still light) |
+| 2026-11-14 | VALIDATION | Notes cleaned for the public page (no dates, names or PR numbers); V3, V4, V6, V7 marked In progress with their partial results |
+| 2026-11-14 | SUBMISSION | Rewritten to the official form fields: 30 s video or ≤ 7 slides, SI options, NASA and other data link lists, DR1 DOI |
