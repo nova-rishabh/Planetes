@@ -1,6 +1,6 @@
 # Planetes 01 — PRD (Product Requirements)
 
-Nov 7, 2026 · Team Planetes · NASA Space Apps 2026, Challenge “Planet X and SPHEREx” · v2 (final for build)
+Team Planetes · NASA Space Apps 2026, Challenge “Planet X and SPHEREx” · v2 (final for build)
 
 **Doc set:** 01 PRD (what & why) · 02 TRD (how) · 03 Data Contract & API · 04 Science & Validation · 05 Phases & Timeline · 06 Role Guide · 07 AI Build Playbook · 08 Demo, Pitch & Submission Kit
 
@@ -170,9 +170,9 @@ Priority: **Must** = required to submit · **Should** = strongly wanted · **Cou
 
 ## 10. Open items
 
-- Official challenge **Resources tab opens Nov 13**: re-check this PRD against it that day.
+- Official challenge **Resources tab opens near the event start**: re-check this PRD against it then.
 - Submission deadline and time zone for our registered event (Tirth).
-- Registered under Universal Event; global deadline (confirm Nov 13).
+- Registered under Universal Event; global deadline (to confirm).
 - Hosting decided: website on Vercel (free), API on Render Starter (team credits). See doc 02.
 
 ## Sources

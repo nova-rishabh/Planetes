@@ -1,5 +1,5 @@
 /*
- * Design tokens: "Bold editorial" (chosen Nov 13, docs/09 §3d), evolved from palette C "Plate Archive". Light theme only.
+ * Design tokens: "Bold editorial" (docs/09 §3d), evolved from palette C "Plate Archive". Light theme only.
  * Components use these variables and never raw hex.
  */
 :root {

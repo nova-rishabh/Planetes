@@ -63,4 +63,4 @@ On the site: About page, section "How we used AI tools". Full record: docs/AI_US
 - Project code | https://github.com/nova-rishabh/Planetes
 
 ## Before pressing Submit
-English throughout · every link opens in a private window without login · demo ≤ 30 s or ≤ 7 slides · no NASA logo anywhere · both boxes ticked · submitted before Sun Nov 15, 18:00 IST.
+English throughout · every link opens in a private window without login · demo ≤ 30 s or ≤ 7 slides · no NASA logo anywhere · both boxes ticked · submitted before the internal deadline (18:00 IST on the final day).

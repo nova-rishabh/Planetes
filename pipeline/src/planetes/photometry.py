@@ -4,7 +4,7 @@ Interim version written while the PSF-fit engine (D2.4, Tirth) is in progress: a
 APERTURE_PX pixels at the exact (sub-pixel) source position, a local sky annulus, and an aperture
 correction taken from the file's own PSF, so the flux is the total flux of a point source.
 
-Read from the real files (checked Nov 12 on cached QR2 and QR3 cutouts):
+Read from the real files (checked on cached QR2 and QR3 cutouts):
 - IMAGE and ZODI in MJy/sr, VARIANCE in MJy²/sr². Zodiacal light is subtracted here.
 - QR2 (VERSION 6.x): PSF image cube (121 zones, 101×101, OVERSAMP 10), zone centres XCTR_i / YCTR_i.
 - QR3 (VERSION 7.x): EPSF table (441 zones, 33×33, OVSMPX 5), zone centres XCENTER / YCENTER.

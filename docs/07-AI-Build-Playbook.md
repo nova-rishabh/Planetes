@@ -1,6 +1,6 @@
 # Planetes 07 — AI Build Playbook
 
-Nov 8, 2026 · How we build Planetes fast with AI coding agents without shipping wrong science.
+How we build Planetes fast with AI coding agents without shipping wrong science.
 
 ## 1. Tools and how they read our rules
 
@@ -177,7 +177,7 @@ description: Verify a deliverable before PR
 
 ## 9. Disclosure
 
-Keep `docs/AI_USAGE.md` current: tool, model (if shown), what it generated, what a human checked. Include it in the submission if the 2026 guide asks (check on Nov 13).
+Keep `docs/AI_USAGE.md` current: tool, model (if shown), what it generated, what a human checked. Include it in the submission if the 2026 guide asks (check the official guide).
 
 ## Sources
 

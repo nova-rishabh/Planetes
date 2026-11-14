@@ -47,7 +47,7 @@ Specs: docs/ (PRD, TRD, Data Contract, Science brief). The Data Contract in cont
 ## SPHEREx gotchas (read before touching data code)
 - Use cutouts (?center=RA,DECd&size=DEG), never full ~70 MB files.
 - Prefer TAP (spherex.artifact JOIN spherex.plane) over SIA (SIA lags ~1 day). QR2 and QR3 cover different weeks: use both, prefer QR3 only for the same exposure, record the release.
-- Releases (checked Nov 12, 2026): IRSA now lists DR1 (`spherex_dr1*`, files under `spherex/dr1/`) and QR3; QR2 returns 0 rows. DR1 files have the QR3 layout (EPSF table, MSKN/MSKM flags, X_SC.. spacecraft state). Same exposure in two releases: keep DR1 > QR3 > QR2. Baked QR2 provenance stays as recorded.
+- Releases (checked): IRSA now lists DR1 (`spherex_dr1*`, files under `spherex/dr1/`) and QR3; QR2 returns 0 rows. DR1 files have the QR3 layout (EPSF table, MSKN/MSKM flags, X_SC.. spacecraft state). Same exposure in two releases: keep DR1 > QR3 > QR2. Baked QR2 provenance stays as recorded.
 - IMAGE is MJy/sr and NOT zodi-subtracted: subtract the ZODI extension.
 - FLAGS meanings come from the FLAGS header: QR2 `MP_<NAME> = bit`, QR3 `MSKNnnnn` name + `MSKMnnnn` mask + `MSKDnnnn` description. Never hard-code bit meanings. Bit SOURCE (pixel on a known source) is information, not a defect.
 - Wavelength per pixel: WCS(header, fobj=hdul, key="W"); set .sip = None.

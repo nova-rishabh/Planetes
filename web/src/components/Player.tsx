@@ -6,6 +6,7 @@ import { markersFor } from "@/lib/overlays";
 import { initialPlayer, playerReducer, SPEEDS_FPS } from "@/lib/player";
 import { resolveAsset } from "@/lib/timelapse";
 import { gainFor, pitchHz, tick, tone } from "@/lib/sound";
+import { TOUR_EVENT, type TourCue } from "@/lib/tour";
 import { FrameMeta } from "./FrameMeta";
 
 interface Props {
@@ -157,6 +158,37 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
       fn();
     }
   }, []);
+
+  // Guided tour cues: play, blink first vs last visit, show catalogue stars, or stop.
+  const live = useRef(s);
+  useEffect(() => {
+    live.current = s;
+  }, [s]);
+  useEffect(() => {
+    const onCue = (e: Event) => {
+      const cue = (e as CustomEvent<TourCue>).detail;
+      const now = live.current;
+      if (now.blink.on && cue !== "blink") dispatch({ type: "toggleBlink" });
+      if (cue === "play") {
+        if (!now.loop) dispatch({ type: "toggleLoop" });
+        if (!now.playing) dispatch({ type: "togglePlay" });
+        return;
+      }
+      if (now.playing) dispatch({ type: "pause" });
+      if (cue === "blink" && frames.length > 1) {
+        // First and last visit on the same detector, so only the sky changes between them.
+        const det = frames[0]!.detector;
+        let last = frames.length - 1;
+        while (last > 0 && frames[last]!.detector !== det) last--;
+        dispatch({ type: "setBlinkFrame", which: "a", index: 0 });
+        dispatch({ type: "setBlinkFrame", which: "b", index: last > 0 ? last : frames.length - 1 });
+        if (!now.blink.on) dispatch({ type: "toggleBlink" });
+      }
+      if (cue === "stars") setShowStars(true);
+    };
+    window.addEventListener(TOUR_EVENT, onCue);
+    return () => window.removeEventListener(TOUR_EVENT, onCue);
+  }, [frames]);
 
   // Sonified time-lapse (D1.7): one note per frame while playing or stepping; a tick on each blink flip.
   const lastSound = useRef<string | null>(null);

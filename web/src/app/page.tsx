@@ -100,6 +100,9 @@ export default function Home() {
             Or a benchmark: <Link href="/viewer?target=barnard">Barnard&apos;s Star</Link> ·{" "}
             <Link href="/viewer?target=epsindib">ε Indi B</Link> · <Link href="/viewer?target=wise0855">WISE 0855</Link>
           </p>
+          <Link href="/viewer?target=barnard&tour=1" className="ed-btn mono ed-tour">
+            Take the 1-minute tour →
+          </Link>
         </div>
         {barnard && barnardRun.length > 1 && (
           <div className="ed-hero-fig">

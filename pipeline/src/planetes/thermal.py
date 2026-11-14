@@ -7,7 +7,7 @@ range of albedos and beaming parameters gives a range of possible distances from
 
 Model: NEATM (Harris 1998, Icarus 131, 291), integrated numerically over the visible disk, plus reflected sunlight
 (Sun as a 5772 K blackbody, H-G phase law, flat albedo). sbpy 0.6.0's `thermal.NEATM` has no flux method yet, so the
-integral is written here. Based on Amish's Role 4 draft (Nov 12); changed to use SPHEREx's real viewing geometry:
+integral is written here. Based on Amish's Role 4 draft; changed to use SPHEREx's real viewing geometry:
 SPHEREx looks ~90 deg from the Sun, never at opposition, so each trial distance gets its own observer distance and
 phase angle from the measured solar elongation, and the model is evaluated at the measured wavelengths.
 """

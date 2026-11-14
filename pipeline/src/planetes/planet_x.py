@@ -1,7 +1,7 @@
 """D4.5 Planet X Reality Check: physics for the calculator (docs/04 §6).
 
 Pure functions, no data access. Every output is a scenario for chosen inputs (size, albedo, distance,
-internal temperature), never a prediction that SPHEREx sees a planet. Based on Amish's Role 4 draft (Nov 12),
+internal temperature), never a prediction that SPHEREx sees a planet. Based on Amish's Role 4 draft,
 with the brightness scaling corrected (see reflected_visual_magnitude).
 """
 

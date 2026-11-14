@@ -13,8 +13,8 @@ const LOAD_TIMEOUT_MS = 20000;
 
 /**
  * ESA ESASky copies of the CDS surveys (their properties give creator_did ivo://CDS/P/allWISE/color,
- * ivo://CDS/P/2MASS/color, ivo://CDS/P/DSS2/color; they send Access-Control-Allow-Origin: *, checked Nov 9).
- * Full URLs because CDS itself was down worldwide on Nov 9 and IRSA's copies block browsers (no CORS).
+ * ivo://CDS/P/2MASS/color, ivo://CDS/P/DSS2/color; they send Access-Control-Allow-Origin: *, checked).
+ * Full URLs because CDS itself was down worldwide at the time and IRSA's copies block browsers (no CORS).
  */
 const ESASKY = "https://skies.esac.esa.int";
 export const SURVEYS = [

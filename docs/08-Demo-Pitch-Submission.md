@@ -1,6 +1,6 @@
 # Planetes 08 — Demo, Pitch & Submission Kit
 
-Nov 8, 2026 · Owner: Tirth (pitch & video), with Rishabh (submission) and Shimaya (fact-check). **Re-check everything here against the official Project Submission Guide and Judging Guide when they come out on Nov 13.**
+Owner: Tirth (pitch & video), with Rishabh (submission) and Shimaya (fact-check). **Re-check everything here against the official Project Submission Guide and Judging Guide when they come out.**
 
 ## 1. How we'll be judged
 
@@ -20,7 +20,7 @@ Space Apps judges use five criteria: **Influence, Creativity, Validity, Relevanc
 
 ## 3. Demo video
 
-**Length:** confirm on Nov 13. Some past guides asked for a very short video (about 30 s) for global judging. **Prepare two cuts:** 30 s and \~2 min. English voice or English subtitles.
+**Length:** confirm once the guide is out. Some past guides asked for a very short video (about 30 s) for global judging. **Prepare two cuts:** 30 s and \~2 min. English voice or English subtitles.
 
 ### 30-second cut
 
@@ -63,7 +63,7 @@ Space Apps judges use five criteria: **Influence, Creativity, Validity, Relevanc
 | Did you use AI? | Yes, for coding assistance; humans checked all science. Details in AI\_USAGE.md. |
 | Can others use it? | Yes: URL parameters and an embed page; open-source code. |
 
-## 6. Submission checklist (fields to confirm on Nov 13)
+## 6. Submission checklist (fields to confirm against the official guide)
 
 From past guides, expect fields like these:
 
@@ -107,7 +107,7 @@ From past guides, expect fields like these:
 - The NASA Space Apps Challenge logo may be used per the Space Apps brand guidelines (don't distort it).
 - Only images we made or that are openly licensed and credited. No copyrighted music in the video.
 
-## 9. Final QA (Sun morning)
+## 9. Final QA (final morning)
 
 - [ ] Open the live site in incognito on a phone and a laptop; all 5 benchmarks work.
 - [ ] Type a random coordinate; a time-lapse appears (or a clear “no SPHEREx coverage” message).

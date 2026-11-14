@@ -1,6 +1,6 @@
 # Planetes 03 — Data Contract & API Spec
 
-Nov 7, 2026 · v1.0 · **The single source of truth for how the pieces talk to each other.** Paste the relevant section into every AI coding prompt. Changes only by pull request reviewed by Rishabh.
+v1.0 · **The single source of truth for how the pieces talk to each other.** Paste the relevant section into every AI coding prompt. Changes only by pull request reviewed by Rishabh.
 
 ## 1. Rules for every payload
 
@@ -169,4 +169,4 @@ The web app treats baked files and live API responses **identically**. Only the 
 
 ## 8. Change log
 
-- 1.0 (Nov 7): first version.
+- 1.0: first version.
