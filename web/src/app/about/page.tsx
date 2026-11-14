@@ -172,7 +172,7 @@ export default function About() {
       <section>
         <h2>What we will and will not claim</h2>
         <ul>
-          <li>Every image and number comes from public NASA data. Nothing is simulated or filled in.</li>
+          <li>Every image and number comes from public NASA and ESA archives. Nothing is simulated or filled in.</li>
           <li>
             We say an object is &ldquo;consistent with&rdquo; something, never that we discovered or confirmed it.
             Anything unexplained is a candidate that needs follow-up by astronomers.
@@ -188,10 +188,32 @@ export default function About() {
       <section>
         <h2>Data and credits</h2>
         <p>
-          SPHEREx images: NASA/JPL-Caltech, served by IRSA (NASA/IPAC Infrared Science Archive), Quick Release 2 and 3.
-          Star positions and motions: ESA Gaia DR3 (via IRSA) and SIMBAD (CDS, Strasbourg). Sky map: Aladin Lite (CDS)
-          with images from ESA ESASky. Pipeline built on Astropy and astroquery. Full list in{" "}
+          SPHEREx images: NASA/JPL-Caltech, served by the{" "}
+          <a href="https://irsa.ipac.caltech.edu/Missions/spherex.html">NASA/IPAC Infrared Science Archive (IRSA)</a>:
+          Data Release 1 (doi:10.26131/IRSA678) and Quick Releases 2 and 3 (doi:10.26131/IRSA652, IRSA662). Data access
+          follows IRSA&apos;s{" "}
+          <a href="https://caltech-ipac.github.io/irsa-tutorials/spherex/">SPHEREx tutorial notebooks</a>. Star
+          positions and motions: ESA Gaia DR3 (via IRSA) and SIMBAD (CDS, Strasbourg). Known asteroids: NASA JPL
+          Small-Body Identification. Sky map: Aladin Lite (CDS) with images from ESA ESASky. The blink control is
+          inspired by <a href="http://byw.tools/wiseview">WiseView</a> (no code used). Pipeline built on Astropy and
+          astroquery. Full list in{" "}
           <a href="https://github.com/nova-rishabh/Planetes/blob/main/docs/REFERENCES.md">docs/REFERENCES.md</a>.
+        </p>
+        <p className="hint">
+          This publication makes use of data products from the Spectro-Photometer for the History of the Universe,
+          Epoch of Reionization and Ices Explorer (SPHEREx), which is a joint project of the Jet Propulsion Laboratory
+          and the California Institute of Technology, and is funded by the National Aeronautics and Space
+          Administration.
+        </p>
+      </section>
+
+      <section>
+        <h2>How we used AI tools</h2>
+        <p>
+          AI coding assistants (Claude Code, ChatGPT, Gemini) helped write parts of the code and documentation. Every
+          piece was reviewed and tested by the team against real SPHEREx data before it went in. No image, number or
+          spectrum on this site is AI-generated: all of them come from the archives above. Tool-by-tool record:{" "}
+          <a href="https://github.com/nova-rishabh/Planetes/blob/main/docs/AI_USAGE.md">docs/AI_USAGE.md</a>.
         </p>
         <p className="hint">
           Planetes is a NASA Space Apps 2026 project by Team Planetes for the &ldquo;Planet X and SPHEREx&rdquo;
