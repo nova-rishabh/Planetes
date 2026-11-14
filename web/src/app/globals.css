@@ -216,7 +216,8 @@ h3 { font-size: 0.875rem; margin: 1rem 0 0.5rem; color: var(--ink-muted); text-t
 .val-id { color: var(--ink-muted); }
 .val-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-pill); }
 .val-row[data-state="fail"] .val-badge { color: var(--accent-text); border-color: var(--accent-text); }
-.val-row[data-state="pass"] .val-badge { color: var(--ui-text); border-color: var(--ui); }
+.val-row[data-state="pass"] .val-badge { color: var(--on-ink); background: var(--ink); border-color: var(--ink); }
+.val-row[data-state="progress"] .val-badge { color: var(--ink); border-color: var(--ink); }
 .val-result { margin: 0.5rem 0 0; }
 
 /* Planet X reality check */
