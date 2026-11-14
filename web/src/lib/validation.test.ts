@@ -13,7 +13,8 @@ describe("validation table (docs/VALIDATION.md)", () => {
   it("reads pass, in-progress, cut and not-run states", () => {
     const state = (id: string) => stateOf(rows.find((r) => r.id === id)!);
     expect(state("V5")).toBe("pass");
-    expect(state("V6")).toBe("progress");
+    expect(state("V6")).toBe("pass");
+    expect(state("V7")).toBe("progress");
     expect(state("V9")).toBe("pending");
     expect(state("V10")).toBe("pass");
     // No test is cut at the moment; check the parser on a copy of a row marked cut.
