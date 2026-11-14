@@ -51,7 +51,7 @@ On the site: About page, section "How we used AI tools". Full record: docs/AI_US
 - WiseView (idea for the blink control, no code used) | http://byw.tools/wiseview
 
 ## Space Agency Partner & Other Data (Link Text | Link URL)
-- ESA Gaia Data Release 3 | https://archive.stsci.edu/missions-and-data/gaia
+- ESA Gaia Data Release 3 (IRSA copy, table gaia_dr3_source) | https://irsa.ipac.caltech.edu/Missions/gaia.html
 - SIMBAD Astronomical Database (CDS) | https://simbad.cds.unistra.fr/
 - Aladin Lite (CDS) | https://aladin.cds.unistra.fr/AladinLite/
 - ESA ESASky sky images | https://sky.esa.int/
