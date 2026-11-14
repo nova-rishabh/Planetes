@@ -89,3 +89,4 @@ Every time a doc changes, add a line here and post in the team group.
 | SUBMISSION | Rewritten to the official form fields: 30 s video or ≤ 7 slides, SI options, NASA and other data link lists, DR1 DOI |
 | AGENTS, all docs, code comments | Project-timeline dates removed (log tables lose their Date column; schedules become ordered steps). Science dates (observation times, Gaia epoch) stay |
 | AI_USAGE | Guided tour can start from the homepage and now plays, blinks and shows stars at each stop |
+| VALIDATION | V6 passed (15 known asteroids found in 20 ecliptic fields, within 1 px); V8 passed (R Dra and RW Aur labelled Can't tell: saturated) |
