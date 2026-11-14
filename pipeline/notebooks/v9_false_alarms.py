@@ -98,10 +98,13 @@ def detections(ra0: float, dec0: float) -> tuple[list[dict], np.ndarray]:
             if bad[yi - 2 : yi + 3, xi - 2 : xi + 3].any():
                 continue
             cut = img[yi - BOX : yi + BOX + 1, xi - BOX : xi + BOX + 1]
-            if not np.all(np.isfinite(cut)):
+            if cut.shape != (2 * BOX + 1, 2 * BOX + 1) or not np.all(np.isfinite(cut)):
                 continue
             bkg = float(np.median(img[max(0, yi - 8) : yi + 9, max(0, xi - 8) : xi + 9]))
-            cx, cy = centroid_2dg(cut - bkg)
+            try:
+                cx, cy = centroid_2dg(cut - bkg)
+            except ValueError:
+                continue
             x, y = xi - BOX + float(cx), yi - BOX + float(cy)
             if not (abs(x - xi) < 2 and abs(y - yi) < 2):
                 continue
