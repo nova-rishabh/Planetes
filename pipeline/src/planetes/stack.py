@@ -1,4 +1,4 @@
-﻿"""SPHEREx image stacking, difference, sum, and RGB colour composite modes (Deliverable D2.3).
+"""SPHEREx image stacking, difference, sum, and RGB colour composite modes (Deliverable D2.3).
 
 Implements:
 - Per-epoch, per-detector inverse-variance-weighted coadds (excluding flagged pixels)

@@ -1,4 +1,4 @@
-﻿"""Time-lapse job: POST /api/timelapse -> planetes.access (find + download) -> planetes.frames (align) ->
+"""Time-lapse job: POST /api/timelapse -> planetes.access (find + download) -> planetes.frames (align) ->
 planetes.stack (coadd / difference / sum / color) -> planetes.render (shared stretch, WebP, flag overlay) ->
 files in the cache and a TimelapseResult.
 """
