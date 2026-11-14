@@ -90,3 +90,5 @@ Every time a doc changes, add a line here and post in the team group.
 | AGENTS, all docs, code comments | Project-timeline dates removed (log tables lose their Date column; schedules become ordered steps). Science dates (observation times, Gaia epoch) stay |
 | AI_USAGE | Guided tour can start from the homepage and now plays, blinks and shows stars at each stop |
 | VALIDATION | V6 passed (15 known asteroids found in 20 ecliptic fields, within 1 px); V8 passed (R Dra and RW Aur labelled Can't tell: saturated) |
+| STATUS | Deliverable states brought up to the live site (tour, DR1, V6/V8 pass); Team Owner transfer ticked; team-page text moved to Rishabh |
+| VALIDATION | V9 passed (at most 1 fake mover per field over 100 date shuffles; ε Indi B caught with the real dates) |

@@ -1,0 +1,6 @@
+field,frames,epochs,sources_tested,real_date_movers,target_flagged,target_mu_arcsec_yr,shuffles,false_movers_median,false_movers_worst
+barnard,40,3,29,0,False,,100,0.0,1
+epsindib,40,4,17,1,True,4.6,100,0.0,1
+wise0855,40,3,14,0,False,,100,0.0,0
+rwaur,40,3,28,0,False,,100,0.0,0
+rdra,40,2,0,0,False,,100,0.0,0
