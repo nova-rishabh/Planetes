@@ -85,7 +85,12 @@ def opinions_for(
     measured = measure_spectrum(req, points, moving_sso)
     spectrum, saturated = measured if measured is not None else (None, False)
 
-    if motion is not None and spectrum is not None:
+    if saturated and spectrum is not None:
+        # Saturation decides on its own (docs/04 §8): say so even when motion is still missing.
+        verdict = decide(motion or _no_motion(), spectrum, saturated=True)
+        if motion is None:
+            verdict.reasons = [verdict.reasons[0], MOTION_PENDING]
+    elif motion is not None and spectrum is not None:
         verdict = decide(motion, spectrum, saturated)
     else:
         missing = [r for r, m in ((MOTION_PENDING, motion), (SPECTRUM_PENDING, spectrum)) if m is None]

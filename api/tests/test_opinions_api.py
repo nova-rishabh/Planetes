@@ -79,3 +79,19 @@ def test_baked_spectrum_feeds_the_typer() -> None:
     assert out.spectrum.kind == "template" and out.spectrum.distance.unit == "pc"
     assert out.verdict.label == "cant_tell"
     assert any("Motion" in r for r in out.verdict.reasons)
+
+
+def test_saturated_variables_say_saturated_even_without_motion() -> None:
+    """V8: real baked R Dra and RW Aur spectra are mostly saturated -> can't tell, and the reason says saturated."""
+    import json
+    from pathlib import Path
+
+    from planetes.contracts import SpectrumResult
+
+    for target in ("rdra", "rwaur"):
+        path = Path(__file__).resolve().parents[2] / "web" / "public" / "data" / "targets" / target / "spectrum.json"
+        result = SpectrumResult.model_validate(json.loads(path.read_text(encoding="utf-8")))
+        out = opinions.opinions_for(OpinionsRequest(ra=result.target.ra, dec=result.target.dec), points=result.points)
+        assert out.verdict.label == "cant_tell"
+        assert "saturated" in out.verdict.reasons[0]
+        assert opinions.MOTION_PENDING in out.verdict.reasons
