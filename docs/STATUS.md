@@ -18,30 +18,30 @@ Full list with owners and hours: docs/REMAINING_WORK.md. Step plan: docs/IMPLEME
 | Code | Owner | State |
 |---|---|---|
 | D1.1 scaffold, D1.2 API, D1.3 player | Rishabh | **Done** (live) |
-| D1.4 modes + D2.3 stacks/difference/colour | Tirth (code), Rishabh (integration, bake) | **In PR #20 + #25**: baked for all 5 benchmarks from real DR1/QR3 frames |
-| D1.5 Two Opinions panel, Validation, About | Rishabh | Done; verdicts baked in **PR #23** (spectrum opinion; motion pending D3.3) |
-| D1.6 guided tour + Planet X UI | Rishabh | Planet X **live** (#15); tour in **PR #22** |
-| D1.7 sonified blink + a11y | Rishabh | Sound mode in **PR #22**; a11y pass to do |
-| D1.8 submission package | Rishabh | Draft updated (**PR #24**); final pass after the official guides (not out yet) |
-| Homepage redesign | Rishabh | **PR #21**: real-frame scroll story; viewer at /viewer |
-| SPHEREx DR1 | Rishabh | **PR #25**: IRSA now lists DR1 + QR3, QR2 gone; main crashes on DR1 files until merged |
-| D2.4 photometry, D2.5 quality | Tirth / Rishabh | Aperture photometry live; Tirth's PSF photometry kept as `psf_photometry.py`; quality report in #20 |
+| D1.4 modes + D2.3 stacks/difference/colour | Tirth (code), Rishabh (integration, bake) | **Done** (live): baked for all 5 benchmarks from real DR1/QR3 frames |
+| D1.5 Two Opinions panel, Validation, About | Rishabh | **Done** (live); spectrum opinion baked, motion pending D3.3; saturated targets say "Can't tell: saturated" |
+| D1.6 guided tour + Planet X UI | Rishabh | **Done** (live): tour starts from the homepage, plays and blinks real frames |
+| D1.7 sonified blink + a11y | Rishabh | Sound mode **live**; a11y pass to do |
+| D1.8 submission package | Rishabh | `docs/SUBMISSION.md` follows the official form; needs the demo link (Tirth) |
+| Homepage redesign | Rishabh | **Done** (live): real-frame story; viewer at /viewer |
+| SPHEREx DR1 | Rishabh | **Done**: reads DR1 + QR3 |
+| D2.4 photometry, D2.5 quality | Tirth / Rishabh | Aperture photometry live; Tirth's PSF photometry kept as `psf_photometry.py`; quality report live |
 | D3.1 resolve, D3.2 overlays | Shivaansh | **Done** |
 | D3.3 motion | Shivaansh | Fitter done; measured positions **reported done (ε Indi B 4.71″/yr vs 4.68), not pushed yet** |
-| D3.4 known asteroids | Rishabh (code), Shivaansh (review, V6) | `known.py` on branch `rishabh/known-asteroids`; V6 running |
+| D3.4 known asteroids | Rishabh (code), Shivaansh (review) | **Done**; V6 passed |
 | D3.5 mover search | Shivaansh | Not started (lowest priority) |
-| D4.1 spectrum, D4.3 typer | Rishabh | **Done**; typer now needs two of D1–D3 (RW Aur fix, #23) |
-| D4.2 thermometer | Rishabh (from Amish's draft) | **Done** (#17); V7 needs real asteroid pairs |
-| D4.4 verdict | Rishabh | Done; wired to the spectrum (#23) |
-| D4.5 Planet X physics | Rishabh (from Amish's draft) | **Done** (#15), formula corrected |
-| Validation | — | V1, V5 pass; V3 note (WISE 0855 blended); V4 interim; V6 interim (1 asteroid, 0.07 px); V7, V8, V9, V10 to run |
+| D4.1 spectrum, D4.3 typer | Rishabh | **Done**; typer needs two of D1–D3 |
+| D4.2 thermometer | Rishabh (from Amish's draft) | **Done**; V7 needs D3/D6 pairs of 20 real asteroids |
+| D4.4 verdict | Rishabh | **Done**; wired to the spectrum |
+| D4.5 Planet X physics | Rishabh (from Amish's draft) | **Done**, formula corrected |
+| Validation | — | V1, V5, V6, V8, V10 pass; V3, V4, V7 in progress; V2 needs D3.3; V9 running |
 
 ## Open items (PM_PLAYBOOK §7; tick when done)
 
 - [ ] Send the group message (palette vote + docs update) with `docs/assets/planetes-palettes-light.png` attached
-- [ ] Tirth: turn on "looking for team members", approve join requests, transfer Team Owner to Rishabh (private message not sent yet)
+- [x] Team Owner transferred to Rishabh
 - [ ] Everyone: create Space Apps accounts, register for 2026, join Team Planetes via the direct link
-- [ ] Team page About text says "starry discoveries": change it (no discovery claims) once Rishabh is owner
+- [ ] Rishabh: change the team page About text ("starry discoveries" → no discovery claims)
 - [x] Palette vote: **C "Plate Archive" chosen**; locked in docs/09, already in `tokens.css`
 - [x] Domain planetes.divergit.com live, Render `ALLOWED_ORIGINS` set
 - [x] Google Cloud Storage cache: project `planetes-514208`, key in Render
