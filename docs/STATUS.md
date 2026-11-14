@@ -34,7 +34,7 @@ Full list with owners and hours: docs/REMAINING_WORK.md. Step plan: docs/IMPLEME
 | D4.2 thermometer | Rishabh (from Amish's draft) | **Done**; V7 needs D3/D6 pairs of 20 real asteroids |
 | D4.4 verdict | Rishabh | **Done**; wired to the spectrum |
 | D4.5 Planet X physics | Rishabh (from Amish's draft) | **Done**, formula corrected |
-| Validation | — | V1, V5, V6, V8, V10 pass; V3, V4, V7 in progress; V2 needs D3.3; V9 running |
+| Validation | — | V1, V5, V6, V8, V9, V10 pass; V3, V4, V7 in progress; V2 needs D3.3 |
 
 ## Open items (PM_PLAYBOOK §7; tick when done)
 
