@@ -12,10 +12,10 @@ The AI agent working in this repo is also Rishabh's **project manager**. Rishabh
 | **Shimaya** | Role 4: spectral science & ML | `thermal.py`, `typing.py`, `verdict.py`, validation notebooks | **Science lead**: fact-checks every claim |
 
 - They are **school students**, new to astronomy. Explain in plain words. They build with AI tools (Antigravity, Codex, Claude Code), so tasks should be substantial, not 2-prompt chores.
-- **Event:** NASA Space Apps 2026, challenge "Planet X and SPHEREx". Registered under **Universal Event, Anywhere in the World**. Hackathon **Sat Nov 14 – Sun Nov 15, 2026**. Official Resources tab + Submission & Judging guides come out **Nov 13**.
+- **Event:** NASA Space Apps 2026, challenge "Planet X and SPHEREx". Registered under **Universal Event, Anywhere in the World**. Official Resources tab + Submission & Judging guides come out shortly before the hackathon.
 - **Team page:** "**Team Planetes**" on spaceappschallenge.org (owner: Tirth). A *different* team called just "Planetes" exists on the same challenge. Always share our **direct link**, never just the name.
 - **Live:** API https://planetes-api.onrender.com/api/health · web https://web-gamma-flame-16.vercel.app → moving to **https://planetes.divergit.com**.
-- **Internal deadline:** Sun Nov 15, 18:00 IST. All times IST (Asia/Kolkata).
+- **Internal deadline:** 18:00 IST on the final day. All times IST (Asia/Kolkata).
 
 ## 2. Rishabh's standing rules (always follow)
 
@@ -41,7 +41,7 @@ The AI agent working in this repo is also Rishabh's **project manager**. Rishabh
 | By 23:30 | **Tomorrow's tasks per person** as one group message (§5), sized for 3–5 focused hours with AI tools, tied to D-codes in docs/06 and the current phase gate in docs/05 |
 | Anytime | Group message whenever a doc changes, a decision is made, or a deadline is near |
 
-**Phase gates (docs/05):** G0 Mon 9, 10:00 · G1 Tue 10, 23:00 (first submittable version) · G2 Thu 12, 13:00 · G3 Fri 13, 18:00 · Buffer to Sat 14, 10:00 · Wow layer Sat 10:00–18:00 · Freeze Sat 18:00 · Submit Sun 15, 18:00.
+**Phase gates (docs/05):** G0 → G1 (first submittable version) → G2 → G3 → Buffer → Wow layer (second-to-last day, until the 18:00 freeze) → Submit (18:00 on the final day).
 
 ## 4. Standup script template
 
@@ -79,13 +79,13 @@ Short, friendly, plain English, bullets, one clear ask. Link to files in the rep
 - [ ] **Tirth:** turn on "looking for team members" on the Team Planetes page, approve join requests, then transfer Team Owner to Rishabh (About tab → Team Owner → select → Publish). Rishabh has not messaged him yet (text in §8).
 - [ ] **Everyone:** create Space Apps accounts, register for 2026, join Team Planetes via the direct link.
 - [ ] **Team page About text** says "starry discoveries": change it (no discovery claims) once Rishabh is owner.
-- [x] **Palette vote:** C Plate Archive chosen (Nov 9), locked in docs/09 and tokens.css.
+- [x] **Palette vote:** C Plate Archive chosen, locked in docs/09 and tokens.css.
 - [ ] **Domain** `planetes.divergit.com`: add to Vercel, CNAME at the divergit.com DNS, then add to Render `ALLOWED_ORIGINS`.
 - [ ] **Google Cloud Storage cache** (replaces the earlier R2 idea): steps in docs/RUNBOOK.md.
-- [x] **Camber:** dropped Nov 9. Bakes run in GitHub Actions (docs/02).
-- [ ] **Science [VERIFY] at Monday standup** (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
-- [ ] **G0 Mon 9, 10:00:** each person shows a working notebook/plot (Phase 0 tasks in docs/05).
-- [ ] **Nov 13:** read the Resources tab and Submission/Judging guides; update docs/01 and docs/08 (video length, required fields, AI-use disclosure).
+- [x] **Camber:** dropped. Bakes run in GitHub Actions (docs/02).
+- [ ] **Science [VERIFY] at the next standup** (Shimaya, Shivaansh): is `pm_ra_masyr` multiplied by cos δ (Gaia convention)? Does `bands_covered` mean detector numbers 1–6?
+- [ ] **G0:** each person shows a working notebook/plot (Phase 0 tasks in docs/05).
+- [ ] Read the Resources tab and Submission/Judging guides; update docs/01 and docs/08 (video length, required fields, AI-use disclosure).
 
 ## 8. Ready messages not sent yet
 

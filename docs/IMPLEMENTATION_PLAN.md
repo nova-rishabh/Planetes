@@ -1,7 +1,7 @@
 # Implementation plan — Rishabh's items (with the agent building)
 
-Written Thu Nov 12, 2026, 23:30 IST. Covers every item owned by Rishabh in docs/REMAINING_WORK.md (#2, #3, #4, #6, #7,
-#11, #12 code, #17, #18, #19). Target: all done by **Fri Nov 13, 23:59 IST**.
+Covers every item owned by Rishabh in docs/REMAINING_WORK.md (#2, #3, #4, #6, #7,
+#11, #12 code, #17, #18, #19). Target: all done by the end of the final build day.
 
 Working rules for every step: one PR per step, CI green, real-data screenshot in the PR, Rishabh approves each merge,
 a DOC_UPDATES row for any doc change, no AI attribution outside docs/AI_USAGE.md.
@@ -10,18 +10,18 @@ a DOC_UPDATES row for any doc change, no AI attribution outside docs/AI_USAGE.md
 
 ## Order at a glance
 
-| Step | Item | When | Est. | Depends on |
+| Step | Item | Order | Est. | Depends on |
 |---|---|---|---|---|
-| A | #4 Merge Tirth's D2.3–D2.6 (integration PR) | Thu night | 1 h | — |
-| B | #7 SPHEREx DR1 support | Thu night / Fri early | 2 h | A (same files nearby) |
-| C | #6 Bake stacks / difference / sum / colour for 5 targets | Fri morning | 2 h | A, B, Tirth's speed fix (#5) or a smaller bake |
-| D | #3 Homepage redesign (scroll story) + viewer polish | Fri, main block | 6 h | — (runs alongside C) |
-| E | #12 Known asteroids: finish `known.py` + V6 run | Fri afternoon | 2 h | B |
-| F | #2 Two Opinions verdicts baked | Fri, as soon as D3.3 lands | 2 h | Shivaansh's D3.3 PR |
-| G | #18 Guided tour | Fri evening | 2 h | D |
-| H | #17 V10 reproducibility | Fri evening | 1 h | C |
-| I | #19 Sonified blink + accessibility pass | Fri night | 2 h | D |
-| J | #11 Submission package | Fri (guides out) → Sat | 2 h | everything above |
+| A | #4 Merge Tirth's D2.3–D2.6 (integration PR) | first | 1 h | — |
+| B | #7 SPHEREx DR1 support | early on the final build day | 2 h | A (same files nearby) |
+| C | #6 Bake stacks / difference / sum / colour for 5 targets | morning | 2 h | A, B, Tirth's speed fix (#5) or a smaller bake |
+| D | #3 Homepage redesign (scroll story) + viewer polish | main block | 6 h | — (runs alongside C) |
+| E | #12 Known asteroids: finish `known.py` + V6 run | afternoon | 2 h | B |
+| F | #2 Two Opinions verdicts baked | as soon as D3.3 lands | 2 h | Shivaansh's D3.3 PR |
+| G | #18 Guided tour | evening | 2 h | D |
+| H | #17 V10 reproducibility | evening | 1 h | C |
+| I | #19 Sonified blink + accessibility pass | night | 2 h | D |
+| J | #11 Submission package | when the guides are out, then after | 2 h | everything above |
 
 ---
 
@@ -139,11 +139,11 @@ Accessibility: keyboard map for the player, ARIA labels, focus rings, colour con
 
 ## J. Submission package
 
-1. Fri Nov 13: read the official Project Submission and Judging guides; update docs/01 and docs/08 (video length,
+1. Read the official Project Submission and Judging guides; update docs/01 and docs/08 (video length,
    fields, AI disclosure).
 2. Finalise docs/SUBMISSION.md and README (live link, repo, how to run, data credits, licence, references).
 3. Run the docs/08 §6 pre-submit checklist in an incognito window on phone and laptop.
-4. Rishabh fills the form on Sun with the video link from Tirth.
+4. Rishabh fills the form on the final day with the video link from Tirth.
 
 ---
 

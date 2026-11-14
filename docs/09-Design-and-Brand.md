@@ -1,6 +1,6 @@
 # Planetes 09 — Design & Brand
 
-Nov 8, 2026 · Owner: Rishabh · Applies to everything in `web/`, the demo video and slides.
+Owner: Rishabh · Applies to everything in `web/`, the demo video and slides.
 
 ## 1. Name and tagline
 
@@ -13,7 +13,7 @@ Nov 8, 2026 · Owner: Rishabh · Applies to everything in `web/`, the demo video
 
 **Light theme.** Dark space UIs are what every AI-made astronomy site looks like, so we go the other way: a printed-journal look. Warm off-white paper, near-black ink, thin rules, and the dark SPHEREx frames sitting on the page like photographic plates in a paper. One warm accent is reserved for **things that moved or changed**. No gradients, no glows, no NASA insignia.
 
-## 3. Colour palette: C "Plate Archive" (locked Nov 9 by team vote)
+## 3. Colour palette: C "Plate Archive" (locked by team vote)
 
 Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs below meet WCAG AA (4.5:1) on the background. Accent colours come in two shades: a **fill** for markers and shapes, and a darker **text** shade for words.
 
@@ -35,7 +35,7 @@ Options A Lab Notebook and B Clear Sky were dropped in the vote. All text pairs 
 
 **Spectrum chart, one colour per epoch:** Okabe–Ito colour-blind-safe set: `#0072B2`, `#E69F00`, `#009E73`, `#CC79A7`, `#D55E00`, `#56B4E9`. Rejected points are hollow `ink-muted` circles with a tooltip giving the reason.
 
-## 3d. "Bold editorial" (chosen by Rishabh, Nov 13)
+## 3d. "Bold editorial" (chosen by Rishabh)
 
 The light theme stays, but louder, to give the site character. Chosen from three style frames (dark infrared, bold editorial, observatory instrument).
 
@@ -104,7 +104,7 @@ The light theme stays, but louder, to give the site character. Chosen from three
 - One light theme only for the hackathon. No dark mode.
 - Check every new screen with Lighthouse accessibility ≥ 90.
 
-## 8. 3D homepage (Nov 13)
+## 8. 3D homepage
 
 - Opening: SPHEREx modelled in code (an illustration, labelled so), then the camera dives through the telescope into a stack of real SPHEREx exposures, one glass plate per visit.
 - Every image on a plate is a real baked frame; the ring and line come from the baked target positions. No invented imagery.

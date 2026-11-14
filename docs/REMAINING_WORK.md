@@ -1,10 +1,10 @@
 # What's left — Planetes
 
-Written Thu Nov 12, 2026, 23:00 IST · Owner: Rishabh · Tick items here as they land (and update docs/STATUS.md).
+Owner: Rishabh · Tick items here as they land (and update docs/STATUS.md).
 
-**Target: everything below finished by Fri Nov 13, 23:59 IST.** Sat Nov 14 – Sun Nov 15 then go to polish, the video
-and the submission only. Official deadline: Sun Nov 15, 18:00 IST (internal); the official Submission and Judging
-guides come out Fri Nov 13 and may change the video length or form fields.
+**Target: everything below finished before the last two days.** Those two days then go to polish, the video
+and the submission only. Internal deadline: 18:00 IST on the final day; the official Submission and Judging
+guides come out around now and may change the video length or form fields.
 
 Split is a proposal (Rishabh decides). Each person has about 8–9 focused hours, sized for working with AI tools.
 
@@ -36,7 +36,7 @@ Split is a proposal (Rishabh decides). Each person has about 8–9 focused hours
 | 8 | **Demo video**: 30 s and ~2 min cuts (docs/08 §3), English | 🔴 | Tirth | 5 | Public links play without login | #3 for final shots (first cut can start now) |
 | 9 | **Pitch slides** (docs/08 §4) | 🔴 | Tirth | 2 | 6–8 slides, no NASA logo, real images only | — |
 | 10 | **About page science fact-check** + the two open [VERIFY] questions (pm_ra × cos δ; `bands_covered` = detectors 1–6) | 🔴 | Role 4 (Amish) · backup Shivaansh | 1 | List of fixes sent; answers written in docs/STATUS.md | — |
-| 11 | **Submission package**: read the official guides (Nov 13), finalise docs/SUBMISSION.md, README, checklist in docs/08 §6 | 🔴 | Rishabh | 2 | Every box in docs/08 §6 ticked | Nov 13 guides |
+| 11 | **Submission package**: read the official guides, finalise docs/SUBMISSION.md, README, checklist in docs/08 §6 | 🔴 | Rishabh | 2 | Every box in docs/08 §6 ticked | Official guides |
 | 12 | **D3.4 known asteroids** + V6 (`known.py` drafted: JPL SBIdent from SPHEREx's own position in the FITS header) | 🟡 | Shivaansh (review + V6) · Rishabh (code) | 3 | ≥ 10 known asteroids matched within 1 px in real frames | — |
 | 13 | **V7 thermometer** on real asteroid D3/D6 pairs from #12 | 🟡 | Role 4 (Amish) · backup Rishabh | 3 | ≥ 70 % of JPL distances inside our ranges, or an honest "not passed" with numbers | #12 |
 | 14 | **V4 photometry vs IRSA's tool** on 3 unsaturated stars | 🟡 | Tirth | 2 | Ratios table in docs/VALIDATION.md | — |
@@ -53,15 +53,15 @@ Split is a proposal (Rishabh decides). Each person has about 8–9 focused hours
 | Person | Items | ≈ Hours |
 |---|---|---|
 | **Rishabh** (with the agent doing most of the build) | 2, 3, 4, 6, 7, 11, 17, 18, 19 + code for 12 + all reviews/merges | 9 of your own (agent builds the rest) |
-| **Tirth** | 5, 8, 9, 14, 21 | 12.5 (video is the big one; can spill into Sat) |
+| **Tirth** | 5, 8, 9, 14, 21 | 12.5 (video is the big one; can spill into the second-to-last day) |
 | **Shivaansh** | 1, 12 (V6), 16, 20 | 13 (1 first; 20 only if time) |
 | **Role 4 (Amish)** | 10, 13, 15 | 6 (each has a named backup) |
 
-## 4. Order and checkpoints (Fri Nov 13)
+## 4. Order and checkpoints (final build day)
 
 1. **By 12:00:** #1 progress pushed (Shivaansh) · #4, #7 merged (Rishabh) · #10 sent (Amish) · video script draft (Tirth).
 2. **By 18:00:** #1 merged → #2 baked · #5 merged → #6 baked · #3 first version live · #12 V6 run.
-3. **By 23:59:** all 🔴 done; 🟡 as far as they go; VALIDATION page up to date; submission draft final except the video link.
+3. **End of day:** all 🔴 done; 🟡 as far as they go; VALIDATION page up to date; submission draft final except the video link.
 
 **Critical path:** #1 → #2. The headline feature (Two Opinions) waits on Shivaansh's measured positions.
 

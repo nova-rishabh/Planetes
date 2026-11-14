@@ -1,5 +1,5 @@
 """
-Planetes frame processing (D2.2, Tirth; review fixes by Rishabh, Nov 9).
+Planetes frame processing (D2.2, Tirth; review fixes by Rishabh).
 
 One SPHEREx cutout -> zodi-subtracted image and integer flags on a shared north-up TAN grid, plus a
 `Frame` contract object. Rendering (shared stretch, WebP, flag overlay) lives in render.py.
@@ -101,7 +101,7 @@ def reproject_flags(
 
 
 def flag_bits(header: fits.Header) -> dict[str, int]:
-    """FLAGS bit numbers by name, read from the FLAGS header. Two layouts exist (checked Nov 9):
+    """FLAGS bit numbers by name, read from the FLAGS header. Two layouts exist (checked):
     QR2 (VERSION 6.x): MP_OVERFLOW = 1 (the value is the bit number).
     QR3 (VERSION 7.x): MSKN0001 = 'OVERFLOW', MSKM0001 = 2 (the value is the bit mask), MSKD0001 = description."""
     bits = {k[3:]: int(v) for k, v in header.items() if k.startswith("MP_")}

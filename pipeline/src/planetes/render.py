@@ -1,5 +1,5 @@
 """
-Planetes rendering (D2.2, Tirth; review fixes by Rishabh, Nov 9).
+Planetes rendering (D2.2, Tirth; review fixes by Rishabh).
 
 One shared asinh stretch for all frames of a time-lapse (so the movie does not flicker), WebP frames with
 north at the top, and a transparent flag overlay coloured per docs/09 §3.

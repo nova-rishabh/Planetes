@@ -8,7 +8,7 @@ from typing import Literal
 
 import httpx
 
-# IVOA VOSI availability endpoint of IRSA's TAP service. Checked on 2026-11-08: HTTP 200,
+# IVOA VOSI availability endpoint of IRSA's TAP service. Checked: HTTP 200,
 # <available>true</available>, "services work properly.", ~2.0 s.
 IRSA_TAP_AVAILABILITY_URL = "https://irsa.ipac.caltech.edu/TAP/availability"
 # Matches <available>…</available>, with or without a namespace prefix. A regex avoids running a full

@@ -32,7 +32,7 @@ BENCHMARKS: dict[str, str] = {
     "rwaur": "RW Aurigae",
     "rdra": "R Draconis",
 }
-# Identifiers SIMBAD resolves for each benchmark (checked Nov 11; the display names above do not all resolve).
+# Identifiers SIMBAD resolves for each benchmark (checked; the display names above do not all resolve).
 BENCHMARK_QUERIES: dict[str, str] = {
     "barnard": "Barnard's Star",
     "wise0855": "WISE J085510.83-071442.5",
@@ -40,7 +40,7 @@ BENCHMARK_QUERIES: dict[str, str] = {
     "rwaur": "RW Aur",
     "rdra": "R Dra",
 }
-# CDS first, then the Harvard mirror (CDS SIMBAD returned 404 on Nov 11). Same database.
+# CDS first, then the Harvard mirror (CDS SIMBAD returned 404 at the time). Same database.
 SIMBAD_SERVERS = ("simbad.cds.unistra.fr", "simbad.harvard.edu")
 # SIMBAD gives ICRS coordinates at epoch J2000.
 SIMBAD_EPOCH_JYEAR = 2000.0
@@ -148,7 +148,7 @@ def _string(row: Any, column: str) -> str | None:
 def _simbad_resolve(name: str) -> tuple[SkyCoord, dict[str, float | None], str, int | None]:
     """Identity, J2000 position, proper motion, parallax and Gaia DR3 id from SIMBAD.
 
-    astroquery 0.4.11 (checked Nov 11): `ra`/`dec` are float degrees; fields are `pmra`, `pmdec`,
+    astroquery 0.4.11 (checked): `ra`/`dec` are float degrees; fields are `pmra`, `pmdec`,
     `plx_value`, `ids` (the old `pm` and `coo_epoch` no longer exist).
     """
     last_error: Exception | None = None
@@ -180,7 +180,7 @@ def _simbad_resolve(name: str) -> tuple[SkyCoord, dict[str, float | None], str, 
     raise LookupError(f"SIMBAD unreachable: {last_error}")
 
 
-# Gaia DR3 via IRSA's copy (`gaia_dr3_source`, same values as ESA; checked Nov 11 when ESA's archive returned 503
+# Gaia DR3 via IRSA's copy (`gaia_dr3_source`, same values as ESA; checked when ESA's archive returned 503
 # and astroquery.gaia failed on ESA's archive release 3.15). IRSA is already our SPHEREx source.
 IRSA_TAP_URL = "https://irsa.ipac.caltech.edu/TAP"
 GAIA_TABLE = "gaia_dr3_source"
