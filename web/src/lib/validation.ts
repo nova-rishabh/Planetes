@@ -8,7 +8,7 @@ export type ValidationRow = {
   evidence: string;
 };
 
-export type ValidationState = "pass" | "fail" | "cut" | "pending";
+export type ValidationState = "pass" | "progress" | "fail" | "cut" | "pending";
 
 export function parseValidation(markdown: string): ValidationRow[] {
   return markdown
@@ -25,11 +25,12 @@ export function stateOf(row: ValidationRow): ValidationState {
   const p = row.pass.toLowerCase();
   if (p.includes("pass")) return "pass";
   if (p.includes("fail")) return "fail";
+  if (p.includes("progress")) return "progress";
   if (row.result.toLowerCase() === "cut") return "cut";
   return "pending";
 }
 
 /** Markdown code spans and emphasis to plain text, for display. */
 export function plain(text: string): string {
-  return text.replace(/`([^`]*)`/g, "$1").replace(/\*\*([^*]*)\*\*/g, "$1").replace(/[✅❌]\s*/g, "");
+  return text.replace(/`([^`]*)`/g, "$1").replace(/\*\*([^*]*)\*\*/g, "$1").replace(/[✅❌🟡]\s*/gu, "");
 }

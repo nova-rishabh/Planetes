@@ -7,23 +7,27 @@ import { parseValidation, plain, stateOf, type ValidationState } from "@/lib/val
 
 export const metadata: Metadata = {
   title: "Validation · Planetes",
-  description: "How Planetes checks its own measurements against known values, including what has not passed yet.",
+  description: "How Planetes checks its own measurements against known answers: what has passed, what is in progress and what is next.",
 };
 
 // Read at build time. A missing file must fail the build, never show an empty or invented table.
-const rows = parseValidation(readFileSync(join(process.cwd(), "..", "docs", "VALIDATION.md"), "utf8"));
+const ORDER: ValidationState[] = ["pass", "progress", "fail", "pending", "cut"];
+const rows = parseValidation(readFileSync(join(process.cwd(), "..", "docs", "VALIDATION.md"), "utf8")).sort(
+  (a, b) => ORDER.indexOf(stateOf(a)) - ORDER.indexOf(stateOf(b)),
+);
 
 const LABEL: Record<ValidationState, string> = {
   pass: "Pass",
+  progress: "In progress",
   fail: "Fail",
   cut: "Cut",
-  pending: "Not run yet",
+  pending: "Next",
 };
 
 export default function Validation() {
   const counts = rows.reduce<Record<ValidationState, number>>(
     (acc, r) => ({ ...acc, [stateOf(r)]: acc[stateOf(r)] + 1 }),
-    { pass: 0, fail: 0, cut: 0, pending: 0 },
+    { pass: 0, progress: 0, fail: 0, cut: 0, pending: 0 },
   );
   return (
     <main className="app about">
@@ -32,8 +36,8 @@ export default function Validation() {
         <div>
           <h1>Validation</h1>
           <p className="tagline">
-            Every check we run against a known answer, with the result as it stands. Failures and gaps stay on this
-            page.
+            Every measurement is checked against an answer astronomers already know. Here is where each check
+            stands.
           </p>
         </div>
         <Link href="/viewer" className="btn">
@@ -42,7 +46,8 @@ export default function Validation() {
       </header>
 
       <p className="mono val-counts">
-        {counts.pass} pass · {counts.fail} fail · {counts.pending} not run yet · {counts.cut} cut
+        {counts.pass} passed · {counts.progress} in progress · {counts.pending} next
+        {counts.fail > 0 && ` · ${counts.fail} failed`}
       </p>
 
       <section>
