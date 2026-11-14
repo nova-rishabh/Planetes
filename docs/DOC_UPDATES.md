@@ -88,3 +88,4 @@ Every time a doc changes, add a line here and post in the team group.
 | VALIDATION | Notes cleaned for the public page (no dates, names or PR numbers); V3, V4, V6, V7 marked In progress with their partial results |
 | SUBMISSION | Rewritten to the official form fields: 30 s video or ≤ 7 slides, SI options, NASA and other data link lists, DR1 DOI |
 | AGENTS, all docs, code comments | Project-timeline dates removed (log tables lose their Date column; schedules become ordered steps). Science dates (observation times, Gaia epoch) stay |
+| AI_USAGE | Guided tour can start from the homepage and now plays, blinks and shows stars at each stop |

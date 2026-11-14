@@ -12,6 +12,7 @@ import { ObjectPanels } from "./ObjectPanels";
 import { Player } from "./Player";
 import { SkyContext } from "./SkyContext";
 import { Tour } from "./Tour";
+import { wantsTour } from "@/lib/tour";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 const FOV_CHOICES = [0.03, 0.05, 0.1, 0.2, 0.3, 0.5].filter((f) => f >= FOV_MIN_DEG && f <= FOV_MAX_DEG);
@@ -77,6 +78,7 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
   );
   const [inputError, setInputError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const [tourLink] = useState(() => wantsTour(new URLSearchParams(params.toString())));
 
   const { target, ra_deg, dec_deg, fov_deg, mode, detectors } = view;
   const detKey = detectors.join(",");
@@ -207,7 +209,7 @@ export function Viewer({ embed = false }: { embed?: boolean }) {
       {heading ? (
         <div className="view-heading-row">
           <h2 className="view-heading">{heading}</h2>
-          {!embed ? <Tour /> : null}
+          {!embed ? <Tour autoStart={tourLink && state.kind === "ready"} /> : null}
         </div>
       ) : null}
       {state.kind === "ready" ? (

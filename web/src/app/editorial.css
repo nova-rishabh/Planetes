@@ -60,6 +60,7 @@
 }
 .ed-btn:hover, .ed-btn:focus-visible { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--accent-fill); }
 .ed-btn-ink { background: var(--ink); color: var(--on-ink); }
+.ed-tour { margin-top: 1.25rem; }
 
 .ed-hero-fig { position: relative; min-width: 0; }
 .ed-callout { border-top: 2px solid var(--rule); padding-top: 0.75rem; max-width: 22rem; margin: -1rem 0 0 auto; position: relative; }
