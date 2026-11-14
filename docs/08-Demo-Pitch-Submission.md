@@ -20,30 +20,25 @@ Space Apps judges use five criteria: **Influence, Creativity, Validity, Relevanc
 
 ## 3. Demo video
 
-**Length:** confirm once the guide is out. Some past guides asked for a very short video (about 30 s) for global judging. **Prepare two cuts:** 30 s and \~2 min. English voice or English subtitles.
+**Official rule:** a video of **30 seconds or less** (or 7 slides or fewer), on a public link with no login (YouTube unlisted or Google Drive "anyone with the link"). English voice or English subtitles. A plain screen recording needs no "AI-generated" watermark; any AI-generated image or clip does.
 
-### 30-second cut
+### 30-second script (matches the live site)
 
 | Time | Screen | Voice-over |
 | --- | --- | --- |
-| 0–5 s | Barnard's Star blinking across SPHEREx epochs | “This is Barnard's Star, moving across NASA SPHEREx images.” |
-| 5–12 s | Type coordinates → time-lapse appears; switch to detector-6 stack → WISE 0855 appears | “Type any coordinates. Planetes fetches SPHEREx data live, aligns it, and stacks it to reveal faint, cold worlds.” |
-| 12–22 s | Click ε Indi B → spectrum + Two Opinions panel → “Agree” | “For every mover, two independent opinions: its motion and its 102-colour spectrum. When they agree, it's real.” |
-| 22–30 s | Flags overlay on R Draconis; Validation page; logo/name | “Honest flags, validated against Gaia and JPL. Planetes — Space Apps 2026.” |
+| 0–5 s | Homepage, click **"Take the 1-minute tour"**; Barnard's Star plays | "Pluto was found by blinking two photos. NASA's SPHEREx now photographs the whole sky in 102 infrared colours." |
+| 5–12 s | Tour stop 3: it blinks the first and last visit; Barnard's Star jumps | "Planetes turns any spot on the sky into a SPHEREx time-lapse. Blink two visits, and Barnard's Star moves." |
+| 12–20 s | Pick **ε Indi B**; scroll to the spectrum and Two Opinions | "From SPHEREx's own pixels it builds a spectrum: ε Indi B comes out as a T-type brown dwarf, 2.6 to 3.7 parsecs away, consistent with Gaia's 3.6." |
+| 20–26 s | **Validation** page, passed rows | "Every result is checked against known answers: Gaia, JPL asteroids, false-alarm tests. Six of ten pass so far." |
+| 26–30 s | Back to the homepage title | "Planetes. Real NASA data, honest answers." |
 
-### 2-minute cut
-
-1. **Hook** (0:00–0:15): blink comparator → Pluto → SPHEREx.
-2. **Problem** (0:15–0:30): SPHEREx data is huge and tricky (6 detectors, changing colours, artifacts).
-3. **Live demo** (0:30–1:20): coordinates in, modes, overlays, flags, spectrum on the fly, Two Opinions on ε Indi B, WISE 0855 stack, RW Aur/R Dra “changed but didn't move.”
-4. **Trust** (1:20–1:40): Validation page; what SPHEREx can't do (Planet X Reality Check).
-5. **Impact + team** (1:40–2:00): embeddable for citizen science; four students; open source.
+Keep the spoken numbers in step with the site: if motion lands for ε Indi B, mention it; if more validation tests pass, say the new count.
 
 **Recording tips:**
 
 - Record on the **baked** benchmarks (instant, no waiting).
 - 1080p, cursor highlighted, no notifications.
-- Every claim in the voice-over must match doc 04 §8 wording.
+- Every claim must match doc 04 §8 wording: "consistent with", never "discovered" or "confirmed". No NASA logo.
 
 ## 4. Live presentation (if our event has one)
 
