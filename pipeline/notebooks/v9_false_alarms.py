@@ -17,7 +17,8 @@ Mover. motion.fit_proper_motion on the source's positions and frame dates. It is
   mu x baseline >= 6.2" (one SPHEREx pixel).
 
 Positive control. With the real dates the rule must flag Barnard's Star or eps Indi B (within 30" of their
-mean position); otherwise a count of zero fake movers means nothing and V9 does not pass.
+Gaia DR3 position moved to the mean frame date); otherwise a count of zero fake movers means nothing
+and V9 does not pass.
 
 Shuffle. 100 random permutations of the frame dates within each field (seed 9). A permutation that keeps every
 frame in its own epoch, or maps every epoch onto the reversed epoch order, is skipped, because a straight-line
@@ -55,7 +56,9 @@ TARGETS = {
     "rwaur": (76.95652603458333, 30.401438173888888),
     "rdra": (248.16737836729, 66.75500674547),
 }
-CONTROLS = {"barnard", "epsindib"}
+# Gaia DR3 proper motions at epoch 2016.0 (mas/yr, RA term includes cos dec), from each target.json.
+CONTROLS = {"barnard": (-801.551, 10362.394), "epsindib": (3981.977, -2466.832)}
+GAIA_EPOCH_MJD = 57388.0  # 2016.0
 SIZE_DEG = 0.1
 N_FRAMES = 40
 PIX_ARCSEC = 6.2
@@ -184,7 +187,14 @@ def main() -> None:
         epoch = epochs_of(mjds)
         srcs = testable(link(dets, ra0, dec0), epoch)
         real = movers(srcs, mjds)
-        near = [m for m in real if math.hypot((m[0] - ra0) * math.cos(math.radians(dec0)), m[1] - dec0) * 3600 <= 30]
+        pm_ra, pm_dec = CONTROLS.get(name, (0.0, 0.0))
+        dt_yr = (float(np.mean(mjds)) - GAIA_EPOCH_MJD) / 365.25 if len(mjds) else 0.0
+        x0, y0 = pm_ra * dt_yr / 1000, pm_dec * dt_yr / 1000  # arcsec east and north of the 2016 position
+        near = [
+            m
+            for m in real
+            if math.hypot((m[0] - ra0) * math.cos(math.radians(dec0)) * 3600 - x0, (m[1] - dec0) * 3600 - y0) <= 30
+        ]
         counts = []
         rev = epoch.max() - epoch
         while len(counts) < N_SHUFFLES:
