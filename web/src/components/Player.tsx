@@ -188,7 +188,7 @@ export function Player({ result, baseUrl, startIndex = 0, blinkA = null, blinkB 
     };
     window.addEventListener(TOUR_EVENT, onCue);
     return () => window.removeEventListener(TOUR_EVENT, onCue);
-  }, [frames.length]);
+  }, [frames]);
 
   // Sonified time-lapse (D1.7): one note per frame while playing or stepping; a tick on each blink flip.
   const lastSound = useRef<string | null>(null);
