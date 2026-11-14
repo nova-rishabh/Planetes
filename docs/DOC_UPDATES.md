@@ -92,3 +92,4 @@ Every time a doc changes, add a line here and post in the team group.
 | VALIDATION | V6 passed (15 known asteroids found in 20 ecliptic fields, within 1 px); V8 passed (R Dra and RW Aur labelled Can't tell: saturated) |
 | STATUS | Deliverable states brought up to the live site (tour, DR1, V6/V8 pass); Team Owner transfer ticked; team-page text moved to Rishabh |
 | VALIDATION | V9 passed (at most 1 fake mover per field over 100 date shuffles; ε Indi B caught with the real dates) |
+| 08-Demo-Pitch-Submission | Demo video section rewritten to the official 30 s rule with a script that matches the live site (tour, blink, ε Indi B spectrum, Validation); 2-minute cut removed |
