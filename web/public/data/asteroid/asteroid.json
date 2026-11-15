@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "name": "1562 Gondolatsch",
+  "source": "SPHEREx (IRSA) frames; positions from JPL Small-Body Identification (SBIdent)",
+  "v_mag": 16.5,
+  "grid_px": 48,
+  "pixel_arcsec": 6.2,
+  "hours_apart": 3.17,
+  "shift_arcsec": 157.0,
+  "frames": [
+    {
+      "image": "/data/asteroid/a.webp",
+      "obs_id": "ivo://irsa.ipac/spherex_dr1?2025W48_1A_0556_3/D2",
+      "release": "DR1",
+      "utc": "2025-11-26T14:26:22.214400Z",
+      "mjd": 61005.60165,
+      "detector": 2,
+      "wavelength_um": 1.14,
+      "jpl_xy": [
+        35.63,
+        27.03
+      ],
+      "measured_xy": [
+        35.52,
+        27.06
+      ],
+      "offset_px": 0.11,
+      "peak_snr": 26.1
+    },
+    {
+      "image": "/data/asteroid/b.webp",
+      "obs_id": "ivo://irsa.ipac/spherex_dr1?2025W48_1A_0585_3/D1",
+      "release": "DR1",
+      "utc": "2025-11-26T17:36:21.830400Z",
+      "mjd": 61005.73359,
+      "detector": 1,
+      "wavelength_um": 1.02,
+      "jpl_xy": [
+        11.37,
+        19.97
+      ],
+      "measured_xy": [
+        11.3,
+        19.9
+      ],
+      "offset_px": 0.1,
+      "peak_snr": 36.3
+    }
+  ]
+}

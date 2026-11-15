@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "query": "WISE J085510.83-071442.5",
+  "name": "WISEA J085510.74-071442.5",
+  "ra": 133.81890825,
+  "dec": -7.247048000000001,
+  "ref_epoch_jyear": 2000.0,
+  "pm_ra_masyr": -8123.7,
+  "pm_dec_masyr": 673.2,
+  "parallax_mas": 439.0,
+  "source": "SIMBAD"
+}

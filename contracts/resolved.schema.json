@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/resolved.schema.json",
+  "title": "Resolved",
+  "description": "GET /api/resolve: name to position and proper motion (docs/03 §5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "query", "name", "ra", "dec", "ref_epoch_jyear", "pm_ra_masyr", "pm_dec_masyr", "parallax_mas", "source"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "query": { "type": "string" },
+    "name": { "type": ["string", "null"] },
+    "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+    "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+    "ref_epoch_jyear": { "type": ["number", "null"], "description": "Epoch of ra/dec, Julian year." },
+    "pm_ra_masyr": { "type": ["number", "null"] },
+    "pm_dec_masyr": { "type": ["number", "null"] },
+    "parallax_mas": { "type": ["number", "null"] },
+    "source": { "type": "string", "description": "Service that resolved the name." }
+  }
+}

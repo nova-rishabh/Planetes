@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/common.schema.json",
+  "title": "Common",
+  "description": "Shared definitions referenced by the other contracts (docs/03). Not a payload on its own.",
+  "$defs": {
+    "SchemaVersion": {
+      "description": "Contract version (docs/03 §1).",
+      "type": "string",
+      "const": "1.0"
+    },
+    "Release": {
+      "description": "SPHEREx release a measurement came from: Quick Releases QR2/QR3, or Data Release DR1 (QR2 is no longer listed at IRSA).",
+      "type": "string",
+      "enum": ["QR2", "QR3", "DR1"]
+    },
+    "RequestedRelease": {
+      "description": "Release to query. auto = every release IRSA lists (currently DR1 and QR3); for the same exposure DR1 wins, then QR3, then QR2.",
+      "type": "string",
+      "enum": ["auto", "DR1", "QR3", "QR2"]
+    },
+    "RaDeg": {
+      "description": "Right ascension, ICRS, degrees.",
+      "type": "number",
+      "minimum": 0,
+      "exclusiveMaximum": 360
+    },
+    "DecDeg": {
+      "description": "Declination, ICRS, degrees.",
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "Detector": {
+      "description": "SPHEREx detector number (D1-D6).",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+    },
+    "ProperMotion": {
+      "description": "Proper motion and its reference epoch, as returned by /resolve.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pm_ra_masyr", "pm_dec_masyr", "ref_epoch_jyear"],
+      "properties": {
+        "pm_ra_masyr": { "type": "number", "description": "Proper motion in RA, mas/yr." },
+        "pm_dec_masyr": { "type": "number", "description": "Proper motion in Dec, mas/yr." },
+        "ref_epoch_jyear": { "type": "number", "description": "Reference epoch, Julian year (Gaia DR3 = 2016.0)." }
+      }
+    },
+    "Distance": {
+      "description": "Distance range. null = not measured.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lo", "hi", "unit"],
+      "properties": {
+        "lo": { "type": ["number", "null"] },
+        "hi": { "type": ["number", "null"] },
+        "unit": { "type": ["string", "null"], "enum": ["pc", "au", null] }
+      }
+    }
+  }
+}

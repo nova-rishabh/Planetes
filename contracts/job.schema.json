@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/job.schema.json",
+  "title": "Job",
+  "description": "GET /api/jobs/{job_id}: status and (partial) result (docs/03 §5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "job_id", "kind", "status", "progress", "result", "error"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "job_id": { "$ref": "#/$defs/JobId" },
+    "kind": { "type": "string", "enum": ["timelapse", "spectrum"] },
+    "status": { "type": "string", "enum": ["queued", "running", "done", "error"] },
+    "progress": { "$ref": "#/$defs/JobProgress" },
+    "result": {
+      "description": "TimelapseResult or SpectrumResult; partial while running, null before any output.",
+      "anyOf": [
+        { "$ref": "timelapse_result.schema.json" },
+        { "$ref": "spectrum_result.schema.json" },
+        { "type": "null" }
+      ]
+    },
+    "error": {
+      "anyOf": [{ "$ref": "error.schema.json#/$defs/ErrorBody" }, { "type": "null" }]
+    }
+  },
+  "$defs": {
+    "JobId": {
+      "type": "string",
+      "pattern": "^j_[A-Za-z0-9_-]+$"
+    },
+    "JobProgress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["done", "total", "stage"],
+      "properties": {
+        "done": { "type": "integer", "minimum": 0 },
+        "total": { "type": ["integer", "null"], "minimum": 0, "description": "null while the total is not yet known." },
+        "stage": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

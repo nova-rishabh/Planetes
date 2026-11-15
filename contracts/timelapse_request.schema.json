@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/timelapse_request.schema.json",
+  "title": "TimelapseRequest",
+  "description": "Body of POST /api/timelapse (docs/03 §4). Echoed in TimelapseResult.request.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ra", "dec"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "ra": { "$ref": "common.schema.json#/$defs/RaDeg" },
+    "dec": { "$ref": "common.schema.json#/$defs/DecDeg" },
+    "fov_deg": { "type": "number", "minimum": 0.03, "maximum": 0.5, "default": 0.1 },
+    "mode": {
+      "type": "string",
+      "enum": ["exposures", "stacks", "difference", "sum", "color"],
+      "default": "stacks"
+    },
+    "detectors": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/Detector" },
+      "minItems": 1,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "default": [1, 2, 3, 4, 5, 6]
+    },
+    "release": { "$ref": "common.schema.json#/$defs/RequestedRelease", "default": "auto" },
+    "mjd_start": { "type": ["number", "null"], "default": null },
+    "mjd_end": { "type": ["number", "null"], "default": null },
+    "max_frames": { "type": "integer", "minimum": 1, "maximum": 120, "default": 60 },
+    "pm": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/ProperMotion" }, { "type": "null" }],
+      "default": null
+    }
+  }
+}

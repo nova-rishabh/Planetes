@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/health.schema.json",
+  "title": "Health",
+  "description": "GET /api/health: liveness and upstream check (docs/03 §5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "code_version", "irsa_tap", "default_release", "cache_entries"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "status": { "type": "string", "enum": ["ok"], "description": "The API process is up." },
+    "code_version": { "type": "string", "minLength": 1, "description": "Git short hash of the running code, or \"dev\"." },
+    "irsa_tap": { "type": "string", "enum": ["ok", "slow", "down"], "description": "Result of a live request to the IRSA TAP service." },
+    "default_release": { "$ref": "common.schema.json#/$defs/Release" },
+    "cache_entries": { "type": "integer", "minimum": 0 }
+  }
+}

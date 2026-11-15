@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+node_modules/
+web/.next/
+web/out/
+.vercel/
+.env
+.env.*
+!.env.example
+*.fits
+!pipeline/tests/data/*.fits
+cache/
+.DS_Store
+web/next-env.d.ts
+web/*.tsbuildinfo
+
+# Local cache from planetes.cache
+.planetes-cache/
+
+# Local tool settings
+.claude/

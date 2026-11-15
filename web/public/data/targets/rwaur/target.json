@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "query": "RW Aur",
+  "name": "V* RW Aur",
+  "ra": 76.95652603458333,
+  "dec": 30.401438173888888,
+  "ref_epoch_jyear": 2000.0,
+  "pm_ra_masyr": 7.23,
+  "pm_dec_masyr": -20.33,
+  "parallax_mas": 15.42,
+  "source": "SIMBAD"
+}

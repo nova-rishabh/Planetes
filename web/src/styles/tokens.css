@@ -1,0 +1,42 @@
+/*
+ * Design tokens: "Bold editorial" (docs/09 §3d), evolved from palette C "Plate Archive". Light theme only.
+ * Components use these variables and never raw hex.
+ */
+:root {
+  /* Page and panels */
+  --bg: #efebe3;
+  --surface: #f8f6f0;
+  --border: #cdc6b8;
+  /* Hard editorial rules (section dividers, card outlines) */
+  --rule: #0f1012;
+
+  /* Text */
+  --ink: #0f1012;
+  --ink-muted: #4f4c46;
+
+  /* Interactive: fill for shapes and the focus ring, text shade for words */
+  --ui: #6b665c;
+  --ui-text: #4f4c46;
+
+  /* Reserved for things that moved or changed */
+  --accent-fill: #e4501b;
+  --accent-text: #b13a0d;
+
+  /* Sky frames sit on a dark plate (docs/09 §3) */
+  --plate: #0b0c0e;
+  --on-ink: #f8f6f0;
+
+  /* Shape and spacing (docs/09 §5) */
+  --radius-panel: 0;
+  --radius-control: 0;
+  --radius-pill: 999px;
+
+  /* Spectrum chart, one colour per SPHEREx visit: Okabe–Ito colour-blind-safe set (docs/09 §3). */
+  --epoch-1: #0072b2;
+  --epoch-2: #e69f00;
+  --epoch-3: #009e73;
+  --epoch-4: #cc79a7;
+  --epoch-5: #d55e00;
+  --epoch-6: #56b4e9;
+  color-scheme: light;
+}

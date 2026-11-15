@@ -1,0 +1,6 @@
+# Keep LF everywhere so generated files are byte-identical on Windows and in CI.
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.webp binary
+*.fits binary

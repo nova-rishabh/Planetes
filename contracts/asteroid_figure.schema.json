@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nova-rishabh/Planetes/contracts/asteroid_figure.schema.json",
+  "title": "AsteroidFigure",
+  "description": "Baked homepage figure: two real SPHEREx frames of a known asteroid with JPL SBIdent positions (pipeline/notebooks/asteroid_figure.py).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "name", "source", "v_mag", "grid_px", "pixel_arcsec", "hours_apart", "shift_arcsec", "frames"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/SchemaVersion" },
+    "name": { "type": "string" },
+    "source": { "type": "string" },
+    "v_mag": { "type": ["number", "null"] },
+    "grid_px": { "type": "integer", "minimum": 1 },
+    "pixel_arcsec": { "type": "number", "exclusiveMinimum": 0 },
+    "hours_apart": { "type": "number", "exclusiveMinimum": 0 },
+    "shift_arcsec": { "type": "number", "minimum": 0 },
+    "frames": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/AsteroidFrame" } }
+  },
+  "$defs": {
+    "AsteroidFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["image", "obs_id", "release", "utc", "mjd", "detector", "wavelength_um", "jpl_xy", "measured_xy", "offset_px", "peak_snr"],
+      "properties": {
+        "image": { "type": "string" },
+        "obs_id": { "type": "string" },
+        "release": { "type": "string" },
+        "utc": { "type": "string" },
+        "mjd": { "type": "number" },
+        "detector": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "wavelength_um": { "type": ["number", "null"] },
+        "jpl_xy": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2, "description": "0-based grid pixel, origin lower-left." },
+        "measured_xy": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+        "offset_px": { "type": "number", "minimum": 0 },
+        "peak_snr": { "type": "number" }
+      }
+    }
+  }
+}
